@@ -1,0 +1,291 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/selectize.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <!--     <link rel="stylesheet" type="text/css" href="http://cistrome.org/~dsun/MAESTRO/css/mFilter.css">
+ -->
+    <!--     <link rel="stylesheet" type="text/css" href="https://cdn.mfilter.tk/css/mfilter.min.css">
+ -->
+    <title>TISCH</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm fixed-top navbar-dark" style="background-color:#252746">
+        <div class="container">
+            <!-- <a href="/" class="navbar-brand">TISCH</a> -->
+            <a href="../home">
+                <img src="/static/image/TISCH.png" width="140">
+            </a>
+            <div id="navbar-nav-scroll">
+                <ul class="navbar-nav bd-navbar-nav flex-row">
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../home" style="padding-left: 1rem; padding-right: 1rem">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link nav-a" href="../gallery" style="padding-left: 1rem; padding-right: 1rem">Dataset-Browser</a>
+                    </li>
+                    <!--                     <li class="nav-item">
+                        <a class="nav-link nav-a" href="../search-cancer" style="padding-left: 1rem; padding-right: 1rem">Dataset</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../search-gene" style="padding-left: 1rem; padding-right: 1rem">Gene-Browser</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="#" style="padding-left: 1rem; padding-right: 1rem">Documentation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="row body2" style="margin-top: 8rem; margin-bottom: 6rem">
+        <div class="col-md-12">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs align-items-center" style="margin-bottom: 0.2rem">
+<!--                             <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" aria-selected="true" href="#overview-tab" id="overview-link">Overview</a>
+                            </li> -->
+                            <li class="nav-item" style="">
+                                <div class="dropdown dropleft">
+                                    <svg t="1586176795585 dropdown-toggle" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="32305" width="26" height="26" id="advanced-gene-dropdown" data-toggle="dropdown">
+                                        <path d="M352 102.4H150.4C99.2 102.4 57.6 140.8 57.6 192v204.8c0 51.2 41.6 89.6 89.6 89.6H352c51.2 0 89.6-41.6 89.6-89.6V192c0-51.2-38.4-89.6-89.6-89.6zM937.6 230.4l-144-144c-35.2-35.2-92.8-35.2-128 0l-144 144c-16 16-25.6 38.4-25.6 64s9.6 48 25.6 64l144 144c16 16 38.4 25.6 64 25.6s48-9.6 64-25.6l144-144c16-16 25.6-38.4 25.6-64 3.2-25.6-6.4-48-25.6-64zM352 582.4H150.4c-51.2 0-89.6 41.6-89.6 89.6v204.8c0 51.2 41.6 89.6 89.6 89.6H352c51.2 0 89.6-41.6 89.6-89.6V672c0-51.2-38.4-89.6-89.6-89.6zM832 582.4h-204.8c-51.2 0-89.6 41.6-89.6 89.6v204.8c0 51.2 41.6 89.6 89.6 89.6H832c51.2 0 89.6-41.6 89.6-89.6V672c0-51.2-38.4-89.6-89.6-89.6z" p-id="32306" fill="#707070"></path>
+                                    </svg>
+                                    <div class="dropdown-menu" aria-labelledby="advanced-gene-dropdown" style="margin-top: -0.8rem; margin-left: 0.4rem; padding-left: 2rem; padding-right: 2rem; padding-top: 2rem; padding-bottom: 2rem; width: 19rem">
+                                        <h5 style="color: #2F5597">Advanced Gene Search</h5>
+                                        <div class="dropdown-divider"></div>
+                                        <form class="px-1 py-1" method="post" id="gene-list-form" name="gene-list-form" enctype="multipart/form-data" onsubmit="return false">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label><b>Upload gene list</b></label>
+                                                <input type="file" class="form-control-file" name="genelistfile" id="genelistfile">
+                                            </div>
+                                            <div class="form-group">
+                                                <label><b>Label for gene list</b></label>
+                                                <input type="text" name="genelistlabel" id="genelistlabel" value="GeneSet">
+                                            </div>
+                                            <div class="form-group">
+                                                <label><b>Collapse genes by</b></label>
+                                                <select class="form-control" style="font-size: 1rem" name="collapsemode" id="collapsemode">
+                                                    <option value="mean">Mean</option>
+                                                    <option value="median">Median</option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-secondary">Search</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item" style="margin-left: 0.5rem; width: 50%">
+                                <form id="gene-form" name="gene-form" onsubmit="return false" method="post">
+                                    {% csrf_token %}
+                                    <div class="input-group" style="margin-bottom: 0rem!important">
+                                        <div style="width: 80%">
+                                            <input type="text" class="form-control" placeholder="Gene (up to 6)" aria-label="Gene" aria-describedby="button-addon2" id="genesearch" name="genesearch">
+                                        </div>
+                                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+                                    </div>
+                                </form>
+                            </li>
+                            <li class="nav-item ml-auto" style="width: 23%">
+                                <select class="form-control" name="annotation" id="annotation">
+                                    <option value="Celltype_general">Level 1 annotation (general)</option>
+                                    <option value="Celltype_curated" selected="selected">Level 2 annotation (major)</option>
+                                    <option value="Celltype_subtype">Level 3 annotation (minor)</option>
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
+                    <ul class="list-group list-group-flush text-left">
+                        {% for dataset in dataset_list %}
+                        <li class="list-group-item" style="padding-top: 1rem" id="{{ dataset.dataset_name }}">
+                            <div class="container">
+                                <div class="row align-items-end justify-content-md-start">
+                                    <div class="col-sm-5">
+                                        <img class="umap_celltype" src="{{ dataset.umap }}" style="width: 100%">
+                                    </div>
+                                    <div class="col-sm-7 pre-scrollable">
+                                        <div class="row">
+<!--                                             <div class="col-sm-6" style="margin-top: 8rem">
+                                                <img src="{{ dataset.umap }}" style="width: 100%">
+                                            </div>
+                                            <div class="col-sm-6" style="margin-top: 8rem">
+                                                <img src="{{ dataset.umap }}" style="width: 100%">
+                                            </div>
+                                            <div class="col-sm-6" style="margin-top: 8rem">
+                                                <img src="{{ dataset.umap }}" style="width: 100%">
+                                            </div>
+                                            <div class="col-sm-6" style="margin-top: 8rem">
+                                                <img src="{{ dataset.umap }}" style="width: 100%">
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="container">
+                <div id="loading" style="display: none">
+                    <img src="/static/image/loading.gif">
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-expand-sm fixed-bottom navbar-dark" style="background-color: #252746">
+        <div class="container">
+            <!--         <a href="http://liulab.dfci.harvard.edu/" class="navbar-brand">
+          <img src="http://liulab.dfci.harvard.edu/WEBSITE/images/Global/logofinal.png" height="46" width="58">
+        </a> -->
+            <span class="navbar-text" style="font-size: 13px">Copyright @2020 Liu lab</span>
+        </div>
+    </nav>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="http://cistrome.org/~dsun/MAESTRO/js/mFilter.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"></script>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+    <script src="/static/js/plot.js"></script>
+    <script>
+    // PlotScatter("/static/image/tSNE/AML_GSE116256_AML_umap.json", "AML_GSE116256_AML");
+
+    var availableTags = {{ available_genes | safe }};
+    var availableOptions = []
+    for (var i = 0; i < availableTags.length; i++) {
+        availableOptions.push({ gene: availableTags[i] })
+    }
+    var dataset_select = {{ dataset_select | safe }};
+    var gene_valid = true;
+
+    function CheckGene() {
+        var gene_search = $("#genesearch").val();
+        if (availableTags.indexOf(gene_search) > -1) {
+            gene_valid = true;
+            return false;
+        } else {
+            alert("Please input valid gene symbol!")
+            gene_valid = false;
+            return false;
+        }
+    };
+
+    // $('.js-example-basic-multiple').select2();
+
+    $(function() {
+        $("#genesearch").selectize({
+            valueField: 'gene',
+            labelField: 'gene',
+            searchField: ['gene'],
+            persist: false,
+            maxOptions: 50,
+            options: availableOptions,
+            delimiter: ',',
+            create: false,
+            maxItems: 6
+        });
+        $("#annotation").selectize();
+    });
+
+    $("#gene-form").submit(function() {
+        if (gene_valid) {
+            $('#loading').show();
+            $.ajax({
+                data: {
+                    'dataset_selected': dataset_select,
+                    'genesearch': $("#genesearch").val().split(","),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function(res) {
+                    $('#loading').hide();
+                    console.log($("#genesearch").val());
+                    for (var i = 0; i < dataset_select.length; i++) {
+                        dataset_li_elem = document.getElementById(dataset_select[i])
+                        dataset_li_elem.children[0].children[0].children[1].children[0].innerHTML = ""
+                        for (var j = 0; j < $("#genesearch").val().split(",").length; j++) {
+                            col_elem = document.createElement("div")
+                            col_elem.innerHTML = '<img src="' + res.gene_umap[i][j] + '" style="width: 100%">'
+                            col_elem.className = "col-sm-6"
+                            col_elem.style.marginTop = "5rem"
+                            dataset_li_elem.children[0].children[0].children[1].children[0].append(col_elem);
+                        }
+                    }
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                }
+            });
+        }
+    });
+    $("#gene-list-form").submit(function() {
+        $('#loading').show();
+
+        var myFormData = new FormData();
+        myFormData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        myFormData.append('collapsemode', $("#collapsemode").val());
+        myFormData.append('genelistlabel', $("#genelistlabel").val());
+        myFormData.append('genelistfile', $('#genelistfile')[0].files[0]);
+        for (var i = 0; i < dataset_select.length; i++) {
+            myFormData.append('dataset_selected[]', dataset_select[i]);
+        }
+
+        $.ajax({
+            data: myFormData,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            success: function(res) {
+                for (var i = 0; i < dataset_select.length; i++) {
+                    dataset_li_elem = document.getElementById(dataset_select[i])
+                    dataset_li_elem.children[0].children[0].children[1].children[0].innerHTML = ""
+                    col_elem = document.createElement("div")
+                    col_elem.innerHTML = '<img src="' + res.gene_umap[i] + '" style="width: 100%">'
+                    col_elem.className = "col-sm-6"
+                    col_elem.style.marginTop = "5rem"
+                    dataset_li_elem.children[0].children[0].children[1].children[0].append(col_elem);
+                    $('#loading').hide();
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+            }
+        });
+    });
+
+    $("#annotation").change(function(){
+        var annotation = $("#annotation").val();
+        $(".umap_celltype").each(function(){
+            var dataset = $(this).attr("src").split("/")[3];
+            $(this).attr("src", "/static/data/" + dataset + "/" + dataset + "_umap_" + annotation + ".png");
+        });
+    });
+
+    </script>
+</body>
+
+</html>

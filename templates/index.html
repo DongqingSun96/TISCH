@@ -1,0 +1,848 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-99107243-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-99107243-3');
+</script>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <title>TISCH</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark" style="background-color:#252746">
+        <div class="container">
+            <!-- <a href="/" class="navbar-brand">TISCH</a> -->
+            <a href="../home">
+                <img src="/static/image/TISCH.png" width="140">
+            </a>
+            <div id="navbar-nav-scroll">
+                <ul class="navbar-nav bd-navbar-nav flex-row">
+                    <li class="nav-item active">
+                        <a class="nav-link nav-a" href="../home" style="padding-left: 1rem; padding-right: 1rem">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../gallery" style="padding-left: 1rem; padding-right: 1rem">Dataset</a>
+                    </li>
+                    <!--                     <li class="nav-item">
+                        <a class="nav-link nav-a" href="../search-cancer" style="padding-left: 1rem; padding-right: 1rem">Dataset</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../search-gene" style="padding-left: 1rem; padding-right: 1rem">Gene</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../documentation" style="padding-left: 1rem; padding-right: 1rem">Documentation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<!--         <div class="row body2" style="margin-top: 4.7rem; margin-left: 0; margin-right: 0">
+            <div class="col-lg-12 px-0">
+                <div class="jumbotron jumbotron-fluid shadow-sm" style="background-image: url('/static/image/background.svg'); background-size: cover; background-image: center; padding-top: 100px; padding-bottom: 100px">
+                 <div class="jumbotron jumbotron-fluid shadow-sm" style="background-color: #293462; background-size: cover; background-image: center; padding-top: 100px; padding-bottom: 100px">
+                    <div class="container">
+                        <h2 class="display-5" style="font-family: Avenir-black,Arial,sans-serif; text-align: left;">Welcome to TISCH</h2>
+                        <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif">Tumor Immune Single-cell Hub (TISCH) is a scRNA-seq database, which focuses on immune cells in tumor. TISCH provides detailed cell-type annotation for all curated datasets, enabling the exploration of tumor immunity across different cancer types.</p>
+                        <a role="button" class="btn btn-outline-tisch btn-lg" href="#" style="border-width: 2px; font-family: Avenir-black,Arial,sans-serif">Learn More »</a>
+                        <h2 class="display-5" style="font-family: Avenir-black,Arial,sans-serif; text-align: center; color: white">Welcome to TISCH</h2>
+                        <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif; color: white">Tumor Immune Single-cell Hub (TISCH) is a scRNA-seq database, which focuses on immune cells in tumor. TISCH provides detailed cell-type annotation for all curated datasets, enabling the exploration of tumor immunity across different cancer types.</p>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search a gene of interest" id="genesearch" name="genesearch" autocomplete="on">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-tisch" type="submit" id="button-addon2" style="padding-left: 20px; padding-right: 20px">Explore</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <div class="row body2" style="margin-top: 4.7rem; margin-left: 0; margin-right: 0">
+            <div class="col-lg-12 px-0">
+                <div class="jumbotron jumbotron-fluid shadow-sm" style="background-size: cover; background-image: center; padding-top: 60px; padding-bottom: 80px">
+                    <div class="container">
+                        <!--                         <h2 class="display-5" style="font-family: Avenir-black,Arial,sans-serif; text-align: left;">Welcome to TISCH</h2>
+                        <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif">Tumor Immune Single-cell Hub (TISCH) is a scRNA-seq database, which focuses on immune cells in tumor. TISCH provides detailed cell-type annotation for all curated datasets, enabling the exploration of tumor immunity across different cancer types.</p>
+                        <a role="button" class="btn btn-outline-tisch btn-lg" href="#" style="border-width: 2px; font-family: Avenir-black,Arial,sans-serif">Learn More »</a> -->
+                        <h1 class="display-5" style="font-family: Avenir-black,Arial,sans-serif; text-align: center;">
+                          Welcome to TISCH
+                          <span class="badge badge-pill badge-warning" style="font-size: 1rem; vertical-align: top; font-family: Avenir,Arial,sans-serif; font-weight: 400; background-color: rgba(51, 204, 255, 0.4); color: #262626"><b>BETA</b></span>
+                          <span class="badge badge-pill badge-warning" style="font-size: 1rem; vertical-align: top; font-family: Avenir,Arial,sans-serif; font-weight: 400; background-color: rgba(255, 221, 51, 0.7); margin-left: -0.5rem"><b>80</b> datasets</span>
+                          <span class="badge badge-pill badge-warning" style="font-size: 1rem; vertical-align: top; font-family: Avenir,Arial,sans-serif; font-weight: 400; background-color: rgba(255, 221, 51, 0.7); margin-left: -0.5rem">
+                          <b>2,144,813</b> cells</span></h1>
+                        <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif;">Tumor Immune Single-cell Hub (TISCH) is a scRNA-seq database, which focuses on immune cells in tumor. TISCH provides detailed cell-type annotation for all curated datasets, enabling the exploration of tumor immunity across different cancer types.</p>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search a gene of interest" id="genesearch" name="genesearch" autocomplete="on">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-tisch" type="submit" id="button-addon2" style="padding-left: 20px; padding-right: 20px">Explore</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row align-items-center" style="margin-bottom: 6rem">
+                <div class="col-lg-3 col-md-4 px-0" style="position: relative; height: 0; padding-top: 45%; margin: 5px 0;">
+                    <img src="/static/image/tissue/Humanbody.png" width="100%" style="display: block; position: absolute; width:286px; height:529px; top: 0; bottom: 0">
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1944 3604" style="enable-background:new 0 0 1944 3604; position: absolute; z-index: 999; width:286px; height:529px; top: 0; bottom: 0" xml:space="preserve">
+                        <style type="text/css">
+                        .st0 {
+                            opacity: 0;
+                            fill: #99CED3;
+                        }
+
+                        .st1 {
+                            opacity: 0;
+                            fill: #99CED3;
+                        }
+
+                        .st2 {
+                            opacity: 0;
+                            fill: #99CED3;
+                        }
+                        </style>
+                        <polygon id="brain-highlight" class="st0 highlight" points="769.68,143.35 764,158.12 764,169.48 758.32,180.84 758.32,194.47 764,209.24 764,224.01 
+                      778.77,241.05 796.95,247.86 810.58,247.86 823.08,255.81 835.57,251.27 835.57,272.86 844.66,285.35 852.61,296.71 868.52,296.71 
+                      882.15,301.26 895.78,301.26 911.69,301.26 923.05,306.94 937.82,306.94 944.63,321.71 959.4,336.47 970.76,345.56 980.65,356.92 
+                      998.03,388.73 1009.39,384.19 1019.61,377.37 1012.8,364.87 1004.84,347.83 1019.61,348.97 1029.84,336.47 1043.47,336.47 
+                      1058.24,334.2 1074.14,326.25 1083.23,308.07 1083.23,292.17 1073.01,271.72 1083.23,275.13 1093.45,278.54 1113.9,266.04 
+                      1121.85,246.73 1121.85,225.14 1121.85,210.37 1121.85,199.01 1111.63,184.24 1104.81,170.61 1095.73,155.84 1094.59,143.35 
+                      1084.37,135.4 1077.55,124.03 1066.19,112.67 1053.69,103.59 1043.47,97.91 1030.97,88.82 1019.61,88.82 1007.11,79.73 
+                      980.65,74.05 959.4,74.05 945.77,74.05 923.05,74.05 902.6,78.59 887.83,79.73 863.97,84.27 845.8,89.95 825.35,101.31 
+                      811.72,106.99 793.54,120.63 " />
+                        <polygon id="skin-highlight" class="st0 highlight" points="1248.08,603.64 1316.81,629.09 1352.44,657.09 1380.44,705.45 1403.35,794.55 1428.81,937.09 
+                      1454.26,1044 1464.44,1102.54 1507.72,1194.18 1553.53,1293.45 1589.17,1397.82 1627.35,1486.91 1670.62,1568.36 1696.08,1606.54 
+                      1599.35,1672.72 1510.26,1550.54 1451.72,1453.82 1388.08,1354.54 1347.35,1260.36 1326.99,1138.18 1291.35,1066.91 
+                      1263.35,1005.82 1248.08,937.09 " />
+                        <polygon id="head-highlight" class="st0 highlight" points="713.54,289.29 690.63,328.73 702.08,351.64 726.26,351.64 726.26,379.64 726.26,402.55 737.11,425.46 
+                      737.11,456 737.11,478.91 758.32,489.09 784.9,489.09 817.9,476.36 843.35,468.73 866.26,478.91 881.54,504.36 881.54,540 
+                      1085.17,540 1072.44,504.36 1064.81,466.18 1064.81,425.46 1072.44,388.73 1085.17,364.37 1031.72,402.55 1003.72,414.65 957.9,400 
+                      912.08,388.73 868.81,377.09 820.45,356.73 758.32,326.18 " />
+                        <polygon id="lymphnode-highlight" class="st0 highlight" points="830.63,568 784.9,585.82 737.11,596 690.63,603.64 649.9,621.46 604.08,654.55 581.17,682.55 
+                      565.9,730.91 550.63,792 535.36,863.27 520.08,937.09 504.81,1005.82 492.08,1077.09 481.9,1107.64 644.81,1107.64 670.26,1051.64 
+                      690.63,1016 700.81,957.45 710.99,924.36 737.11,891.27 774.63,865.82 800.08,837.82 830.63,784.36 861.17,743.64 876.45,720.73 
+                      899.35,708 899.35,639.27 899.35,568 " />
+                        <ellipse id="eye-highlight" class="st1 highlight" cx="758.32" cy="271.38" rx="30" ry="20" />
+                        <polygon id="lung-highlight" class="st2 highlight" points="887.9,721.03 874.29,741.09 859.25,759.89 845.46,779.95 829.16,801.27 814.11,827.59 797.81,851.41 
+                      780.26,880.25 766.47,914.1 758.32,942.93 746.41,978.04 736.38,1013.14 730.12,1038.21 730.12,1060.78 730.12,1079.58 
+                      730.12,1107.64 722.59,1130.99 722.59,1152.3 731.37,1164.84 742.65,1174.87 758.32,1167.34 779.01,1156.06 805.25,1143.52 
+                      816.62,1138.18 829.16,1132.24 851.72,1125.97 879.3,1117.2 899.35,1113.43 916.92,1107.64 931.96,1098.39 940.09,1083.35 
+                      945.75,1068.3 945.75,1043.23 945.75,1013.14 945.75,974.27 954.53,947.95 954.53,920.37 948.26,894.04 940.09,866.46 
+                      940.09,842.64 931.96,823.83 933.21,801.27 929.45,768.67 923.18,747.36 915.66,727.3 899.35,721.03 " />
+                        <circle id="breast-highlight" class="st0 highlight" cx="1155.23" cy="1002.29" r="99" />
+                        <polygon id="liver-highlight" class="st2 highlight" points="976.38,1210.24 976.38,1168.98 982.01,1138.18 982.01,1125.86 986.69,1116.48 981.54,1107.64 
+                      972,1101.28 958.57,1101.28 939.82,1101.28 929.5,1107.64 917.31,1115.54 899.35,1121.17 872.31,1125.86 844.18,1133.36 
+                      824.49,1143.67 797.3,1155.76 780.43,1164.3 767.3,1170.86 757.93,1190.55 757.93,1210.24 757.93,1232.74 757.93,1256.18 
+                      762.61,1277.74 761.68,1324.62 769.18,1316.18 769.18,1287.12 771.99,1267.43 780.43,1243.05 793.55,1225.24 819.81,1207.42 
+                      849.81,1201.8 872.31,1208.36 887.31,1225.24 892,1245.86 908.88,1256.18 929.5,1258.05 945.44,1263.68 954.53,1269.3 972,1258.05 
+                      981.07,1242.11 " />
+                        <path id="stomach-highlight" class="st2 highlight" d="M1008.81,1107.64c-1.55-0.47-5.14-0.9-11.07,4.04l-4.92,9.84v8.61l8,8.06l8,11.01l6.15,9.23l4.92,9.84
+                      l3.69,11.69v12.92v11.07v11.69l-3.08,14.15l-3.69,11.07l-4.92,10.46l-7.38,8l-7.38,4.31l138.4,3.08l4.92-15.38l2.46-12.3v-11.07
+                      v-11.69v-12.92l-3.69-12.3l-8-20.91l-9.23-15.38l-10.46-11.07l-12.92-9.84l-15.38-4.31l-9.84,0.62l-13.53,1.85l-10.46,3.08
+                      c-0.99,0.93-3.09,2.62-6.15,3.13c-3.75,0.62-6.71-0.9-8.61-1.9c-2.25-1.2-3.82-2.57-9.84-9.84c-4.16-5.03-6.24-7.54-8-9.84
+                      C1011.77,1109.97,1011.13,1108.33,1008.81,1107.64z" />
+                        <polygon id="kidney-highlight" class="st1 highlight" points="866.72,1287.6 874.71,1287.6 883.94,1278.37 888.25,1266.68 888.25,1254.38 888.25,1239.62 
+                      882.1,1229.16 877.48,1219.32 866.72,1212.95 854.42,1207.63 842.11,1207.63 833.5,1207.63 823.04,1212.95 811.97,1218.7 
+                      800.28,1227.93 790.44,1239 785.52,1247.61 778.14,1262.38 774.45,1277.14 774.45,1287.6 774.45,1297.44 774.45,1307.28 
+                      774.45,1314.66 784.91,1314.66 795.36,1314.66 802.74,1310.97 811.97,1309.74 824.27,1307.28 831.35,1304.82 841.5,1301.13 
+                      851.34,1293.13 858.11,1288.83 " />
+                        <polygon id="pancreas-highlight" class="st2 highlight" points="928.94,1324.62 947.18,1324.62 963.5,1330.14 978.86,1330.14 992.82,1334.94 1002.86,1334.94 
+                      1018.22,1334.94 1028.78,1329.78 1039.33,1324.62 1048.93,1319.58 1062.37,1314.66 1076.77,1309.98 1088.29,1309.98 
+                      1100.77,1302.31 1113.25,1290.79 1121.89,1282.15 1121.89,1271.59 1115.26,1271.59 1110.52,1271.59 1104.35,1269.49 
+                      1099.14,1269.49 1094.39,1269.49 1088.7,1269.49 1083.49,1269.49 1077.8,1271.38 1073.53,1269.49 1067.86,1269.49 1062.62,1269.49 
+                      1057.41,1269.49 1052.19,1271.38 1046.97,1269.49 1041.28,1269.49 1034.17,1269.49 1028.48,1269.49 1022.79,1271.38 
+                      1016.15,1271.38 1008.09,1271.38 1002.87,1271.38 996.23,1269.49 984.85,1269.49 977.26,1269.49 972,1269.49 966.83,1266.68 
+                      961.14,1269.01 956.63,1269.96 953.57,1271.04 949.42,1268.88 944.38,1265.46 936.45,1262.58 931.59,1261.15 925.65,1260.24 
+                      918.08,1260.24 910.34,1258.79 905.47,1258.79 900.97,1257.89 896.65,1256.81 892.5,1258.07 890.34,1259.51 890.34,1263.66 
+                      889.37,1268.3 888.25,1272.05 886.59,1276.54 881.89,1282.41 878.47,1286.52 875.27,1290.18 872.31,1293.38 876.41,1296.8 
+                      880.07,1300 883.04,1303.88 888.25,1308.23 894.23,1311.2 899.49,1314.66 905.43,1317.82 910.45,1321.02 917.08,1323.53 
+                      922.33,1324.62 " />
+                        <path id="colon-highlight" class="st0 highlight" d="M762.28,1329.08c-2.15,2.75-3.51,5.33-4.35,7.16v14.04l4.35,7.71l-2.17,6.61l-2.17,9.91v6.88l4.35,7.16
+                      l5.51,4.13l-3.58,4.96l-1.35,6.88l1.35,6.33l3.58,5.51l-3.03,5.51l-0.28,8.26l0.28,6.61l1.65,4.13l2.75,1.65l-5.62,7.71l-3.47,7.44
+                      l-0.55,6.61l0.55,3.86l3.47,3.03l-5.62,7.16l-3.36,8.26v10.46l4.41,8.81l-7.44,6.06l-4.13,11.29v12.39l4.13,9.09l-5.51,8.54v11.02
+                      l1.1,11.84l4.41,8.54l-5.51,10.46v11.29v11.84l3.58,12.39l5.51,7.71l6.06,4.96l5.78,1.1l-0.28,9.91l5.23,12.67l7.99,9.64l11.29,7.71
+                      l17.07,6.88l12.39,1.93l17.9-3.58l14.39-16.83l5.82-8.1v-16.64l-4.52-9.04l-6.5-6.82l-9.09-6.5l-6.82-6.82l-7.8-5.2l-9.42-10.39
+                      l-12.22-8.57l-2.52-12.23l-6.75-10.8l-5.4-8.1l0.9-16.2l-2.7-11.7l2.29-12.09l0.65-8.82l-3.59-9.48l4.9-6.86l2.29-12.74l-2.61-11.76
+                      l3.92-9.8l-0.33-10.46l-2.61-8.5l4.58-3.59l0.65-10.46l-0.65-6.54l-4.25-4.9l2.94-8.5l-1.31-11.44l-3.92-13.07l6.21,6.54l7.32,2.94
+                      l5.75,3.92l12.74,0.65l5.56,6.54l9.8,4.9l8.5,3.92l6.54,4.9l8.82,0.98l4.25-0.33l10.46,5.56l5.56,1.63h7.88l5.2-1.63l6.86,5.23
+                      l6.54,4.25l8.5,1.96l10.78-0.33l8.5-2.94l8.82,4.25l9.8,2.94l7.84,0.98l11.24-0.33l12.94-1.96l7.19-4.58l4.64-3.92l7.45,2.94
+                      l7.84,1.31l11.44-0.33l11.44-3.27l9.8-4.25l5.56-7.52l7.84,1.96l11.11,0.33c2.34,0.06,6-0.13,10.13-1.63
+                      c5.38-1.96,8.72-5.17,10.78-7.19c2.52-2.46,4.43-4.34,5.88-7.52c1.41-3.1,1.27-5.02,2.94-5.88c1.96-1.02,3.47,0.96,6.86,1.31
+                      c4.96,0.5,9.19-2.96,12.74-5.88c2.97-2.43,4.88-4.93,6.86-7.52c2.04-2.67,1.64-2.59,4.25-6.21c4.16-5.76,6.66-8.01,9.48-9.48
+                      c1.67-0.87,3-1.55,3.92-0.98c1.62,1,0.79,5.15-0.33,10.78c-0.65,3.27-1.42,5.95-1.96,7.84c-0.79,2.75-2.1,3.88-1.96,6.21
+                      c0.14,2.35,1.31,4.25,1.31,4.25c1.24,2,2.6,2.31,2.61,3.59c0.01,1.18-1.13,1.45-1.96,2.94c-1.07,1.93-0.44,3.77,0,6.86
+                      c0,0,0.56,3.97,0.33,8.17c-0.38,6.87-3.13,8.07-1.96,11.76c1.02,3.21,3.43,3.35,3.59,6.21c0.14,2.38-1.5,2.97-2.94,6.54
+                      c-0.44,1.09-2.36,5.82-0.98,10.46c1.32,4.44,4.57,5.06,4.25,8.17c-0.24,2.34-2.12,2.43-3.27,5.88c-0.81,2.43-0.58,4.5-0.33,6.86
+                      c0.3,2.81,0.82,3.29,2.29,8.82c1.1,4.14,1.64,6.21,1.63,7.52c-0.03,4.42-1.99,6.36-0.65,8.5c0.98,1.57,2.34,1,3.59,2.61
+                      c1.65,2.13,0.6,4.81,0.33,8.5c-0.2,2.68,0.25,2.75,1.63,11.11c1.65,9.98,1.05,10.07,1.96,14.05c2.05,8.91,8.12,10.84,6.86,15.36
+                      c-0.88,3.17-3.66,2.77-5.23,6.86c-0.45,1.18-0.73,2.54,0.33,10.78c1.16,9.05,1.72,9.19,1.31,11.76c-0.76,4.77-2.98,6.14-1.96,8.82
+                      c1.17,3.07,4.85,3.28,4.9,5.56c0.04,1.63-1.85,2.03-3.92,4.58c-2.8,3.44-3.26,7.5-3.59,10.46c-0.65,5.7,1.2,6.11,0,9.48
+                      c-1.03,2.9-2.38,2.57-6.21,8.17c-2.15,3.15-3.23,4.77-3.27,6.86c-0.06,3.26,2.12,4.13,1.63,6.54c-0.54,2.65-3.38,2.58-6.54,5.88
+                      c-3.44,3.6-1.76,5.47-5.23,10.13c-2.79,3.74-6.4,5.92-8.5,7.19c-3.67,2.22-6.11,2.76-8.82,5.88c-1.24,1.43-2.25,2.62-2.29,4.25
+                      c-0.07,2.77,2.71,3.83,5.88,7.52c0.41,0.47,4.93,5.85,6.21,13.07c0.71,4.02-0.31,4.54,0.65,9.15c0.55,2.63,1.2,5.76,3.27,8.5
+                      c4.19,5.55,11.64,6.1,13.07,6.21c5.97,0.44,10.3-1.89,18.3-6.21c6.09-3.28,10.25-6.63,12.42-8.5c5.07-4.37,7.99-6.89,10.13-11.44
+                      c0.99-2.11,1.75-5.11,3.27-11.11c0.94-3.71,1.41-5.6,1.31-6.86c-0.45-5.65-4.87-8.48-3.59-10.78c0.58-1.05,1.75-0.92,3.59-1.63
+                      c2.93-1.14,4.02-3.17,7.84-8.17c5.44-7.11,4.9-5.64,6.21-7.84c2.73-4.6,3.79-8.84,4.58-12.09c0.67-2.78,1.22-4.88,1.31-7.84
+                      c0.08-2.64,0.16-5.35-0.98-8.5c-1.04-2.89-2.23-3.74-1.96-5.56c0.28-1.87,1.85-2.53,3.59-4.25c2.5-2.47,3.4-5.08,4.9-9.48
+                      c1.8-5.26,1.91-9.57,1.96-12.09c0.11-5.77-0.96-10.1-1.63-12.74c-1.17-4.62-1.76-6.93-3.27-9.15c-3.17-4.67-7.25-5.82-7.52-9.8
+                      c-0.08-1.19,0.25-1.63,0.65-3.27c1.84-7.35-0.76-14.22-1.31-15.69c-2.16-5.72-4.14-4.43-6.21-10.46c-1.57-4.57-1.91-9.64-1.96-10.46
+                      c-0.28-4.56,0.43-4.87-0.33-6.86c-1.79-4.74-6.8-5.5-6.54-8.17c0.16-1.67,2.14-1.6,3.59-3.92c1.42-2.27,0.86-5.25-0.33-11.11
+                      c-1.21-5.99-1.81-8.99-3.59-11.76c-2.05-3.19-4.06-4.33-3.92-6.86c0.11-2.09,1.56-2.7,2.61-4.9c0.91-1.89,0.85-3.53-0.98-12.09
+                      c-1.83-8.57-2.78-12.9-4.25-15.03c-2.11-3.06-3.68-3.52-3.92-5.88c-0.33-3.23,2.43-4.06,4.25-9.15c1.02-2.86,0.13-2.56,1.31-10.78
+                      c0.7-4.92,1.11-5.69,1.31-9.15c0.22-3.84,0.32-5.76-0.33-7.84c-1.55-4.96-4.97-5.19-5.23-8.82c-0.2-2.82,1.84-3.08,3.27-7.84
+                      c0.76-2.52,0.72-5.17,0.65-10.46c-0.07-4.94-0.1-7.42-0.65-10.13c-1.41-6.89-4.03-8.33-2.94-11.44c0.91-2.59,2.94-2.19,6.21-5.88
+                      c3.21-3.62,4.35-7.52,4.9-9.48c1.49-5.3,0.87-9.61,0.33-13.4c-0.56-3.86-1.04-7.23-3.27-11.11c-3.22-5.62-7.88-8.45-9.8-9.48
+                      c-3.2-1.72-6.07-2.32-7.52-2.61c-5.82-1.18-7.49,0.3-12.09-1.31c-2.12-0.74-1.6-1-6.54-3.59c-4.44-2.33-6.84-3.59-9.48-4.25
+                      c-5.57-1.38-10.44,0.42-13.07,1.31c-3.96,1.34-6.63,3.18-8.17,4.25c-1.53,1.07-5,3.57-8.17,7.84c-2.54,3.42-2.82,5.19-5.23,6.54
+                      c-2.25,1.25-3.73,0.5-6.21,0.98c-2.97,0.58-5.1,3.06-9.48,7.52c-2.91,2.96-4.36,4.45-5.23,6.54c-0.93,2.23-0.78,3.56-1.96,4.58
+                      c-1.9,1.64-4.77,0.19-7.52,0c-2.69-0.18-4.49,1.01-13.07,7.19c-6.07,4.37-6.13,3.64-11.11,8.17c-4.02,3.66-3.63,4.79-6.21,6.54
+                      c-2.36,1.6-4.73,2.13-6.86,2.61c-2.77,0.63-3.91,0.43-5.56,0.65c-3.72,0.52-9.01,3.99-9.8,4.58c-4.17,3.11-3.2,4.9-5.88,5.88
+                      c-2.79,1.03-4.35-0.49-8.82-0.33c-0.58,0.02-0.52,0.02-7.19,1.63c-7,1.7-7.44,1.74-8.5,2.29c-4.14,2.15-3.62,6.1-6.54,6.86
+                      c-1.93,0.5-3.29-1.22-6.54-2.61c-2.95-1.27-6.17-1.02-12.42-0.65c-4.38,0.26-8.41,0.46-13.73,1.63c-6.96,1.54-7.96,2.91-11.44,2.29
+                      c-3.65-0.66-4.46-2.51-8.82-4.25c-3.79-1.51-7.23-1.48-10.78-1.63c-6.54-0.28-7.27,0.84-10.13-0.33c-3.52-1.43-3.69-3.64-7.19-5.23
+                      c-0.64-0.29-1.73-0.56-8.82-0.65c-4.52-0.06-5.12,0.73-6.54,0c-2.56-1.33-1.98-4.02-4.58-7.19c-2.67-3.26-6.44-4.28-7.52-4.58
+                      c-6.7-1.82-10.37,2.5-14.05,0c-2.46-1.68-0.93-3.68-3.92-6.54c-2.66-2.54-7.35-4.27-11.76-3.92c-2.19,0.17-3.28,0.78-4.58,0
+                      c-2.02-1.22-1.08-3.72-2.94-5.56c-2.5-2.47-6.11,0.18-8.5-1.96c-2.44-2.19,0.42-5.78-1.96-10.13c-1.8-3.28-5.3-4.64-8.5-5.88
+                      c-3.08-1.19-6.21-2.49-10.13-1.63c-4.43,0.97-4.05,4.63-8.5,5.88c-1.08,0.3-1.41,0.19-9.48-0.65c-6.59-0.69-7.25-0.71-8.17-0.65
+                      c-4.65,0.28-8.11,1.94-9.48,2.61C767.17,1322.91,764.14,1326.69,762.28,1329.08z" />
+                        <ellipse id="ovary-highlight" transform="matrix(0.3727 -0.928 0.928 0.3727 -1068.2026 1918.3506)" class="st1 highlight" cx="884.75" cy="1749.24" rx="13.41" ry="16.35" />
+                        <path id="uterus-highlight" class="st1 highlight" d="M934.05,1706.29c3.98,3.24,7.97,6.47,11.95,9.71c1.24,4.48,2.49,8.96,3.73,13.45l8.96,19.79l7.47,13.82
+                      c3.24,5.48,6.47,10.96,9.71,16.43c2.99-5.48,5.98-10.96,8.96-16.43l6.72-13.82l5.98-16.81l5.23-11.95l6.72-8.22l9.71-5.98h-17.18
+                      l-9.71,3.73h-26.89l-20.17-3.73H934.05z" />
+                        <ellipse id="bladder-highlight" class="st1 highlight" cx="981.35" cy="1783.92" rx="56.96" ry="37.12" />
+                        <polygon id="blood-highlight" class="st0 highlight" points="992.82,1940.95 986.69,1912.45 1019.2,1866.85 1089.68,1802 1155.23,1761.42 1212.07,1749.24 
+                      1254.22,1749.24 1306.26,1767.12 1331.91,1801.67 1343.3,1845.09 1343.3,1909.6 1323.36,2003.64 1303.41,2091.98 1289.16,2163.22 
+                      1269.21,2237.31 1254.22,2331.35 1254.22,2405.44 1254.22,2448.19 1254.22,2476.68 1254.22,2525.13 1266.36,2579.27 
+                      1183.72,2579.27 1067.86,2579.27 1056.23,2519.43 1056.23,2473.83 1038.31,2436.79 1038.31,2345.6 1038.31,2268.66 1038.31,2203.11 
+                      1019.2,2131.87 997.1,2054.93 992.82,1997.94 " />
+                        <path id="bone-highlight" class="st0 highlight" d="M830.68,1889.8c-0.6,0.63-4.13,4.26-9.14,6.09c-6.9,2.53-13.32,0.45-17.41-0.87
+                      c-9.24-2.99-14.71-8.81-17.41-11.75c-3.78-4.12-8.7-9.49-9.14-16.97c-0.24-4.09,1.12-4.38,0.87-8.7c-0.38-6.6-3.86-11.38-7.4-16.1
+                      c-4.3-5.74-8.39-9.1-14.36-13.93c-7.56-6.12-11.35-9.18-16.97-11.32c-6.08-2.31-11.19-2.61-18.72-3.05
+                      c-3.76-0.22-9.12-0.5-16.1,0.44c-3.68,0.49-9.69,1.34-16.97,4.35c-2.96,1.22-10.05,4.42-17.41,10.88
+                      c-4.15,3.64-7.72,6.77-10.45,12.19c-0.77,1.53-1.83,5.1-3.92,12.19c-1.98,6.72-2.98,10.14-3.48,13.06
+                      c-1.05,6.1-0.93,10.9-0.87,12.62c0.05,1.44,0.32,7.74,2.61,15.67c0.81,2.8,1.7,5.06,3.48,9.58c1.91,4.85,3.59,8.52,5.22,11.75
+                      c1.98,3.92,2.99,5.91,4.35,7.4c3.37,3.69,7.29,5.15,8.71,5.66c1.93,0.69,4.75,1.7,8.27,1.31c4.73-0.53,5.69-3.05,10.01-3.92
+                      c0.82-0.17,3.3-0.58,10.45,1.74c4.49,1.46,10.52,3.47,17.41,8.27c6.79,4.73,10.84,9.67,13.93,13.49c3.81,4.72,6.03,8.54,9.14,13.93
+                      c1.18,2.05,5.18,9.07,10.88,21.76c2.5,5.57,6.53,14.6,10.88,26.99c3.18,9.05,5.66,16.12,7.83,26.11c1.66,7.64,2.36,13.37,3.48,22.63
+                      c1.52,12.51,2.05,22.01,2.18,24.37c0.35,6.54,0.38,14.61,0.44,30.47c0.01,3.54,0,3.07,0,21.33c0,16.54,0,24.81,0,27.86
+                      c0.03,16.38,0.08,16.79,0,21.76c-0.07,4.34-0.26,13.18-0.87,24.37c-0.61,11.03-0.92,11.55-2.18,29.16
+                      c-1.04,14.65-0.86,14.78-1.74,26.11c-1.26,16.12-1.56,15.01-2.18,24.81c-1.03,16.53-0.06,18.23-1.31,31.77
+                      c-0.99,10.85-1.6,9.6-2.61,20.46c-1.15,12.33-0.38,14.1-1.31,32.64c-0.33,6.63-0.72,14.25-1.74,24.37
+                      c-0.91,9.08-1.44,14.31-2.61,21.76c-1.38,8.79-2.25,11.67-2.18,17.85c0.04,3.81,0.14,8.77,2.18,14.8c1.07,3.18,2.84,8.24,7.4,13.06
+                      c4.17,4.41,8.58,6.4,11.75,7.83c2.25,1.02,6.41,2.85,12.19,3.48c6.2,0.68,10.95-0.4,14.8-1.31c3.44-0.81,7.73-1.86,12.62-4.79
+                      c2.41-1.44,6.3-3.82,9.58-8.27c1.97-2.67,3.72-6.1,5.22-13.06c1.71-7.9,1.53-13.07,1.74-21.33c0.2-7.98,0.71-14.46,1.74-27.42
+                      c0.89-11.23,1.27-11.99,2.18-22.63c1-11.77,0.94-15.58,1.74-30.03c0.17-3.05,1.17-20.81,3.05-41.78c1.76-19.6,2.19-18.69,3.48-35.26
+                      c0.92-11.8,0.97-15.79,2.18-28.73c0.59-6.33,1.02-10.08,1.74-18.72c0.51-6.05,0.63-8.19,1.31-16.97
+                      c1.16-15.19,1.28-15.26,1.74-21.76c0.75-10.69,0.49-11.44,1.31-28.73c0.66-13.86,0.98-20.79,1.74-29.6
+                      c0.92-10.64,1.14-9.17,3.05-28.29c1.29-12.92,1.93-19.38,2.18-25.24c0.17-4.1,0.27-8.79,0.87-16.1c0.49-6.02,0.74-9.04,1.31-12.19
+                      c1.06-5.84,3.39-10.78,7.83-20.46c4.89-10.66,4.63-8.56,7.4-15.23c2.59-6.24,3.27-9.18,6.53-13.06c2.66-3.16,4.1-3.47,6.53-6.53
+                      c1.43-1.8,3.5-5.06,5.22-11.75c1-3.91,1.95-9.29,1.74-20.89c-0.11-5.97-0.94-13.41-2.61-28.29c-0.95-8.48-1.44-11.99-3.48-16.54
+                      c-2.46-5.48-5.89-9.61-7.4-11.32c-5.37-6.08-7.25-4.99-10.45-10.01c-2.42-3.81-2.04-5.52-5.66-10.88c-2.35-3.47-4.03-5.01-4.79-5.66
+                      c-2.28-1.96-4.79-4.12-8.27-4.35c-3.03-0.2-5.44,1.15-9.58,3.48c-3.02,1.7-2.64,2.01-4.79,3.05c-5.01,2.42-7,0.7-10.45,2.61
+                      C833.86,1883.39,834.7,1885.59,830.68,1889.8z" />
+                        <path id="nerve-highlight" class="st0 highlight" d="M696.98,2473.62c6.48-4.17,16,7.38,40.59,17.91c15.6,6.68,27.41,10.76,42.98,10.75
+                      c9.74-0.01,8.37-1.79,35.82-5.97c23.55-3.59,22.22-1.92,34.62-4.78c25.9-5.97,33.43-8.36,33.43-8.36c8.19-2.6,10.17-3.66,11.94-2.39
+                      c5.82,4.19-5.31,23.17-13.13,58.5c-1.47,6.64-2.97,16.37-5.97,35.82c-3.43,22.24-5.14,33.36-5.97,45.37
+                      c-0.72,10.48-0.26,12.03,0,42.98c0.03,3.85,0.23,28.63,0,53.73c-0.16,16.85-0.32,34.11-1.19,54.92
+                      c-1.52,36.17-2.29,54.25-5.97,76.41c-5.42,32.64-9.55,30.84-15.52,68.05c-3.3,20.59-2.57,24.48-7.16,53.73
+                      c-4.82,30.69-6.04,29.08-8.36,47.76c-2.63,21.16-0.36,17.58-3.58,65.67c-2.98,44.52-4.33,38.71-3.58,47.76
+                      c0.6,7.2,1.47,11.11-1.19,14.33c-6.71,8.11-22.17-4.65-53.73-4.78c-17.92-0.07-28.08,3.98-44.17-2.39
+                      c-4.61-1.82-9.56-2.93-13.13-7.16c-6.66-7.89-4.39-19.09-3.58-27.46c1.17-12.11-1.57-9.49-8.36-51.34
+                      c-2.99-18.41-4.78-34.56-8.36-66.86c-3.55-32.06-2.67-29.09-5.97-58.5c-3.48-30.94-4.44-34.09-8.36-69.25
+                      c-1.3-11.69-0.49-4.99-4.78-45.37c-3.38-31.8-4.06-37.61-4.78-48.95c-0.73-11.5-1.62-25.48-1.19-42.98
+                      c0.63-25.95,3.9-46.97,5.97-58.5c3.52-19.66,5.21-20.2,8.36-40.59c2.17-14.03,2.34-20.1,4.78-37.01c2.26-15.7,3.48-23.53,5.97-34.62
+                      c3.47-15.49,4.55-15.17,4.78-21.49c0.47-12.99-3.99-16.32-4.78-32.24C692.84,2485.01,692.43,2476.55,696.98,2473.62z" />
+                        <path id="soft-highlight" class="st0 highlight" d="M416.8,1231.7c-8.4,8.5-3.1,10.6-23.8,66.7c-5.8,15.8-20.5,54.3-26.2,69.1c-14.7,38.4-17.3,44.9-14.3,54.8
+                        c4.6,15,17.9,23.9,42.9,40.5c15.9,10.6,15.2,7.1,38.1,21.5c20.7,12.9,25.8,18.6,33.4,16.7c9.1-2.3,11.2-13,21.5-33.4
+                        c5.5-11,2.7-3.4,28.6-45.3c19.4-31.3,16.4-28.1,35.8-59.6c10.2-16.6,19.2-30.7,31-52.4c9.7-17.8,14.5-26.8,14.3-31
+                        C596,1238.6,458.7,1189.6,416.8,1231.7z"/>
+                    </svg>
+                </div>
+                <div class="col-lg-9 col-md-8">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="bladder-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/bladder.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Bladder</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0">BLCA (2)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="blood-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/blood.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Blood</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.70rem">
+                                            <tr>
+                                                <td class="py-0 pr-0" style="white-space: nowrap">AEL (2)</td>
+                                                <td class="py-0 pr-0" style="white-space: nowrap">ALL (1)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-0 pr-0" style="white-space: nowrap">AML (2)</td>
+                                                <td class="py-0 pr-0" style="white-space: nowrap">CLL (2)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-0 pr-0" style="white-space: nowrap">PBMC (3)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="bone-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/bone.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Bone marrow</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0">MM (2)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="brain-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/brain.png" width="80px" height="80px" id="brain-img">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Brain</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.85rem">
+                                            <tr>
+                                                <td class="py-0">GBM (12)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-0">MB (1)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="breast-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/breast.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Breast</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0">BRCA (8)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem;">
+                            <div class="row py-2 px-2 tissue-row" id="colon-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/colon.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0 pr-0">Colorectum</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0">COAD (8)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-0">READ (1)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="eye-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/eye.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Eye</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0">UVM (1)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="head-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/head.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Head & Neck</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0">HNSC (2)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="kidney-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/kidney.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Kidney</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0">KIRC (2)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="liver-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/liver.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Liver</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0">CHOL (1)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-0">LIHC (4)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="lung-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/lung.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Lung</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0">NSCLC (8)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="lymphnode-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/lymphnode.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Lymph node</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0">NHL (2)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="nerve-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/nerve.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Nervous system</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0">NET (1)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="pancreas-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/pancreas.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Pancreas</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0">PAAD (2)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="pelvic-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/pelvic.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Pelvic cavity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0">OV (2)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-0">UCEC (1)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="skin-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/skin.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Skin</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0 pr-0" style="white-space: nowrap">BCC (1)</td>
+                                                <td class="py-0 pr-0" style="white-space: nowrap">MCC (2)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="py-0 pr-0" style="white-space: nowrap">SCC (1)</td>
+                                                <td class="py-0 pr-0" style="white-space: nowrap">SKCM (6)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="soft-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/soft.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Soft tissue</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0">SARC (1)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4" style="margin-top: 1.2rem">
+                            <div class="row py-2 px-2 tissue-row" id="stomach-row">
+                                <div class="col-5 px-0 py-0">
+                                    <img src="/static/image/tissue/stomach.png" width="80px" height="80px">
+                                </div>
+                                <div class="col-7 px-0 py-0">
+                                    <table class="table table-borderless table-sm my-0">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="pb-0">Stomach</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: 0.8rem">
+                                            <tr>
+                                                <td class="py-0">STAD (1)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--             <div class="row" style="margin-top: 3rem; margin-bottom: 7rem">
+                <div class="col-lg-6">
+                    <h3 style="font-family: Avenir-black,Arial,sans-serif">Dataset Browser</h3>
+                    <p style="font-family: 'Trebuchet MS',Arial,sans-serif">Search datasets by cancer types. Users can dive into a specified dataset by looking through the overall UMAP plot colored by cell-types, or looking into the expression of one gene or multiple genes in the dataset. </p>
+                    <a role="button" class="btn btn-tisch" href="../gallery" style="border-width: 2px; font-family: Avenir-black,Arial,sans-serif">View »</a>
+                </div>
+                <div class="col-lg-6">
+                    <h3 style="font-family: Avenir-black,Arial,sans-serif">Gene Exploration</h3>
+                    <p style="font-family: 'Trebuchet MS',Arial,sans-serif">Search a gene across all cancer types. A heatmap will be displayed to show the expression of given gene in different immune cells across all available datasets.</p>
+                    <a role="button" class="btn btn-tisch" href="../search-gene" style="border-width: 2px; font-family: Avenir-black,Arial,sans-serif">View »</a>
+                </div>
+            </div> -->
+        </div>
+
+    <nav class="navbar navbar-expand-sm fixed-bottom navbar-dark" style="background-color: #252746">
+        <div class="container">
+            <!--         <a href="http://liulab.dfci.harvard.edu/" class="navbar-brand">
+          <img src="http://liulab.dfci.harvard.edu/WEBSITE/images/Global/logofinal.png" height="46" width="58">
+        </a> -->
+            <span class="navbar-text" style="font-size: 13px">Copyright @2020 TISCH project</span>
+        </div>
+    </nav>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+
+    var availableTags = {{ available_genes | safe }};
+    var availableOptions = [];
+    for (var i = 0; i < availableTags.length; i++) {
+        availableOptions.push({ gene: availableTags[i] })
+    }
+
+
+
+    // $(function() {
+    //     $("#genesearch").selectize({
+    //         valueField: 'gene',
+    //         labelField: 'gene',
+    //         searchField: ['gene'],
+    //         persist: false,
+    //         maxOptions: 50,
+    //         options: availableOptions,
+    //         delimiter: ',',
+    //         create: false,
+    //         maxItems: 1
+    //     });
+    // });
+
+    $(".highlight").each(function() {
+        var tissue = $(this).attr("id").split("-")[0];
+        document.getElementById($(this).attr("id")).addEventListener("mouseenter", function() {
+            $(this).css('opacity', 0.6);
+            // $("#brain-row").css('background-color', "rgba(153,206,211,0.5)");
+            // $("#brain-row").css('background-color', "rgba(109,121,147,0.2)");
+            if (tissue == "ovary" || tissue == "uterus") {
+                // document.getElementById("pelvic-row").style.backgroundColor = "rgba(247,245,230,1)";
+                document.getElementById("pelvic-row").style.backgroundColor = "rgba(109,121,147,0.2)";
+                document.getElementById("pelvic-row").style.borderRadius = "0.5rem";
+            } else {
+                document.getElementById(tissue + "-row").style.backgroundColor = "rgba(109,121,147,0.2)";
+                document.getElementById(tissue + "-row").style.borderRadius = "0.5rem";
+            }
+        });
+    });
+    $(".highlight").each(function() {
+        var tissue = $(this).attr("id").split("-")[0];
+        document.getElementById($(this).attr("id")).addEventListener("mouseleave", function() {
+            $(this).css('opacity', 0);
+            // $("#brain-row").css('background-color', "rgba(153,206,211,0.5)");
+            // $("#brain-row").css('background-color', "rgba(109,121,147,0.2)");
+            if (tissue == "ovary" || tissue == "uterus") {
+                document.getElementById("pelvic-row").style.backgroundColor = "rgba(109,121,147,0)";
+                document.getElementById("pelvic-row").style.borderRadius = "0.5rem";
+            } else {
+                document.getElementById(tissue + "-row").style.backgroundColor = "rgba(109,121,147,0)";
+                document.getElementById(tissue + "-row").style.borderRadius = "0.5rem";
+            }
+        });
+    });
+
+    $(".tissue-row").each(function() {
+        var tissue = $(this).attr("id").split("-")[0];
+        document.getElementById($(this).attr("id")).addEventListener("mouseenter", function() {
+            $(this).css('background-color', "rgba(109,121,147,0.2)");
+            $(this).css('border-radius', "0.5rem");
+            // $("#brain-row").css('background-color', "rgba(153,206,211,0.5)");
+            // $("#brain-row").css('background-color', "rgba(109,121,147,0.2)");
+            if (tissue == "pelvic") {
+                // document.getElementById("pelvic-row").style.backgroundColor = "rgba(247,245,230,1)";
+                document.getElementById("ovary-highlight").style.opacity = 0.6;
+                document.getElementById("uterus-highlight").style.opacity = 0.6;
+            } else {
+                document.getElementById(tissue + "-highlight").style.opacity = 0.6;
+            }
+        });
+    });
+    $(".tissue-row").each(function() {
+        var tissue = $(this).attr("id").split("-")[0];
+        document.getElementById($(this).attr("id")).addEventListener("mouseleave", function() {
+            $(this).css('background-color', "rgba(109,121,147,0)");
+            $(this).css('border-radius', "0.5rem");
+            // $("#brain-row").css('background-color', "rgba(153,206,211,0.5)");
+            // $("#brain-row").css('background-color', "rgba(109,121,147,0.2)");
+            if (tissue == "pelvic") {
+                document.getElementById("ovary-highlight").style.opacity = 0;
+                document.getElementById("uterus-highlight").style.opacity = 0;
+            } else {
+                document.getElementById(tissue + "-highlight").style.opacity = 0;
+            }
+        });
+    });
+
+    $(".tissue-row").each(function() {
+        var tissue = $(this).attr("id").split("-")[0];
+        document.getElementById($(this).attr("id")).addEventListener("click", function() {
+            var tr_list = document.getElementById($(this).attr("id")).getElementsByTagName("tbody")[0].children;
+            console.log(tr_list);
+
+            // var tr_list = document.getElementById($(this).attr("id")).children[1].children[0].children[1].children;
+            var cancer_list = [];
+            for (var i = 0; i < tr_list.length; i++) {
+              for (var j = 0; j < tr_list[i].children.length; j++) {
+                var cancer = tr_list[i].children[j].innerHTML.split(" ")[0];
+                console.log(cancer);
+                cancer_list.push(cancer);
+              }
+            }
+            console.log(cancer_list);
+            var url_jump = "../gallery/?"
+            for (var i = 0; i < cancer_list.length; i++) {
+                url_jump = url_jump + "cancer=" + cancer_list[i] + "&"
+            }
+            url_jump = url_jump + "celltype=&species="
+            // console.log(url_jump);
+            window.open(url_jump, "_self");
+        });
+    });
+
+    window.onload=function() {
+        $("#genesearch").autocomplete({
+            source: availableTags,
+            minLength: 3
+        });
+    };
+    </script>
+</body>
+
+</html>

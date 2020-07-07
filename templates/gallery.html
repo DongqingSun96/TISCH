@@ -1,0 +1,1511 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/selectize.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <!-- <link rel="stylesheet" type="text/css" href="https://www.supremo.co.uk/typeterms/styles.min.css"> -->
+    <!--     <link rel="stylesheet" type="text/css" href="http://cistrome.org/~dsun/MAESTRO/css/mFilter.css">
+ -->
+    <!--     <link rel="stylesheet" type="text/css" href="https://cdn.mfilter.tk/css/mfilter.min.css">
+ -->
+
+    <style type="text/css">
+        .dataTables_scrollBody
+        {
+            border-bottom: 2px solid #dee2e6;
+        }
+    </style>
+    <title>TISCH</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark px-0" style="background-color:#252746">
+        <div class="container">
+            <!-- <a href="/" class="navbar-brand">TISCH</a> -->
+            <a href="../home">
+                <img src="/static/image/TISCH.png" width="140">
+            </a>
+            <div id="navbar-nav-scroll">
+                <ul class="navbar-nav bd-navbar-nav flex-row">
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../home" style="padding-left: 1rem; padding-right: 1rem">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link nav-a" href="../gallery" style="padding-left: 1rem; padding-right: 1rem">Dataset</a>
+                    </li>
+                    <!--                     <li class="nav-item">
+                        <a class="nav-link nav-a" href="../search-cancer" style="padding-left: 1rem; padding-right: 1rem">Dataset</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../search-gene" style="padding-left: 1rem; padding-right: 1rem">Gene</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../documentation" style="padding-left: 1rem; padding-right: 1rem">Documentation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="row body2" style="margin-top: 4.7rem; margin-right: 0; margin-left: 0">
+        <div class="col-lg-12 px-0">
+            <div class="jumbotron jumbotron-fluid shadow-sm">
+                <div class="container">
+                    <h1 style="font-family: Avenir-black,Arial,sans-serif">Dataset Browser</h1>
+                    <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif">Filter datasets by cancer types or other criteria. Users can compare multiple datasets by selecting and submitting them. Alternatively, if users are interested in one specific dataset, they can dive into it by clicking the line of the dataset. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2" style="margin-right: 0; margin-left: 0;">
+        <div class="col-lg-12 px-0">
+            <div class="container">
+                <form method="get" id="dataset_form">
+                    <div class="form-row align-items-start">
+                        <div class="col-lg-5 form-group" style="margin-bottom: 0.2rem">
+                            <label class="col-form-label" style="padding-left: 0px; font-size: 1.1rem">Cancer type</label>
+                            <select class="form-control rounded-left" style="font-size: 0.9rem; border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; " name="cancer" id="cancer" multiple="multiple">
+                                <!-- <option value="All">All cancers</option> -->
+                                <option value='' disabled selected style='display:none;'></option>
+                                <option value="AEL">AEL (Acute Erythroid Leukemia)</option>
+                                <option value="ALL">ALL (Acute Lymphoblastic Leukemia)</option>
+                                <option value="AML">AML (Acute Myeloid Leukemia)</option>
+                                <option value="BCC">BCC (Basal Cell Carcinoma)</option>
+                                <option value="BLCA">BLCA (Bladder Urothelial Carcinoma)</option>
+                                <option value="BRCA">BRCA (Breast Invasive Carcinoma)</option>
+                                <option value="CHOL">CHOL (Cholangiocarcinoma)</option>
+                                <option value="COAD">COAD (Colon Adenocarcinoma)</option>
+                                <option value="CLL">CLL (Chronic Lymphocytic Leukemia)</option>
+                                <option value="GBM">GBM (Glioblastoma Multiforme)</option>
+                                <option value="HNSC">HNSCC (Head and Neck Squamous Cell Carcinoma)</option>
+                                <option value="KIRC">KIRC (Kidney Renal Clear Cell Carcinoma)</option>
+                                <option value="LIHC">LIHC (Liver Hepatocellular Carcinoma)</option>
+                                <!--option value="LUAD">LUAD (Lung Adenocarcinoma)</option-->
+                                
+                                <option value="MB">MB (Medulloblastoma)</option>
+                                <option value="MCC">MCC (Merkel cell carcinoma)</option>
+                                <option value="MM">MM (Multiple Myeloma)</option>
+                                <option value="NET">NET (Neuroendocrine Tumor)</option>
+                                <option value="NHL">NHL (Non-Hodgkin Lymphoma)</option>
+                                <option value="NSCLC">NSCLC (Non-small Cell Lung Cancer)</option>
+                                <option value="OV">OV (Ovarian Serous Cystadenocarcinoma)</option>
+                                <option value="PAAD">PAAD (Pancreatic Adenocarcinoma)</option>
+                                <option value="PBMC">PBMC (Peripheral Blood Mononuclear Cell)</option>
+                                <!--option value="PRAD">PRAD (Prostate Adenocarcinoma)</option-->
+                                <option value="READ">READ (Rectum Adenocarcinoma)</option>
+                                <option value="SARC">SARC (Sarcoma)</option>
+                                <option value="SCC">SCC (Squamous Cell Carcinoma)</option>
+                                <option value="SKCM">SKCM (Skin Cutaneous Melanoma)</option>
+                                <option value="STAD">STAD (Stomach Adenocarcinoma)</option>
+                                <option value="UCEC">UCEC (Uterine Corpus Endometrial Carcinoma)</option>
+                                <option value="UVM">UVM (Uveal Melanoma)</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-5 form-group" style="margin-bottom: 0.2rem">
+                            <label class="col-form-label" style="padding-left: 0px; font-size: 1.1rem">Cell type included in datasets</label>
+                            <select class="form-control" name="celltype" id="celltype" multiple="multiple">
+                                <option value='' disabled selected style='display:none;'></option>
+                                <option value="B">B (B cells)</option>
+                                <option value="CD4Tconv">CD4Tconv (Conventional CD4 T cells)</option>
+                                <option value="CD8T">CD8T (CD8 T cells)</option>
+                                <option value="CD8Tex">CD8Tex (Exhausted CD8 T cells)</option>
+                                <option value="DC">DC (Dendritic cells)</option>
+                                <option value="Endothelial">Endothelial (Endothelial cells)</option>
+                                <option value="Fibroblasts">Fibroblasts</option>
+                                <option value="ILC">ILC (Innate lymphoid cells)</option>
+                                <option value="Malignant">Malignant (Malignant cells)</option>
+                                <option value="Mast">Mast (Mast cells)</option>
+                                <option value="Mono/Macro">Mono/Macro (Monocytes or macrophages)</option>
+                                <option value="Myofibroblasts">Myofibroblasts</option>
+                                <option value="NK">NK (Natural killer cells)</option>
+                                <option value="Neutrophils">Neutrophils</option>
+                                <option value="pDC">pDC (Plasmacytoid dendritic cells)</option>
+                                <option value="Plasma">Plasma (Plasma cells)</option>
+                                <option value="TMKI67">TMKI67 (Proliferating T cells)</option>
+                                <option value="Treg">Treg (Regulatory T cells)</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 form-group" style="margin-bottom: 0.2rem">
+                            <label class="col-form-label" style="padding-left: 0px; font-size: 1.1rem">Species</label>
+                            <select class="form-control" name="species" id="species">
+                                <option value='' disabled selected style='display:none;'></option>
+                                <option value="Human">Human</option>
+                                <option value="Mouse">Mouse</option>
+                            </select>
+                        </div>
+                        <!--                             <div class="col-lg-1 form-group">
+                                <button class="btn btn-tisch align-items-center" type="submit" id="button-addon2" style="padding-left: 0.65rem; padding-right: 0.65rem;">
+                                    <svg t="1586881905095" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2266" width="20" height="20" style="margin-top: -0.3rem">
+                                        <path d="M1005.26751 914.388545 696.84534 605.966377C741.636939 543.258136 767.872023 467.112414 767.872023 383.928011 767.872023 172.127725 595.744297 0 383.944011 0 172.143725 0 0.016 172.127725 0.016 383.928011 0.016 595.728297 172.143725 767.856024 383.944011 767.856024 467.128413 767.856024 543.274136 741.62094 606.622257 696.829341L915.044429 1005.251511C939.999745 1030.206833 980.952072 1030.206833 1005.26751 1005.251511 1029.582949 980.296188 1030.222833 939.343868 1005.26751 914.388545L1005.26751 914.388545ZM95.998002 383.928011C95.998002 224.597886 224.613886 95.982003 383.944011 95.982003 543.274136 95.982003 671.890018 224.597886 671.890018 383.928011 671.890018 543.258136 543.274136 671.874018 383.944011 671.874018 224.613886 671.874018 95.998002 543.258136 95.998002 383.928011L95.998002 383.928011Z" p-id="2267" fill="#ffffff"></path>
+                                    </svg>  
+                                </button>
+                            </div> -->
+                        <!--                             <div class="col-lg-1 form-group text-right">
+                                <input type="checkbox" class="form-check-input" name="selectall" id="selectall">
+                                <label class="form-check-label">Select all</label>
+                            </div> -->
+                        <div class="col-lg-5 form-group">
+                            <label class="col-form-label" style="padding-left: 0px; font-size: 1.1rem">Treatment</label>
+                            <select class="form-control rounded-left" style="font-size: 0.9rem; border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; " name="treatment" id="treatment" multiple="multiple">
+                                <option value='' disabled selected style='display:none;'></option>
+                                <option value="None">No treatment</option>
+                                <option value="Chemotherapy">Chemotherapy</option>
+                                <option value="Immunotherapy">Immunotherapy</option>
+                                <option value="Targeted therapy">Targeted therapy</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-7 form-group">
+                            <label class="col-form-label" style="padding-left: 0px; font-size: 1.1rem">Primary/Metastatic</label>
+                            <select class="form-control rounded-left" style="font-size: 0.9rem; border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; " name="primary" id="primary" multiple="multiple">
+                                <option value='' disabled selected style='display:none;'></option>
+                                <option value="Primary">Primary</option>
+                                <option value="Metastatic">Metastatic</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--                         <div class="col-lg-5">
+                            <select class="form-control rounded-left" style="font-size: 0.9rem; border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; " name="cancer" id="cancer" multiple="multiple">
+                                <option value="All">All cancers</option>
+                                <option value="BCC">BCC (Basal Cell Carcinoma)</option>
+                                <option value="BRCA">BRCA (Breast Invasive Carcinoma)</option>
+                                <option value="COAD">COAD (Colon Adenocarcinoma)</option>
+                                <option value="CLL">CLL (Chronic Lymphocytic Leukemia)</option>
+
+                                <option value="GBM">GBM (Glioblastoma Multiforme)</option>
+                                <option value="HNSC">HNSCC (Head and Neck Squamous Cell Carcinoma)</option>
+                                <option value="KIRC">KIRC (Kidney Renal Clear Cell Carcinoma)</option>
+                                <option value="LIHC">LIHC (Liver Hepatocellular Carcinoma)</option>
+                                <option value="MM">MM (Multiple Myeloma)</option>
+                                <option value="NET">NET (Neuroendocrine Tumor)</option>
+                                <option value="NHL">NHL (Non-Hodgkin Lymphoma)</option>
+                                <option value="NSCLC">NSCLC (Non-small Cell Lung Cancer)</option>
+                                <option value="OV">OV (Ovarian Serous Cystadenocarcinoma)</option>
+                                <option value="PAAD">PAAD (Pancreatic Adenocarcinoma)</option>
+                                <option value="Sarcoma">Sarcoma</option>
+                                <option value="SCC">SCC (Squamous Cell Carcinoma)</option>
+                                <option value="SKCM">SKCM (Skin Cutaneous Melanoma)</option>
+                                <option value="UCEC">UCEC (Uterine Corpus Endometrial Carcinoma)</option>
+                                <option value="UVM">UVM (Uveal Melanoma)</option>
+                            </select>
+                        </div> -->
+                    <!--                             <div class="input-group-append">
+                                <button class="btn btn-tisch align-items-center" type="submit" id="button-addon2" style="padding-left: 0.65rem; padding-right: 0.65rem; border-top-left-radius: 0; border-bottom-left-radius: 0; height: calc(1.5em + .75rem);">
+                                    <svg t="1586881905095" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2266" width="20" height="20" style="margin-top: -0.3rem">
+                                        <path d="M1005.26751 914.388545 696.84534 605.966377C741.636939 543.258136 767.872023 467.112414 767.872023 383.928011 767.872023 172.127725 595.744297 0 383.944011 0 172.143725 0 0.016 172.127725 0.016 383.928011 0.016 595.728297 172.143725 767.856024 383.944011 767.856024 467.128413 767.856024 543.274136 741.62094 606.622257 696.829341L915.044429 1005.251511C939.999745 1030.206833 980.952072 1030.206833 1005.26751 1005.251511 1029.582949 980.296188 1030.222833 939.343868 1005.26751 914.388545L1005.26751 914.388545ZM95.998002 383.928011C95.998002 224.597886 224.613886 95.982003 383.944011 95.982003 543.274136 95.982003 671.890018 224.597886 671.890018 383.928011 671.890018 543.258136 543.274136 671.874018 383.944011 671.874018 224.613886 671.874018 95.998002 543.258136 95.998002 383.928011L95.998002 383.928011Z" p-id="2267" fill="#ffffff"></path>
+                                    </svg>
+                                </button>
+                            </div> -->
+                    <!--                         <div class="col-lg-1">
+                            <button class="btn btn-tisch align-items-center" type="submit" id="button-addon2" style="padding-left: 0.65rem; padding-right: 0.65rem; height: calc(1.5em + .75rem);">
+                                <svg t="1586881905095" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2266" width="20" height="20" style="margin-top: -0.3rem">
+                                    <path d="M1005.26751 914.388545 696.84534 605.966377C741.636939 543.258136 767.872023 467.112414 767.872023 383.928011 767.872023 172.127725 595.744297 0 383.944011 0 172.143725 0 0.016 172.127725 0.016 383.928011 0.016 595.728297 172.143725 767.856024 383.944011 767.856024 467.128413 767.856024 543.274136 741.62094 606.622257 696.829341L915.044429 1005.251511C939.999745 1030.206833 980.952072 1030.206833 1005.26751 1005.251511 1029.582949 980.296188 1030.222833 939.343868 1005.26751 914.388545L1005.26751 914.388545ZM95.998002 383.928011C95.998002 224.597886 224.613886 95.982003 383.944011 95.982003 543.274136 95.982003 671.890018 224.597886 671.890018 383.928011 671.890018 543.258136 543.274136 671.874018 383.944011 671.874018 224.613886 671.874018 95.998002 543.258136 95.998002 383.928011L95.998002 383.928011Z" p-id="2267" fill="#ffffff"></path>
+                                </svg>
+                            </button>
+                        </div> -->
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container mb-3 mt-3">
+        <div class="row align-items-center">
+            <div class="col-lg-auto">
+                <p style="font-size: 1.2rem"><b>{{ searchinfo }}</b></p>
+            </div>
+            <!--             <div class="col-lg-2" style="margin-left: 2rem">
+                <div class="form-group">
+                    <input type="checkbox" class="form-check-input" name="selectall" id="selectall">
+                    <label class="form-check-label">Select all</label>
+                </div>
+            </div> -->
+        </div>
+        <!--         <div class="form-group">
+            <input type="checkbox" class="form-check-input" name="selectall" id="selectall">
+            <label class="form-check-label">Select all</label>
+        </div> -->
+    </div>
+    <form method="post" id="select_form">
+        {% csrf_token %}
+        <div class="container" style="margin-bottom: 6rem;">
+            <table class="table dataTable justify-content-center table-hover table-bordered table-sm" style="font-size: 0.8rem;" id="dataset-table">
+                <thead class="thead">
+                    <tr>
+                        <th scope="col" style="vertical-align: middle; text-align: center;">Select</th>
+                        <th scope="col" style="vertical-align: middle;">Dataset Name</th>
+                        <th scope="col" style="vertical-align: middle;">Species</th>
+                        <th scope="col" style="vertical-align: middle;">Treatment</th>
+                        <th scope="col" style="vertical-align: middle;">Patients</th>
+                        <th scope="col" style="vertical-align: middle;">Cells</th>
+                        <th scope="col" style="vertical-align: middle;">Platform</th>
+                        <th scope="col" style="vertical-align: middle;">Pri / Meta</th>
+                        <th scope="col" style="vertical-align: middle;">Publication</th>
+                    </tr>
+                </thead>
+                <tbody style="font-size: 0.7rem; word-break: keep-all; word-wrap: break-word;">
+                    {% for data in datainfo %}
+                    <tr>
+                        <td style="vertical-align: middle; text-align: center;" class="checkbox-td"><input type="checkbox" value="{{ data.dataset_name }}" name="dataset_checkbox_list"></td>
+                        <td style="vertical-align: middle; cursor: pointer;" data-toggle="tooltip" title="<img src='{{ data.umap }}' width=350px>" data-placement="right" data-html="true">{{ data.dataset_name }}</td>
+                        <td style="vertical-align: middle; cursor: pointer;">{{ data.species }}</td>
+                        {% if data.treatment == 'None' %}
+                        <td style="vertical-align: middle; cursor: pointer;">{{ data.treatment }}</td>
+                        {% else %}
+                        <td style="vertical-align: middle; cursor: pointer;" data-toggle="tooltip" title="{{ data.treatment_detailed }}" data-placement="top">{{ data.treatment }}</td>
+                        {% endif %}
+                        <td style="vertical-align: middle; cursor: pointer;">{{ data.patient }}</td>
+                        <td style="vertical-align: middle; cursor: pointer;">{{ data.cell }}</td>
+                        <td style="vertical-align: middle; cursor: pointer;">{{ data.platform }}</td>
+                        <td style="vertical-align: middle; cursor: pointer;">{{ data.primary }}</td>
+                        {% if data.publication == 'NA' %}
+                        <td style="vertical-align: middle;" class="checkbox-td">{{ data.publication }}</td>
+                        {% else %}
+                        <td style="vertical-align: middle;" class="checkbox-td"><a href="https://pubmed.ncbi.nlm.nih.gov/?term={{ data.pmid }}">{{ data.publication }}</a></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div style="margin-top: 2rem">
+                <button type="button" id="select_button" class="btn btn-tisch">Compare</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="container" style="margin-top: -4rem; margin-bottom: 6rem; display: none;" id="single-dataset-result">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" aria-selected="true" href="#overview-tab" id="overview-link">Overview</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" aria-selected="true" href="#gene-tab" id="gene-link">Gene</a>
+                    </li>
+                    <li class="nav-item" id="gsea-list">
+                        <a class="nav-link" id="gsea-link" data-toggle="tab" href="#gsea-cluster-tab">GSEA</a>
+                    </li>
+                    <li class="nav-item dropdown" id="gsea-dropdown-list" style="display: none; cursor: pointer;">
+                        <a class="nav-link dropdown-toggle" id="gsea-dropdown-link" data-toggle="dropdown" role="button">GSEA</a>
+                        <div class="dropdown-menu" style="font-family: 'Trebuchet MS',Arial,sans-serif">
+                            <a class="dropdown-item" data-toggle="tab" href="#gsea-cluster-tab" id="gsea-cluster-link" style="display: none">Cluster</a>
+                            <a class="dropdown-item" data-toggle="tab" href="#gsea-Response-tab" id="gsea-Response-link" style="display: none">Response</a>
+                            <a class="dropdown-item" data-toggle="tab" href="#gsea-Therapy-tab" id="gsea-Therapy-link" style="display: none">Therapy</a>
+                            <a class="dropdown-item" data-toggle="tab" href="#gsea-Treatment-tab" id="gsea-Treatment-link" style="display: none">Treatment</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown" id="download-list" style="cursor: pointer;">
+                        <a class="nav-link dropdown-toggle" id="download-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Download</a>
+                        <div class="dropdown-menu" style="font-family: 'Trebuchet MS',Arial,sans-serif">
+                            <a class="dropdown-item" href="{{ expr_mat }}">Expression matrix</a>
+                            <a class="dropdown-item" href="{{ de_table }}">DE gene table</a>
+                        </div>
+                    </li>
+                    <li class="nav-item ml-auto" style="margin-left: 0.5rem; width: 35%">
+                        <form id="annotation-form" name="annotation-form" onsubmit="return false" method="post">
+                            {% csrf_token %}
+                            <div class="form-group row" id="annotation-form-group" style="margin-bottom: 0rem; padding-bottom: 0.2rem;">
+                                <label style="margin-top: 0.5rem; padding-right: 0.5rem" class="col-lg-auto" data-toggle="tooltip" title="<p align='left'>{{ celltype_abbr_str | safe }}</p>" data-placement="left" id="annotation-tooltip" data-html="true">
+                                    <b>Annotation</b>
+                                    <svg t="1581181133804" class="icon" data-toggle="collapse" href="#genelist-help" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1372" width="0.95em" height="0.95em" overflow="hidden" style="cursor:pointer">
+                                        <path d="M512 149.333333c200.298667 0 362.666667 162.368 362.666667 362.666667s-162.368 362.666667-362.666667 362.666667S149.333333 712.298667 149.333333 512 311.701333 149.333333 512 149.333333z m0 64c-164.949333 0-298.666667 133.717333-298.666667 298.666667s133.717333 298.666667 298.666667 298.666667 298.666667-133.717333 298.666667-298.666667-133.717333-298.666667-298.666667-298.666667z m39.658667 426.666667v64h-59.946667l-0.021333-64h59.968z m-3.541334-316.757333c38.72 7.808 84.778667 44.736 84.778667 98.453333 0 53.738667-43.882667 74.069333-59.605333 84.117333-14.506667 9.28-20.672 19.882667-21.525334 31.189334l-0.106666 2.816V597.333333h-59.968v-79.338666c0-18.816 6.037333-32 22.826666-43.648l3.776-2.496 33.685334-22.4c21.482667-14.464 21.184-43.498667 7.893333-56.32a60.373333 60.373333 0 0 0-52.842667-13.546667c-37.376 7.338667-41.685333 33.706667-41.941333 59.306667v14.485333H405.333333c0-49.834667 5.717333-72.426667 32.298667-100.970667 29.781333-31.893333 71.744-37.013333 110.485333-29.162666z" p-id="1373" fill="#707070">
+                                        </path>
+                                    </svg>
+                                    <b>:</b>
+                                </label>
+                                <div class="col" id="annotation_form">
+                                    {{ annotation_form | safe }}
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="overview-tab" role="tabpanel">
+                        <div class="container">
+                            <div class="row mt-4 mb-3">
+                                <div class="col-lg-6" style="overflow: scroll; width: 520px;">
+                                    <img src="{{ umap_cluster }}" id="umap_cluster" style="height: 370px">
+                                </div>
+                                <div class="col-lg-6" style="overflow: scroll; width: 520px;">
+                                    <img class="umap_celltype_single" src="{{ umap_anno }}" id="umap_anno" style="height: 370px">
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 2rem">
+                                <div class="container">
+                                    <h4 style="text-align: center">Top differential genes for each cluster</h4>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom: 1.5rem">
+                                <div class="col-lg-12">
+                                    <div class="container">
+                                        <table class="table table-striped table-bordered dataTable justify-content-center table-sm" style="font-size: 0.9rem; align: left!important;" id="diffgene_table">
+                                            <thead class="thead" style="text-align: center;">
+                                                <tr>
+                                                    <th scope="col" style="vertical-align: middle;">Cluster</th>
+                                                    <th scope="col" style="vertical-align: middle;">Celltype (malignancy)</th>
+                                                    <th scope="col" style="vertical-align: middle;">Celltype (major-lineage)</th>
+                                                    <th scope="col" style="vertical-align: middle;">Celltype (minor-lineage)</th>
+                                                    <th scope="col" style="vertical-align: middle;">Gene</th>
+                                                    <th scope="col" style="vertical-align: middle;">Log2 FC</th>
+                                                    <th scope="col" style="vertical-align: middle;">Percentage (%)</th>
+                                                    <th scope="col" style="vertical-align: middle;">Adjusted p-value</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="gene-tab" role="tabpanel">
+                        <div class="container">
+                            <div class="mt-3 mb-3">
+                                <form id="gene-form-single" name="gene-form-single" onsubmit="return false" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group row align-items-center" style="margin-bottom: 1.5rem">
+                                        <label class="col-lg-3 mb-0" style="font-size: 1.1rem; padding-right: 0">
+                                            <b>Individual gene exploration</b>
+                                        </label>
+                                        <div class="col-lg-9" style="padding-left: 2rem">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="Search gene (up to 6)" aria-label="Gene" aria-describedby="button-addon2" id="genesearch-single" name="genesearch-single">
+                                                <button class="btn btn-tisch" type="submit" id="button-addon2">Search</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- <hr> -->
+                                <form method="post" id="gene-list-form-single" name="gene-list-form-single" enctype="multipart/form-data" onsubmit="return false">
+                                    {% csrf_token %}
+                                    <div class="row form-group align-items-start">
+                                        <label class="col-lg-3"  style="font-size: 1.1rem; padding-right: 0">
+                                            <b>Gene signature exploration</b>
+                                            <svg t="1581181133804" class="icon" data-toggle="collapse" href="#genelist-help" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1372" width="0.9em" height="0.9em" overflow="hidden" style="cursor:pointer">
+                                                <path d="M512 149.333333c200.298667 0 362.666667 162.368 362.666667 362.666667s-162.368 362.666667-362.666667 362.666667S149.333333 712.298667 149.333333 512 311.701333 149.333333 512 149.333333z m0 64c-164.949333 0-298.666667 133.717333-298.666667 298.666667s133.717333 298.666667 298.666667 298.666667 298.666667-133.717333 298.666667-298.666667-133.717333-298.666667-298.666667-298.666667z m39.658667 426.666667v64h-59.946667l-0.021333-64h59.968z m-3.541334-316.757333c38.72 7.808 84.778667 44.736 84.778667 98.453333 0 53.738667-43.882667 74.069333-59.605333 84.117333-14.506667 9.28-20.672 19.882667-21.525334 31.189334l-0.106666 2.816V597.333333h-59.968v-79.338666c0-18.816 6.037333-32 22.826666-43.648l3.776-2.496 33.685334-22.4c21.482667-14.464 21.184-43.498667 7.893333-56.32a60.373333 60.373333 0 0 0-52.842667-13.546667c-37.376 7.338667-41.685333 33.706667-41.941333 59.306667v14.485333H405.333333c0-49.834667 5.717333-72.426667 32.298667-100.970667 29.781333-31.893333 71.744-37.013333 110.485333-29.162666z" p-id="1373" fill="#707070">
+                                                </path>
+                                            </svg>
+                                            <div class="collapse" id="genelist-help">
+                                                <p style="font-size: 0.75rem; margin-bottom: 0"><b>(Optional)</b> The gene signature file should be a line-separated list, in which expression of genes will be collapased by mean value or median, according to the choice.</p>
+                                            </div>
+                                        </label>
+                                        <div class="col-lg-9" style="padding-left: 2rem">
+                                            <div class="row">
+                                                <div class="col-lg-12" style="margin-bottom: 1rem">
+                                                    <input type="file" class="form-control-file" name="genelistfile-single" id="genelistfile-single">
+                                                    <!-- <textarea class="form-control" id="genelist" rows="3"></textarea> -->
+                                                </div>
+                                                <div class="col-lg-6" style="margin-bottom: 1rem">
+                                                    <select class="form-control" style="font-size: 1rem" name="collapsemode-single" id="collapsemode-single">
+                                                        <option value="mean" selected="selected">Collapse genes by mean</option>
+                                                        <option value="median">Collapse genes by median</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-6" style="margin-bottom: 1rem">
+                                                    <input class="form-control" type="text" name="genelistlabel-single" id="genelistlabel-single" value="GeneSignatureLabel">
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <button type="submit" class="btn btn-tisch">Upload</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="row mt-4 mb-3 justify-content-center">
+                                <div class="col-lg-5 pr-0" style="overflow: scroll; width: 350px">
+                                    <img class="umap_celltype_single" src="{{ umap_anno }}" style="height: 280px">
+                                </div>
+                                <div class="col-lg-7" id="gene-umap-distribution" style="margin-left: -2rem; overflow-x: scroll">
+                                    <div class="row flex-nowrap">
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="row align-items-center" style="margin-top: 3rem">
+                                <div class="col-lg-12">
+                                    <form method="post" id="view-option-form" name="view-option-form" onsubmit="return false">
+                                        {% csrf_token %}
+                                        <div class="form-row justify-content-around">
+                                            <div class="col-lg-5">
+                                                <div class="form-group row align-items-center" id="comparison-form-group" style="margin-bottom: 0rem">
+                                                    <label style="margin-top: 0.5rem; font-size: 1.1rem" class="col-lg-auto"><b>Compared across</b></label>
+                                                    <div class="col" id="comparison_form">
+                                                        {{ comparison_form | safe }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <div class="form-group row align-items-center" id="group-form-group" style="margin-bottom: 0rem">
+                                                    <label style="margin-top: 0.5rem; font-size: 1.1rem" class="col-lg-auto"><b>Grouped by</b></label>
+                                                    <div class="col" id="group_form">
+                                                        {{ group_form | safe }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                <div class="form-group align-items-center">
+                                                    <button type="submit" class="btn btn-tisch" style="margin-top: 0.15rem">Update</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center" style="margin-top: 3rem">
+                                <div class="lds-spinner" id="loading2">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-top: 3rem">
+                                <div class="col-lg-12 text-center" id="gene-violin" style="overflow-x: scroll">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div id="gene-dot"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="gsea-cluster-tab" role="tabpanel">
+                        <div class="row" style="margin-top: 2rem">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Up-regulated KEGG Pathways</h5> -->
+                                    <img src="{{ gsea_kegg_up_cluster }}" id="gsea_kegg_up_cluster" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Down-regulated KEGG Pathways</h5> -->
+                                    <img src="{{ gsea_kegg_down_cluster }}" id="gsea_kegg_down_cluster" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Up-regulated Hallmark Pathways</h5> -->
+                                    <img src="{{ gsea_hallmark_up_cluster }}" id="gsea_hallmark_up_cluster" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Down-regulated Hallmark Pathways</h5> -->
+                                    <img src="{{ gsea_hallmark_down_cluster }}" id="gsea_hallmark_down_cluster" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="gsea-Response-tab" role="tabpanel">
+                        <div class="row" style="margin-top: 2rem">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Up-regulated KEGG Pathways</h5> -->
+                                    <img src="{{ gsea_kegg_up_Response }}" id="gsea_kegg_up_Response" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Down-regulated KEGG Pathways</h5> -->
+                                    <img src="{{ gsea_kegg_down_Response }}" id="gsea_kegg_down_Response" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Up-regulated Hallmark Pathways</h5> -->
+                                    <img src="{{ gsea_hallmark_up_Response }}" id="gsea_hallmark_up_Response" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Down-regulated Hallmark Pathways</h5> -->
+                                    <img src="{{ gsea_hallmark_down_Response }}" id="gsea_hallmark_down_Response" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="gsea-Therapy-tab" role="tabpanel">
+                        <div class="row" style="margin-top: 2rem">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Up-regulated KEGG Pathways</h5> -->
+                                    <img src="{{ gsea_kegg_up_Therapy }}" id="gsea_kegg_up_Therapy" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Down-regulated KEGG Pathways</h5> -->
+                                    <img src="{{ gsea_kegg_down_Therapy }}" id="gsea_kegg_down_Therapy" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Up-regulated Hallmark Pathways</h5> -->
+                                    <img src="{{ gsea_hallmark_up_Therapy }}" id="gsea_hallmark_down_Therapy" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Down-regulated Hallmark Pathways</h5> -->
+                                    <img src="{{ gsea_hallmark_down_Therapy }}" id="gsea_hallmark_down_Therapy" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="gsea-Treatment-tab" role="tabpanel">
+                        <div class="row" style="margin-top: 2rem">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Up-regulated KEGG Pathways</h5> -->
+                                    <img src="{{ gsea_kegg_up_Treatment }}" id="gsea_kegg_up_Treatment" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Down-regulated KEGG Pathways</h5> -->
+                                    <img src="{{ gsea_kegg_down_Treatment }}" id="gsea_kegg_down_Treatment" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Up-regulated Hallmark Pathways</h5> -->
+                                    <img src="{{ gsea_hallmark_up_Treatment }}" id="gsea_hallmark_up_Treatment" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="container">
+                                <div class="col-lg-12">
+                                    <!-- <h5>Down-regulated Hallmark Pathways</h5> -->
+                                    <img src="{{ gsea_hallmark_down_Treatment }}" id="gsea_hallmark_down_Treatment" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="interaction-tab" role="tabpanel">
+                        <div class="container">
+                            <div class="row" style="margin-top: 2rem">
+                                <div class="container">
+                                    <form id="interaction-form" name="interaction-form" onsubmit="return false" method="post">
+                                        {% csrf_token %}
+                                        <div class="form-group row align-items-center">
+                                            <label class="col-lg-3" style="margin-bottom: 0" style="font-size: 1.1rem"><b>Cell-types of interest</b></label>
+                                            <div class="col-lg-9">
+                                                <select class="form-control" name="celltype" id="celltype" placeholder="Cell-types of interest (3 ~ 6 is recommended)" multiple="multiple">
+                                                    <option value='' disabled selected style='display:none;'>Cell-types of interest </option>
+                                                    {% for value, name in celltype_available %}
+                                                    <option value="{{ value }}">{{ name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row align-items-center">
+                                            <label class="col-lg-3" style="margin-bottom: 0" style="font-size: 1.1rem"><b>Top significant interactions</b></label>
+                                            <div class="col-lg-9">
+                                                <input type="text" id="rank" name="rank" class="slider">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" style="margin-right: 0;margin-left: 0;">
+                                            <div class="col-lg-2" style="padding-left: 0">
+                                                <button class="btn btn-tisch" type="submit" id="button-addon2">Explore</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div id="cpdb_dotplot">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: -4rem; margin-bottom: 6rem; display: none;" id="multiple-dataset-result">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs align-items-center" style="margin-bottom: 0.2rem">
+<!--                             <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" aria-selected="true" href="#overview-tab" id="overview-link">Overview</a>
+                    </li> -->
+                    <li class="nav-item" style="">
+                        <div class="dropdown dropright">
+                            <!-- <svg t="1586176795585 dropdown-toggle" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="32305" width="26" height="26" id="advanced-gene-dropdown" data-toggle="dropdown">
+                                <path d="M352 102.4H150.4C99.2 102.4 57.6 140.8 57.6 192v204.8c0 51.2 41.6 89.6 89.6 89.6H352c51.2 0 89.6-41.6 89.6-89.6V192c0-51.2-38.4-89.6-89.6-89.6zM937.6 230.4l-144-144c-35.2-35.2-92.8-35.2-128 0l-144 144c-16 16-25.6 38.4-25.6 64s9.6 48 25.6 64l144 144c16 16 38.4 25.6 64 25.6s48-9.6 64-25.6l144-144c16-16 25.6-38.4 25.6-64 3.2-25.6-6.4-48-25.6-64zM352 582.4H150.4c-51.2 0-89.6 41.6-89.6 89.6v204.8c0 51.2 41.6 89.6 89.6 89.6H352c51.2 0 89.6-41.6 89.6-89.6V672c0-51.2-38.4-89.6-89.6-89.6zM832 582.4h-204.8c-51.2 0-89.6 41.6-89.6 89.6v204.8c0 51.2 41.6 89.6 89.6 89.6H832c51.2 0 89.6-41.6 89.6-89.6V672c0-51.2-38.4-89.6-89.6-89.6z" p-id="32306" fill="#707070"></path>
+                            </svg> -->
+                            <button class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="advanced-gene-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Upload gene signature
+                            </button> 
+                            <div class="dropdown-menu" aria-labelledby="advanced-gene-dropdown" style="margin-top: -0.8rem; margin-left: 0.4rem; padding-left: 2rem; padding-right: 2rem; padding-top: 2rem; padding-bottom: 2rem; width: 19rem">
+                                <h5 style="color: #2F5597">Advanced Gene Search</h5>
+                                <div class="dropdown-divider"></div>
+                                <form class="px-1 py-1" method="post" id="gene-list-form-multiple" name="gene-list-form-multiple" enctype="multipart/form-data" onsubmit="return false">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label><b>Upload gene list</b></label>
+                                        <input type="file" class="form-control-file" name="genelistfile-multiple" id="genelistfile-multiple">
+                                    </div>
+                                    <div class="form-group">
+                                        <label><b>Label for gene list</b></label>
+                                        <input type="text" class="form-control" name="genelistlabel-multiple" id="genelistlabel-multiple" value="GeneSignatureLabel">
+                                    </div>
+                                    <div class="form-group">
+                                        <label><b>Collapse genes by</b></label>
+                                        <select class="form-control" style="font-size: 1rem" name="collapsemode-multiple" id="collapsemode-multiple">
+                                            <option value="mean" selected="">Mean</option>
+                                            <option value="median">Median</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-tisch">Upload</button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item" style="margin-left: 1rem; margin-right: 1rem">
+                        <label style="margin-bottom: 0; font-family: Avenir-black,Arial,sans-serif; font-size: 1.1rem; color: #6c757d">OR</label>
+                    </li>
+                    <li class="nav-item" style="width: 50%">
+                        <form id="gene-form-multiple" name="gene-form-multiple" onsubmit="return false" method="post">
+                            {% csrf_token %}
+                            <div class="input-group" style="margin-bottom: 0rem!important">
+                                <div style="width: 75%">
+                                    <input type="text" class="form-control" placeholder="Search gene (up to 6)" aria-label="Gene" aria-describedby="button-addon2" id="genesearch-multiple" name="genesearch-multiple">
+                                </div>
+                                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+                            </div>
+                        </form>
+                    </li>
+                    <li class="nav-item ml-auto" style="width: 25%; height: 38px">
+                        <select class="form-control" name="annotation-multiple" id="annotation-multiple">
+                            <option value="Celltype_general">Celltype (malignancy)</option>
+                            <option value="Celltype_curated" selected="selected">Celltype (major-lineage)</option>
+                            <option value="Celltype_subtype">Celltype (minor-lineage)</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+            <ul class="list-group list-group-flush text-left" id="dataset-list">
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="container">
+                <div id="loading" style="display: none">
+                    <img src="/static/image/loading.gif">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-sm fixed-bottom navbar-dark" style="background-color: #252746">
+        <div class="container">
+            <!--         <a href="http://liulab.dfci.harvard.edu/" class="navbar-brand">
+          <img src="http://liulab.dfci.harvard.edu/WEBSITE/images/Global/logofinal.png" height="46" width="58">
+        </a> -->
+            <span class="navbar-text" style="font-size: 13px">Copyright @2020 TISCH project</span>
+        </div>
+    </nav>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"></script>
+    <script type="text/javascript">
+
+    $(document).ready(function() {
+
+        // init the selectize plugin
+        $(function() {
+            $("#cancer").selectize({
+                plugins: ['remove_button'],
+                persist: false,
+                maxOptions: 50,
+                create: false,
+            });
+            $("#celltype").selectize({
+                plugins: ['remove_button'],
+                persist: false,
+                maxOptions: 50,
+                create: false,
+            });
+            $("#species").selectize();
+            $("#treatment").selectize({
+                plugins: ['remove_button'],
+                persist: false,
+                maxOptions: 50,
+                create: false,
+            });
+            $("#primary").selectize({
+                plugins: ['remove_button'],
+                persist: false,
+                create: false,
+            });
+        });
+
+        $("td[data-toggle='tooltip']").tooltip();
+
+        if ($('input[name="dataset_checkbox_list"]').length <= 10) {
+            $('input[name="dataset_checkbox_list"]').each(function() {
+                $(this).prop("checked", true);
+            });
+            // document.getElementById('selectall').click()
+        }
+
+        $("#dataset-table").DataTable({
+            "scrollY": '40vh',
+            "scrollCollapse": true,
+            "paging": false,
+            "searching": false,
+            "info": false,
+            "columnDefs": [
+                { "orderable": false, "targets": [0,8] }
+                ],
+            "order": [[ 1, "asc" ]]
+        });
+
+        $('#dataset-table tbody td[class!="checkbox-td"]').each(function() {
+            this.addEventListener("click", function() {
+                var dataset_curr = this.parentNode.children[0].children[0].value;
+                // var url_jump = "../data/"
+                // url_jump = url_jump + dataset;
+                // window.open(url_jump, "_self");
+                $('#loading').show();
+                $.ajax({
+                    data: {
+                        'dataset': dataset_curr,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(result) {
+                        $('#loading').hide();
+                        SingleDataset(result);
+                        $('html,body').animate({scrollTop:$("#single-dataset-result").offset().top-90}, 10);
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+
+            });
+        });
+
+        function SingleSubmitGeneForm(dataset) {
+            $("#gene-form-single").unbind("submit").bind("submit",function(e) {
+                e.preventDefault();
+                // e.stopImmediatePropagation();
+                if ($("#genesearch-single").val() == "") {
+                    alert("Please input a valid gene!")
+                } else {
+                    $('#loading').show();
+                    $.ajax({
+                        data: {
+                            'dataset_selected': dataset,
+                            'genesearch': $("#genesearch-single").val().split(","),
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            'plottype': 'umap'
+                        },
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function(res) {
+                            $('#loading').hide();
+                            console.log(res);
+                            dataset_li_elem = document.getElementById("gene-umap-distribution")
+                            dataset_li_elem.children[0].innerHTML = ""
+                            for (var j = 0; j < $("#genesearch-single").val().split(",").length; j++) {
+                                col_elem = document.createElement("div")
+                                col_elem.innerHTML = '<img src="' + res.gene_umap[j] + '" style="height: 280px">'
+                                col_elem.className = "col-lg-6"
+                                // col_elem.style.paddingRight = "0"
+                                dataset_li_elem.children[0].append(col_elem);
+                            }
+                            $("#gene-link").removeClass("disabled");
+                            $("#gene-link").tab("show");
+                            document.getElementById("gene-violin").innerHTML = "";
+                            $("#loading2").show();
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                        }
+                    });
+                    $.ajax({
+                        data: {
+                            'dataset_selected': dataset,
+                            'genesearch': $("#genesearch-single").val().split(","),
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            'plottype': 'violin',
+                            'annotation': $("#comparison").val(),
+                            'group': $("#group").val()
+                        },
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function(res) {
+                            $("#view-option-form").show();
+                            dataset_li_elem = document.getElementById("gene-violin")
+                            dataset_li_elem.innerHTML = '<img src="' + res.violin_plot + '" style="height: 500px">'
+                            $('#loading2').hide();
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                        }
+                    });
+                }
+            });
+        };
+
+        function SingleSubmitGenelistForm(dataset) {
+            $("#gene-list-form-single").unbind("submit").bind("submit",function(e) {
+                e.preventDefault();
+                if ($('#genelistfile-single')[0].files[0]) {
+                // if ($('#genelist').val() == "") {
+                //     alert("Please choose a gene signature file!")
+                // } else {
+                    $('#loading').show();
+                    $("#genesearch-single")[0].selectize.clear();
+                    var myFormData = new FormData();
+                    myFormData.append('dataset_selected', dataset);
+                    myFormData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+                    myFormData.append('collapsemode', $("#collapsemode-single").val());
+                    myFormData.append('genelistlabel', $("#genelistlabel-single").val());
+                    myFormData.append('genelistfile', $('#genelistfile-single')[0].files[0]);
+                    myFormData.append('plottype', 'umap');
+                    console.log(myFormData);
+                    $.ajax({
+                        data: myFormData,
+                        type: 'POST',
+                        contentType: false,
+                        processData: false,
+                        success: function(res) {
+                            $('#loading').hide();
+                            dataset_li_elem = document.getElementById("gene-umap-distribution")
+                            dataset_li_elem.children[0].innerHTML = ""
+                            col_elem = document.createElement("div")
+                            col_elem.innerHTML = '<img src="' + res.gene_umap + '" style="height: 280px">'
+                            col_elem.className = "col-lg-6"
+                            // col_elem.style.paddingRight = "0"
+                            dataset_li_elem.children[0].append(col_elem);
+                            $("#gene-link").removeClass("disabled");
+                            $("#gene-link").tab("show");
+                            document.getElementById("gene-violin").innerHTML = "";
+                            $("#loading2").show();
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                        }
+                    });
+                    myFormData.delete('plottype');
+                    myFormData.append('plottype', 'violin');
+                    myFormData.append('annotation', $("#comparison").val());
+                    myFormData.append('group', $("#group").val());
+                    $.ajax({
+                        data: myFormData,
+                        type: 'POST',
+                        contentType: false,
+                        processData: false,
+                        success: function(res) {
+                            $("#view-option-form").show();
+                            dataset_li_elem = document.getElementById("gene-violin")
+                            dataset_li_elem.innerHTML = '<img src="' + res.violin_plot + '" style="height: 500px">'
+                            $('#loading2').hide();
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                        }
+                    });
+                } 
+                else {
+                    alert("Please choose a gene signature file!")
+                }
+            });
+        };
+
+        function UpdateViolinplot(dataset) {
+            $("#view-option-form").unbind("submit").bind("submit",function(e) {
+                e.preventDefault();
+                if ($("#genesearch-single").val() == "") {
+                    if ($('#genelistfile-single')[0].files[0]) {
+                        document.getElementById("gene-violin").innerHTML = "";
+                        $('#loading2').show();
+                        var myFormData = new FormData();
+                        myFormData.append('dataset_selected', dataset);
+                        myFormData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+                        myFormData.append('collapsemode', $("#collapsemode-single").val());
+                        myFormData.append('genelistlabel', $("#genelistlabel-single").val());
+                        myFormData.append('genelistfile', $('#genelistfile-single')[0].files[0]);
+                        myFormData.append('plottype', 'violin');
+                        myFormData.append('annotation', $("#comparison").val());
+                        myFormData.append('group', $("#group").val());
+                        $.ajax({
+                            data: myFormData,
+                            type: 'POST',
+                            contentType: false,
+                            processData: false,
+                            success: function(res) {
+                                $("#view-option-form").show();
+                                dataset_li_elem = document.getElementById("gene-violin")
+                                dataset_li_elem.innerHTML = '<img src="' + res.violin_plot + '" style="height: 500px">'
+                                $('#loading2').hide();
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                            }
+                        });
+                    } else {
+                        alert("Please input a valid gene or upload a gene signature file!")
+                    }
+                } else {
+                    document.getElementById("gene-violin").innerHTML = "";
+                    $('#loading2').show();
+                    $.ajax({
+                        data: {
+                            'dataset_selected': dataset,
+                            'genesearch': $("#genesearch-single").val().split(","),
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            'plottype': 'violin',
+                            'annotation': $("#comparison").val(),
+                            'group': $("#group").val()
+                        },
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function(res) {
+                            $("#view-option-form").show();
+                            dataset_li_elem = document.getElementById("gene-violin")
+                            dataset_li_elem.innerHTML = '<img src="' + res.violin_plot + '" style="height: 500px">'
+                            $('#loading2').hide();
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                        }
+                    });
+                }
+            });
+        };
+
+        function SingleDataset(res){
+            $("#multiple-dataset-result").hide();
+            var diffgene_table = $('#diffgene_table').DataTable();
+            console.log("Return result of " + res.current_dataset);
+
+            document.getElementById("annotation_form").innerHTML = res.annotation_form;
+            document.getElementById("comparison_form").innerHTML = res.comparison_form;
+            document.getElementById("group_form").innerHTML = res.group_form;
+            var celltype_abbr_str = res.celltype_abbr_str;
+            $("#annotation-tooltip").attr("title", celltype_abbr_str);
+            $("#annotation-tooltip").tooltip();
+            var umap_celltype_list = document.getElementsByClassName("umap_celltype_single");
+            for (var i = 0; i < umap_celltype_list.length; i++) {
+                var umap_celltype = umap_celltype_list[i];
+                umap_celltype.setAttribute("src", res.umap_anno);
+            }
+            document.getElementById("umap_cluster").setAttribute("src", res.umap_cluster);
+            document.getElementById("gsea_kegg_up_cluster").setAttribute("src", res.gsea_kegg_up_cluster);
+            document.getElementById("gsea_kegg_down_cluster").setAttribute("src", res.gsea_kegg_down_cluster);
+            document.getElementById("gsea_hallmark_up_cluster").setAttribute("src", res.gsea_hallmark_up_cluster);
+            document.getElementById("gsea_hallmark_down_cluster").setAttribute("src", res.gsea_hallmark_down_cluster);
+
+            document.getElementById("gene-umap-distribution").children[0].innerHTML = "";
+            document.getElementById("gene-violin").innerHTML = "";
+
+            $("#loading2").hide();
+            $("#view-option-form").hide();
+            var availableTags = res.available_genes;
+            var availableOptions = [];
+            for (var i = 0; i < availableTags.length; i++) {
+                availableOptions.push({ gene: availableTags[i] })
+            }
+            $(function() {
+                $("#genesearch-single").selectize()[0].selectize.destroy();
+                $("#genesearch-single").selectize({
+                    valueField: 'gene',
+                    labelField: 'gene',
+                    searchField: ['gene'],
+                    persist: false,
+                    maxOptions: 50,
+                    options: availableOptions,
+                    delimiter: ',',
+                    create: false,
+                    maxItems: 6
+                });
+                $("#genesearch-single")[0].selectize.clear();
+                $("#annotation").selectize();
+                $("#annotation")[0].selectize.setValue("Celltype_curated");
+                $("#celltype").selectize({
+                    plugins: ['remove_button'],
+                    persist: false,
+                    maxOptions: 50,
+                    create: false,
+                });
+                $("#collapsemode-single").selectize();
+                $("#group").selectize();
+                $("#comparison").selectize();
+                $("#comparison")[0].selectize.setValue("Celltype_curated");
+            });
+            var file = document.getElementById("genelistfile-single") ; 
+            file.outerHTML = file.outerHTML;
+            $("#genelistlabel-single").val("GeneSignatureLabel");
+
+            $("#single-dataset-result").show();
+            $("#overview-link").tab("show");
+            diffgene_table.clear();
+            diffgene_table.destroy();
+            var diffgene_file = res.diffgene_file;
+            $('#diffgene_table thead th').each( function () {
+                var title = $(this).text();
+                if ($(this).children().length > 0) {
+                    this.removeChild(this.childNodes[1])
+                }
+                if (title == "Gene") {
+                    var input_ele = $('<input class="form-control form-control-sm" type="text" placeholder="Search '+title+'" />');
+                    input_ele.appendTo($(this));
+                }
+            } );
+
+            $('#diffgene_table').DataTable({
+                "ajax": diffgene_file,
+                initComplete: function () {
+                    this.api().columns([0, 1, 2, 3]).every( function () {
+                    var column = this;
+                        var select = $('<select class="form-control form-control-sm"><option value=""></option></select>')
+                            .appendTo( $(column.header()))
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+         
+                                column
+                                    .search( val ? '^'+val+'$' : '', true, false )
+                                    .draw();
+                            } );
+         
+                        column.data().unique().sort().each( function ( d, j ) {
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        } );
+                        // select.selectize();
+                    } );
+                    this.api().columns([4]).every( function () {
+                        var column = this;
+                        console.log(column);
+                        $( 'input', this.header() ).on( 'keyup change clear', function () {
+                            if ( column.search() !== this.value ) {
+                                column
+                                    .search( this.value )
+                                    .draw();
+                            }
+                        } );
+                    } );
+                }
+            });
+
+
+            $("#annotation").change(function() {
+                var annotation = $("#annotation").val();
+                console.log(annotation);
+                $(".umap_celltype_single").each(function() {
+                    console.log($(this).attr("src"))
+                    $(this).attr("src", "/static/data/" + res.current_dataset + "/" + res.current_dataset + "_umap_" + annotation + ".png");
+                });
+                // if ($("#gene-tab").hasClass("show")){
+                //     var curr_violin = $("#gene-violin").children().attr("src");
+                //     console.log(curr_violin);
+                //     var new_violin = curr_violin.split("Celltype")[0] + annotation + ".png"
+                //     console.log(new_violin);
+                //     $("#gene-violin").children().attr("src", new_violin);
+                // }
+            });
+            SingleSubmitGeneForm(res.current_dataset);
+            
+            UpdateViolinplot(res.current_dataset);
+            SingleSubmitGenelistForm(res.current_dataset);
+            function DisableViewoption() {
+                $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+                    if($(e.target.hash).attr('id') !="overview-tab" && $(e.target.hash).attr('id') != "gene-tab") {
+                        $("#annotation-form-group").hide();
+                    } else {
+                        $("#annotation-form-group").show();
+                    }
+                });
+            };
+
+            DisableViewoption();
+
+            var gsea_meta_available = res.gsea_meta_available;
+            console.log(gsea_meta_available);
+            if (gsea_meta_available.length > 1) {
+                $("#gsea-list").hide();
+                $("#gsea-dropdown-list").show();
+                for (var i = 0; i < gsea_meta_available.length; i++) {
+                    var gsea_meta = gsea_meta_available[i];
+                    var gsea_meta_link = "gsea-" + gsea_meta + "-link";
+                    document.getElementById("gsea_kegg_up_" + gsea_meta).setAttribute("src", res["gsea_kegg_up_" + gsea_meta]);
+                    document.getElementById("gsea_kegg_down_" + gsea_meta).setAttribute("src", res["gsea_kegg_down_" + gsea_meta]);
+                    document.getElementById("gsea_hallmark_up_" + gsea_meta).setAttribute("src", res["gsea_hallmark_up_" + gsea_meta]);
+                    document.getElementById("gsea_hallmark_down_" + gsea_meta).setAttribute("src", res["gsea_hallmark_down_" + gsea_meta]);
+                    
+                    document.getElementById(gsea_meta_link).style.display = "block";
+                }
+            } else {
+                $("#gsea-list").show();
+                $("#gsea-dropdown-list").hide();
+            }
+
+            $("#download-list div a").each(function() {
+                var text = $(this).text();
+                if (text == "Expression matrix"){
+                    $(this).attr("href", res.expr_mat);
+                }
+                if (text == "DE gene table"){
+                    $(this).attr("href", res.de_table);
+                }
+            });
+        };
+
+        function MultipleSubmitGeneForm(dataset_select){
+            $("#gene-form-multiple").unbind("submit").bind("submit",function(e) {
+                e.preventDefault();
+                if ($("#genesearch-multiple").val() == "") {
+                    alert("Please input a valid gene!")
+                } else {
+                    $('#loading').show();
+                    $.ajax({
+                        data: {
+                            'dataset_selected': dataset_select,
+                            'genesearch': $("#genesearch-multiple").val().split(","),
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        type: 'POST',
+                        dataType: 'json',
+                        success: function(res) {
+                            $('#loading').hide();
+                            console.log($("#genesearch-multiple").val());
+                            for (var i = 0; i < dataset_select.length; i++) {
+                                dataset_li_elem = document.getElementById(dataset_select[i])
+                                dataset_li_elem.children[0].children[0].children[1].children[0].innerHTML = ""
+                                for (var j = 0; j < $("#genesearch-multiple").val().split(",").length; j++) {
+                                    col_elem = document.createElement("div")
+                                    col_elem.innerHTML = '<img src="' + res.gene_umap[i][j] + '" style="height: 280px">'
+                                    col_elem.className = "col-lg-6"
+                                    // col_elem.style.marginTop = "5rem"
+                                    col_elem.style.paddingRight = "0"
+                                    dataset_li_elem.children[0].children[0].children[1].children[0].append(col_elem);
+                                }
+                            }
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                        }
+                    });
+                }
+            });
+        };
+
+        function MultipleSubmitGenelistForm(dataset_select){
+            $("#gene-list-form-multiple").unbind("submit").bind("submit",function(e) {
+                e.preventDefault();
+                $('#loading').show();
+
+                var myFormData = new FormData();
+                myFormData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+                myFormData.append('collapsemode', $("#collapsemode-multiple").val());
+                myFormData.append('genelistlabel', $("#genelistlabel-multiple").val());
+                myFormData.append('genelistfile', $('#genelistfile-multiple')[0].files[0]);
+                for (var i = 0; i < dataset_select.length; i++) {
+                    myFormData.append('dataset_selected[]', dataset_select[i]);
+                }
+                console.log(myFormData);
+                $.ajax({
+                    data: myFormData,
+                    type: 'POST',
+                    contentType: false,
+                    processData: false,
+                    success: function(res) {
+                        for (var i = 0; i < dataset_select.length; i++) {
+                            dataset_li_elem = document.getElementById(dataset_select[i])
+                            dataset_li_elem.children[0].children[0].children[1].children[0].innerHTML = ""
+                            col_elem = document.createElement("div")
+                            col_elem.innerHTML = '<img src="' + res.gene_umap[i] + '" style="height: 280px">'
+                            col_elem.className = "col-lg-6"
+                            // col_elem.style.marginTop = "5rem"
+                            col_elem.style.paddingRight = "0"
+                            dataset_li_elem.children[0].children[0].children[1].children[0].append(col_elem);
+                            $('#loading').hide();
+                        }
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+            });
+        };
+
+        function MultipleDataset(res){
+            $("#single-dataset-result").hide();
+            var availableTags = res.available_genes;
+            var availableOptions = []
+            for (var i = 0; i < availableTags.length; i++) {
+                availableOptions.push({ gene: availableTags[i] })
+            }
+            var dataset_select = res.dataset_select;
+            $(function() {
+                $("#genesearch-multiple").selectize()[0].selectize.destroy();
+                $("#genesearch-multiple").selectize({
+                    valueField: 'gene',
+                    labelField: 'gene',
+                    searchField: ['gene'],
+                    persist: false,
+                    maxOptions: 50,
+                    options: availableOptions,
+                    delimiter: ',',
+                    create: false,
+                    maxItems: 6
+                });
+                $("#genesearch-multiple")[0].selectize.clear();
+                $("#annotation-multiple").selectize();
+                $("#collapsemode-multiple").selectize();
+            });
+            var file = document.getElementById("genelistfile-multiple") ; 
+            file.outerHTML = file.outerHTML;
+            $("#genelistlabel-multiple").val("GeneSignatureLabel");
+
+            dataset_ul = document.getElementById("dataset-list");
+            dataset_ul.innerHTML = "";
+            $("#multiple-dataset-result").show();
+            var dataset_list = res.dataset_list;
+            for (var i = 0; i < dataset_list.length; i++) {
+                dataset = dataset_list[i];
+                dataset_li = document.createElement("li");
+                dataset_li.className = "list-group-item";
+                dataset_li.style.paddingTop = "1rem";
+                dataset_li.id = dataset.dataset_name;
+
+                container_ele = document.createElement("div");
+                container_ele.classList.add("container", "pr-0");
+
+                row_ele_1 = document.createElement("div");
+                row_ele_1.classList.add("row", "align-items-end", "justify-content-md-start");
+
+                col_5_ele = document.createElement("div");
+                col_5_ele.className = "col-lg-5";
+                col_5_ele.style.overflow = "scroll";
+                col_5_ele.style.width = "445px";
+
+                col_7_ele = document.createElement("div");
+                col_7_ele.className = "col-lg-7";
+                col_7_ele.style.overflowX = "scroll";
+                col_7_ele.style.marginLeft = "-2rem";
+
+                img_ele = document.createElement("img");
+                img_ele.className = "umap_celltype_multiple";
+                img_ele.setAttribute("src", dataset.umap);
+                img_ele.style.height = "280px";
+                col_5_ele.appendChild(img_ele);
+
+                row_ele_2 = document.createElement("div");
+                row_ele_2.classList.add("row", "flex-nowrap");
+                col_7_ele.appendChild(row_ele_2);
+
+                row_ele_1.appendChild(col_5_ele);
+                row_ele_1.appendChild(col_7_ele);
+
+                container_ele.appendChild(row_ele_1);
+                dataset_li.appendChild(container_ele);
+                dataset_ul.appendChild(dataset_li);
+            }
+            MultipleSubmitGeneForm(dataset_select);
+            MultipleSubmitGenelistForm(dataset_select);
+
+            var scroll_row = document.getElementsByClassName("col-lg-7");
+
+            $(".col-lg-7").scroll(function() {
+                for(var i in scroll_row)
+                    $(scroll_row[i]).scrollLeft($(this).scrollLeft());
+            });
+
+            var scroll_umap = document.getElementsByClassName("col-lg-5");
+
+            $(".col-lg-5").scroll(function() {
+                for(var i in scroll_umap)
+                    $(scroll_umap[i]).scrollLeft($(this).scrollLeft());
+            });
+
+            $("#annotation-multiple").change(function(){
+                var annotation = $("#annotation-multiple").val();
+                $(".umap_celltype_multiple").each(function(){
+                    var dataset = $(this).attr("src").split("/")[3];
+                    $(this).attr("src", "/static/data/" + dataset + "/" + dataset + "_umap_" + annotation + ".png");
+                });
+            });
+        }
+
+        $("#select_button").on("click", function() {
+            if ($('input[name="dataset_checkbox_list"]:checked').length < 2){
+                alert("Please select at least two datasets for comparison!");
+            }
+            else if ($('input[name="dataset_checkbox_list"]:checked').length > 1 & $('input[name="dataset_checkbox_list"]:checked').length <= 10) {
+                // $("#select_form").submit();
+                var dataset_checkbox_list = [];
+                $('input[name="dataset_checkbox_list"]:checked').each(function(){
+                    dataset_checkbox_list.push($(this).val());
+                });
+                console.log(dataset_checkbox_list);
+                $('#loading').show();
+                $.ajax({
+                    data: {
+                        'dataset_selected': dataset_checkbox_list,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(res) {
+                        $('#loading').hide();
+                        MultipleDataset(res);
+                        $('html,body').animate({scrollTop:$("#multiple-dataset-result").offset().top-90}, 10);
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+            }
+            else {
+                alert("Please select at most 10 datasets!");
+            }
+        });
+
+        // select all current datasets
+        $("#selectall").on("click", function() {
+            if ($(this).is(':checked')) {
+                if ($('input[name="dataset_checkbox_list"]').length > 10) {
+                    $('input[name="dataset_checkbox_list"]').slice(0, 10).each(function() {
+                        $(this).prop("checked", true);
+                    });
+                    alert("Select 10 datasets at most!")
+                } else {
+                    $('input[name="dataset_checkbox_list"]').each(function() {
+                        $(this).prop("checked", true);
+                    });
+                }
+            } else {
+                $('input[name="dataset_checkbox_list"]').each(function() {
+                    $(this).prop("checked", false);
+                });
+            }
+        });
+
+
+        var cancer_selected = {{ cancerlist | safe }};
+        for (var i = 0; i < cancer_selected.length; i++) {
+            $(" #cancer option[value='" + cancer_selected[i] + "']").each(function() {
+                $(this).attr("selected", "selected");
+            });
+        }
+
+        var celltype_selected = {{ celltypelist | safe }};
+        for (var i = 0; i < celltype_selected.length; i++) {
+            $(" #celltype option[value='" + celltype_selected[i] + "']").each(function() {
+                $(this).attr("selected", "selected");
+            });
+        }
+
+        var treatment_selected = {{ treatmentlist | safe }};
+        for (var i = 0; i < treatment_selected.length; i++) {
+            $(" #treatment option[value='" + treatment_selected[i] + "']").each(function() {
+                $(this).attr("selected", "selected");
+            });
+        }
+
+        var species_selected = {{ specieslist | safe }};
+        console.log(species_selected);
+        if (species_selected.length == 2) {
+            $(" #species option[value='']").each(function() {
+                $(this).attr("selected", "selected");
+            });
+        } else {
+            $(" #species option[value='" + species_selected[0] + "']").each(function() {
+                $(this).attr("selected", "selected");
+            });
+        }
+
+        var primary_selected = {{ primarylist | safe }};
+        for (var i = 0; i < primary_selected.length; i++) {
+            $(" #primary option[value='" + primary_selected[i] + "']").each(function() {
+                $(this).attr("selected", "selected");
+            });
+        }
+
+        // if (cancer_selected[0] != "" || celltype_selected[0] != "" || treatment_selected[0] != "") {
+        //     document.getElementById('selectall').click()
+        // }
+
+        // return datasets in real time
+
+        $("#cancer").change(function() {
+            $("#dataset_form").submit();
+        });
+        $("#celltype").change(function() {
+            $("#dataset_form").submit();
+        });
+        $("#species").change(function() {
+            $("#dataset_form").submit();
+        });
+        $("#treatment").change(function() {
+            $("#dataset_form").submit();
+        });
+        $("#primary").change(function() {
+            $("#dataset_form").submit();
+        });
+
+    });
+    </script>
+</body>
+
+</html>

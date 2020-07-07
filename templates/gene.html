@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/selectize.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <!--     <link rel="stylesheet" type="text/css" href="http://cistrome.org/~dsun/MAESTRO/css/mFilter.css">
+ -->
+    <!--     <link rel="stylesheet" type="text/css" href="https://cdn.mfilter.tk/css/mfilter.min.css">
+ -->
+    <title>TISCH</title>
+    <style type="text/css">
+        .btn-link
+        {
+            color: #54aced;
+            font-size: 1.2rem;
+            font-family: Avenir-black,Arial,sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark" style="background-color:#252746">
+        <div class="container">
+            <!-- <a href="/" class="navbar-brand">TISCH</a> -->
+            <a href="../home">
+                <img src="/static/image/TISCH.png" width="140">
+            </a>
+            <div id="navbar-nav-scroll">
+                <ul class="navbar-nav bd-navbar-nav flex-row">
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../home" style="padding-left: 1rem; padding-right: 1rem">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../gallery" style="padding-left: 1rem; padding-right: 1rem">Dataset</a>
+                    </li>
+                    <!--                     <li class="nav-item">
+                        <a class="nav-link nav-a" href="../search-cancer" style="padding-left: 1rem; padding-right: 1rem">Dataset</a>
+                    </li> -->
+                    <li class="nav-item active">
+                        <a class="nav-link nav-a" href="../search-gene" style="padding-left: 1rem; padding-right: 1rem">Gene</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../documentation" style="padding-left: 1rem; padding-right: 1rem">Documentation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="row body2" style="margin-top: 4.7rem; margin-right: 0; margin-left: 0">
+        <div class="col-lg-12 px-0">
+            <div class="jumbotron jumbotron-fluid shadow-sm">
+                <div class="container">
+                    <h1 style="font-family: Avenir-black,Arial,sans-serif">Gene Exploration</h1>
+                    <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif">Search a gene across cancer types. A heatmap and a violin plot will be displayed to show the expression of given gene in different cell-types across all available datasets. The level of cell-type annotation is optional and the datasets to be used can be customized. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-lg-12">
+            <div class="container">
+                <form method="post" id="geneform" onsubmit="return false">
+                    {% csrf_token %}
+                    <div class="form-group row" style="margin-right: 0;margin-left: 0;">
+                        <label class="col-form-label col-lg-3" style="padding-left: 0px; font-size: 1.2rem"><b>Gene</b></label>
+                        <input type="text" class="form-control col-lg-9" placeholder="Gene" aria-label="Gene" aria-describedby="button-addon2" id="genesearch" autocomplete="on" name="genesearch">
+                    </div>
+                    <div class="form-group row" style="margin-right: 0;margin-left: 0;">
+                        <label class="col-form-label col-lg-3" style="padding-left: 0px; font-size: 1.2rem"><b>Cell-type annotation</b></label>
+                        <select class="form-control col-lg-9" name="annotation" id="annotation" placeholder="Level of cell-type annotation">
+                            <option value='' disabled selected style='display:none;'>Level of cell-type annotations</option>
+                            <option value="Celltype_general">Celltype (malignancy)</option>
+                            <option value="Celltype_curated" selected="selected">Celltype (major-lineage)</option>
+                            <option value="Celltype_subtype">Celltype (minor-lineage)</option>
+                        </select>
+                    </div>
+                    <div class="form-group row" style="margin-right: 0;margin-left: 0;">
+                        <label class="col-form-label col-lg-3" style="padding-left: 0px; font-size: 1.2rem"><b>Cancer type</b></label>
+                        <select class="form-control col-lg-9" name="cancer" id="cancer" multiple="multiple" placeholder="Cancer type">
+                            <option value="All">All cancers</option>
+                            <option value="AEL">AEL (Acute Erythroid Leukemia)</option>
+                            <option value="ALL">ALL (Acute Lymphoblastic Leukemia)</option>
+                            <option value="AML">AML (Acute Myeloid Leukemia)</option>
+                            <option value="BCC">BCC (Basal Cell Carcinoma)</option>
+                            <option value="BLCA">BLCA (Bladder Urothelial Carcinoma)</option>
+                            <option value="BRCA">BRCA (Breast Invasive Carcinoma)</option>
+                            <option value="CHOL">CHOL (Cholangiocarcinoma)</option>
+                            <option value="COAD">COAD (Colon Adenocarcinoma)</option>
+                            <option value="CLL">CLL (Chronic Lymphocytic Leukemia)</option>
+                            <option value="GBM">GBM (Glioblastoma Multiforme)</option>
+                            <option value="HNSC">HNSCC (Head and Neck Squamous Cell Carcinoma)</option>
+                            <option value="KIRC">KIRC (Kidney Renal Clear Cell Carcinoma)</option>
+                            <option value="LIHC">LIHC (Liver Hepatocellular Carcinoma)</option>
+                            <!--option value="LUAD">LUAD (Lung Adenocarcinoma)</option-->
+                            
+                            <option value="MB">MB (Medulloblastoma)</option>
+                            <option value="MCC">MCC (Merkel cell carcinoma)</option>
+                            <option value="MM">MM (Multiple Myeloma)</option>
+                            <option value="NET">NET (Neuroendocrine Tumor)</option>
+                            <option value="NHL">NHL (Non-Hodgkin Lymphoma)</option>
+                            <option value="NSCLC">NSCLC (Non-small Cell Lung Cancer)</option>
+                            <option value="OV">OV (Ovarian Serous Cystadenocarcinoma)</option>
+                            <option value="PAAD">PAAD (Pancreatic Adenocarcinoma)</option>
+                            <option value="PBMC">PBMC (Peripheral Blood Mononuclear Cell)</option>
+                            <!--option value="PRAD">PRAD (Prostate Adenocarcinoma)</option-->
+                            <option value="READ">READ (Rectum Adenocarcinoma)</option>
+                            <option value="SARC">SARC (Sarcoma)</option>
+                            <option value="SCC">SCC (Squamous Cell Carcinoma)</option>
+                            <option value="SKCM">SKCM (Skin Cutaneous Melanoma)</option>
+                            <option value="STAD">STAD (Stomach Adenocarcinoma)</option>
+                            <option value="UCEC">UCEC (Uterine Corpus Endometrial Carcinoma)</option>
+                            <option value="UVM">UVM (Uveal Melanoma)</option>
+                        </select>
+                    </div>
+                    <div class="form-group row" style="margin-right: 0;margin-left: 0; font-size: 0.85rem">
+                        <div class="col-lg-9 offset-lg-3" style="padding-left: 0; padding-right: 0">
+                            <div class="container">
+                                <div class="row" id="datasets-row">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row" style="margin-right: 0;margin-left: 0;">
+                        <div class="col-lg-2" style="padding-left: 0">
+                            <button class="btn btn-tisch" type="submit" id="button-gene">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--                     <div class="row form-group container mb-3">
+                        <div class="col-lg-1">
+                            <button class="btn btn-tisch" type="submit" id="button-addon2">
+                                <svg t="1586881905095" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2266" width="20" height="20" style="margin-top: -0.3rem">
+                                    <path d="M1005.26751 914.388545 696.84534 605.966377C741.636939 543.258136 767.872023 467.112414 767.872023 383.928011 767.872023 172.127725 595.744297 0 383.944011 0 172.143725 0 0.016 172.127725 0.016 383.928011 0.016 595.728297 172.143725 767.856024 383.944011 767.856024 467.128413 767.856024 543.274136 741.62094 606.622257 696.829341L915.044429 1005.251511C939.999745 1030.206833 980.952072 1030.206833 1005.26751 1005.251511 1029.582949 980.296188 1030.222833 939.343868 1005.26751 914.388545L1005.26751 914.388545ZM95.998002 383.928011C95.998002 224.597886 224.613886 95.982003 383.944011 95.982003 543.274136 95.982003 671.890018 224.597886 671.890018 383.928011 671.890018 543.258136 543.274136 671.874018 383.944011 671.874018 224.613886 671.874018 95.998002 543.258136 95.998002 383.928011L95.998002 383.928011Z" p-id="2267" fill="#ffffff"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div> -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="container">
+                <div id="loading" style="display: none">
+                    <img src="/static/image/loading.gif">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 1rem; margin-bottom: 6rem;" id="generesult">
+        <div class="col-lg-12">
+            <div class="container">
+                <div class="card" style="display: none" id="generesult_heatmap">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="font-family: Avenir-black,Arial,sans-serif;">
+                                Average expression of gene in different cell-types across datasets (Heatmap)
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+                        <div class="card-body">
+                            <div id="heatmap">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="display: none" id="generesult_violin">
+                    <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="font-family: Avenir-black,Arial,sans-serif;">
+                                Distribution of expression of gene in different cell-types across datasets (Violin plot)
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center">
+                                <div class="lds-spinner" id="loading2">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                            <div id="violin" style="margin-top: 2rem; margin-bottom: 2rem">
+                                <a href="" id="violin-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--     <div class="row" style="margin-bottom: 6rem;">
+        <div class="col-lg-12">
+            <div class="container">
+                <div id="heatmap">
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <nav class="navbar navbar-expand-sm fixed-bottom navbar-dark" style="background-color:#252746;">
+        <div class="container">
+            <span class="navbar-text" style="font-size: 13px">Copyright @2020 TISCH project</span>
+        </div>
+    </nav>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"></script>
+    <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+    <script src="/static/js/plot.js"></script>
+    <script type="text/javascript">
+    var availableTags = {{ available_genes | safe }};
+    var availableOptions = [];
+    for (var i = 0; i < availableTags.length; i++) {
+        availableOptions.push({ gene: availableTags[i] })
+    }
+
+    // var gene_valid = false;
+    // function CheckGene() {
+    //     var gene_search = $("#genesearch").val();
+    //     if (gene_search != "") {
+    //         var gene_valid = true;
+    //         return false;
+    //         // GeneformSubmit();
+    //     } else {
+    //         var gene_valid = false;
+    //         alert("Please input valid gene symbol!")
+    //         return false;
+    //     }
+    // };
+
+    var availableDatasets = {{ available_cancer_dict | safe }};
+    console.log(availableDatasets);
+
+    $("#cancer").change(function() {
+        console.log($("#cancer").val());
+        document.getElementById("datasets-row").innerHTML = "";
+        datasets = new Array();
+        if ($("#cancer").val().indexOf("All") < 0) {
+            for (var i = 0; i < $("#cancer").val().length; i++) {
+                cancer = $("#cancer").val()[i];
+                console.log(cancer);
+                if (cancer in availableDatasets) {
+                    console.log(availableDatasets[cancer]);
+                    for (var j = 0; j < availableDatasets[cancer].length; j++) {
+                        dataset = availableDatasets[cancer][j];
+                        if (datasets.indexOf(dataset) < 0) {
+                            datasets.push(dataset);
+
+                            dataset_checkbox = document.createElement("div");
+                            dataset_checkbox.classList.add("form-check", "col-lg-4");
+                            dataset_input = document.createElement("input");
+                            dataset_input.className = "form-check-input";
+                            dataset_input.setAttribute("type", "checkbox");
+                            dataset_input.setAttribute("name", "dataset_checkbox_list");
+                            dataset_input.setAttribute("checked", "checked");
+                            dataset_input.setAttribute("value", dataset);
+                            dataset_checkbox.appendChild(dataset_input);
+
+                            dataset_label = document.createElement("label");
+                            dataset_label.className = "form-check-label";
+                            dataset_label.innerHTML = dataset;
+                            dataset_checkbox.appendChild(dataset_label);
+                            console.log(dataset_checkbox);
+                            document.getElementById("datasets-row").appendChild(dataset_checkbox);
+                        }
+                    }
+                }
+            }
+        } else {
+            for (cancer in availableDatasets) {
+                for (var j = 0; j < availableDatasets[cancer].length; j++) {
+                    dataset = availableDatasets[cancer][j];
+                    if (datasets.indexOf(dataset) < 0) {
+                        datasets.push(dataset);
+
+                        dataset_checkbox = document.createElement("div");
+                        dataset_checkbox.classList.add("form-check", "col-lg-4");
+                        dataset_input = document.createElement("input");
+                        dataset_input.className = "form-check-input";
+                        dataset_input.setAttribute("type", "checkbox");
+                        dataset_input.setAttribute("name", "dataset_checkbox_list");
+                        dataset_input.setAttribute("checked", "checked");
+                        dataset_input.setAttribute("value", dataset);
+                        dataset_checkbox.appendChild(dataset_input);
+
+                        dataset_label = document.createElement("label");
+                        dataset_label.className = "form-check-label";
+                        dataset_label.innerHTML = dataset;
+                        dataset_checkbox.appendChild(dataset_label);
+                        console.log(dataset_checkbox);
+                        document.getElementById("datasets-row").appendChild(dataset_checkbox);
+                    }
+                }
+            }
+        }
+    });
+    // dataset_checkbox = document.createElement("div");
+    // dataset_checkbox.classList.add("form-check", "col-lg-4");
+    // dataset_input = document.createElement("input");
+    // dataset_input.className = "form-check-input";
+    // dataset_input.setAttribute("type", "checkbox");
+    // dataset_input.setAttribute("name", "dataset_checkbox_list");
+    // dataset_input.setAttribute("checked", "checked");
+    // dataset_input.setAttribute("value", dataset);
+    // dataset_checkbox.appendChild(dataset_input);
+
+    // dataset_label = document.createElement("label");
+    // dataset_label.className = "form-check-label";
+    // dataset_label.innerHTML = dataset;
+    // dataset_checkbox.appendChild(dataset_label);
+    // document.getElementById("datasets-row").appendChild(dataset_checkbox);
+
+
+    // function CheckGene() {
+    //     var gene_search = $("#genesearch").val();
+    //     if (availableTags.indexOf(gene_search) > -1) {
+    //         gene_valid = true;
+    //         return false;
+    //     } else {
+    //         alert("Please input valid gene symbol!")
+    //         gene_valid = false;
+    //         return false;
+    //     }
+    // };
+
+    // $(document).ready(function() {
+    // $("#genesearch").autocomplete({
+    //     source: availableTags,
+    //     minLength: 3
+    // });
+
+    $(function() {
+        $("#cancer").selectize({
+            plugins: ['remove_button'],
+            persist: false,
+            maxOptions: 100,
+            create: false,
+        });
+        $("#annotation").selectize();
+        $("#genesearch").selectize({
+            valueField: 'gene',
+            labelField: 'gene',
+            searchField: ['gene'],
+            persist: false,
+            maxOptions: 50,
+            options: availableOptions,
+            delimiter: ',',
+            create: false,
+            maxItems: 1
+        });
+    });
+
+    // function GeneAutocomplete(availableOptions) {
+    //     $("#genesearch").selectize({
+    //         valueField: 'gene',
+    //         labelField: 'gene',
+    //         searchField: ['gene'],
+    //         persist: false,
+    //         maxOptions: 50,
+    //         options: availableOptions,
+    //         delimiter: ',',
+    //         create: false,
+    //         maxItems: 1
+    //     });
+    // }
+
+    // GeneAutocomplete(availableOptions);
+
+    function GeneformSubmit() {
+        $("#button-gene").click(function() {
+            if ($("#genesearch").val() == "") {
+                alert("Please input valid gene symbol!")
+            } else {
+                $('#loading').show();
+                $("#violin-link").html('');
+                $("#generesult_violin").hide();
+                var dataset_list = [];
+                $("input[name='dataset_checkbox_list']:checked").each(function(i) {
+                    dataset_list.push($(this).val());
+                })
+                $.ajax({
+                    url: "/search-gene/",
+                    data: {
+                        'genesearch': $("#genesearch").val(),
+                        'annotation': $("#annotation").val(),
+                        'cancer': $("#cancer").val(),
+                        'dataset': dataset_list,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'plottype': 'heatmap'
+                    },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(res) {
+                        console.log('res');
+                        var selected_gene = res.selected_gene;
+                        console.log(selected_gene);
+                        $('#loading').hide();
+                        var heatmap_file = res.heatmap_file;
+                        console.log(heatmap_file);
+                        PlotHeatmap(heatmap_file, selected_gene, "heatmap");
+                        $("#generesult_heatmap").show();
+                        $("#generesult_violin").show();
+                        $("#violin-link").innerHTML = ""
+                        $("#loading2").show();
+                        // availableOptions = [];
+                        // for (var i = 0; i < res.available_genes.length; i++) {
+                        //     availableOptions.push({ gene: res.available_genes[i] })
+                        // }
+                        // GeneAutocomplete(availableOptions);
+                        // console.log(res.violin_svg);
+                        // $("#violin").html(res.violin_svg);
+                        // $("#generesult_violin").show();
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        $('#loading').hide();
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+                $.ajax({
+                    url: "/search-gene/",
+                    data: {
+                        'genesearch': $("#genesearch").val(),
+                        'annotation': $("#annotation").val(),
+                        'cancer': $("#cancer").val(),
+                        'dataset': dataset_list,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'plottype': 'violin'
+                    },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(res) {
+                        console.log('res');
+                        var selected_gene = res.selected_gene;
+                        console.log(selected_gene);
+                        // var heatmap_file = res.heatmap_file;
+                        // console.log(heatmap_file);
+                        // PlotHeatmap(heatmap_file, selected_gene, "heatmap");
+                        // $("#generesult_heatmap").show();
+                        $("#loading2").hide();
+                        $("#violin-link").html(res.violin_svg);
+                        $("#violin-link").attr("href", res.violin_pdf)
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        $("#loading2").hide();
+                        alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                    }
+                });
+            }
+        });
+    }
+    GeneformSubmit();
+
+    var selected_gene = "{{ selected_gene }}";
+    if (selected_gene != "") {
+        document.getElementById('genesearch').value = selected_gene;
+        var selected_cancer = "{{ selected_cancer }}";
+        $(" #cancer option[value='" + selected_cancer + "']").each(function() {
+            $(this).attr("selected", "selected");
+        });
+        document.getElementById('button-gene').click()
+    }
+
+    // $("#geneform").submit(function() {
+    //     if (gene_valid) {
+    //         $('#loading').show();
+    //         $("#violin").html('');
+    //         $("#generesult_violin").hide();
+    //         $.ajax({
+    //             data: {
+    //                 'genesearch': $("#genesearch").val(),
+    //                 'annotation': $("#annotation").val(),
+    //                 'cancer': $("#cancer").val(),
+    //                 'csrfmiddlewaretoken': '{{ csrf_token }}',
+    //                 'plottype': 'heatmap'
+    //             },
+    //             type: 'POST',
+    //             dataType: 'json',
+    //             success: function(res) {
+    //                 console.log('res');
+    //                 var selected_gene = res.selected_gene;
+    //                 console.log(selected_gene);
+    //                 $('#loading').hide();
+    //                 var heatmap_file = res.heatmap_file;
+    //                 console.log(heatmap_file);
+    //                 PlotHeatmap(heatmap_file, selected_gene, "heatmap");
+    //                 $("#generesult_heatmap").show();
+    //                 $("#generesult_violin").show();
+    //                 $("#violin").innerHTML = ""
+    //                 $("#loading2").show();
+    //                 // console.log(res.violin_svg);
+    //                 // $("#violin").html(res.violin_svg);
+    //                 // $("#generesult_violin").show();
+    //             },
+    //             error: function(XMLHttpRequest, textStatus, errorThrown) {
+    //                 alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+    //             }
+    //         });
+    //         $.ajax({
+    //             data: {
+    //                 'genesearch': $("#genesearch").val(),
+    //                 'annotation': $("#annotation").val(),
+    //                 'cancer': $("#cancer").val(),
+    //                 'csrfmiddlewaretoken': '{{ csrf_token }}',
+    //                 'plottype': 'violin'
+    //             },
+    //             type: 'POST',
+    //             dataType: 'json',
+    //             success: function(res) {
+    //                 console.log('res');
+    //                 var selected_gene = res.selected_gene;
+    //                 console.log(selected_gene);
+    //                 // var heatmap_file = res.heatmap_file;
+    //                 // console.log(heatmap_file);
+    //                 // PlotHeatmap(heatmap_file, selected_gene, "heatmap");
+    //                 // $("#generesult_heatmap").show();
+    //                 console.log(res.violin_svg);
+    //                 $("#loading2").hide();
+    //                 $("#violin").html(res.violin_svg);
+    //             },
+    //             error: function(XMLHttpRequest, textStatus, errorThrown) {
+    //                 $("#loading2").hide();
+    //                 alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+    //             }
+    //         });
+    //     }
+    // });
+
+
+
+
+    // if (selected_gene == "") {
+    //     $("#generesult_heatmap").hide();
+    // } else {
+    //     PlotHeatmap("{{ heatmap_file }}", selected_gene, "heatmap");
+    //     $("#generesult_heatmap").show();
+    // }
+
+    // PlotHeatmap("/static/data/CD34_dataset.json", "CD34", "heatmap");
+    // });
+    </script>
+</body>
+
+</html>

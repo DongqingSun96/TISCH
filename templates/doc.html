@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <title>TISCH</title>
+    <style>
+      p
+      {
+        font-family: Avenir,Arial,sans-serif;
+      }
+      h2
+      {
+        font-family: Avenir-black,Arial,sans-serif;
+      }
+      h3
+      {
+        font-family: Avenir-black,Arial,sans-serif;
+        font-size: 1.6rem
+      }
+      h4
+      {
+        font-family: Avenir-black,Arial,sans-serif;
+        font-size: 1.3rem
+      }
+      table
+      {
+        font-family: Avenir,Arial,sans-serif;
+      }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark" style="background-color:#252746">
+        <div class="container">
+            <!-- <a href="/" class="navbar-brand">TISCH</a> -->
+            <a href="../home">
+                <img src="/static/image/TISCH.png" width="140">
+            </a>
+            <div id="navbar-nav-scroll">
+                <ul class="navbar-nav bd-navbar-nav flex-row">
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../home" style="padding-left: 1rem; padding-right: 1rem">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../gallery" style="padding-left: 1rem; padding-right: 1rem">Dataset</a>
+                    </li>
+                    <!--                     <li class="nav-item">
+                        <a class="nav-link nav-a" href="../search-cancer" style="padding-left: 1rem; padding-right: 1rem">Dataset</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../search-gene" style="padding-left: 1rem; padding-right: 1rem">Gene</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link nav-a" href="../documentation" style="padding-left: 1rem; padding-right: 1rem">Documentation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="row flex-xl-nowrap" style="margin-top: 4.7rem; margin-left: 0; margin-right: 0">
+          <nav class="col-md-3 d-md-block bg-light sidebar collapse" style="position: fixed; top: 0; bottom: 0; left: 0; padding-top: 6rem; padding-bottom: 4rem; width: 310px; overflow-y: scroll">
+            <div class="pt-4 pl-3 pr-2 pb-5" style="font-size: 1rem;">
+              <ul class="nav flex-column" style="overflow-y: auto" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#introduction-tab" id="introduction-link" role="tab" data-toggle="tab">Introduction</a>
+                    <ul>
+                      <li class="nav-item">
+                        <a class="nav-link pt-0 link-inside-tab" href="#data-collection" id="data-collection-link" data-target="#data-collection" style="font-size: 1.1rem; font-family: Avenir">Data collection and processing</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link pt-0 link-inside-tab" href="#function" id="function-link" style="font-size: 1.1rem; font-family: Avenir">Function of TISCH</a>
+                      </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#usage-tab" id="usage-link" role="tab" data-toggle="tab">Usage</a>
+                    <ul>
+                      <li class="nav-item">
+                        <a class="nav-link pt-0 link-inside-tab" href="#usage-cancer" id="usage-cancer-link" style="font-size: 1.1rem; font-family: Avenir">Starting from a cancer type</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link pt-0 link-inside-tab" href="#usage-gene" id="usage-gene-link" style="font-size: 1.1rem; font-family: Avenir">Starting with a gene</a>
+                      </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#abbreviation-tab" id="abbreviation-link" role="tab" data-toggle="tab">Abbreviations</a>
+                    <ul>
+                      <li class="nav-item">
+                        <a class="nav-link pt-0 link-inside-tab" href="#abbr-cancer" id="abbr-cancer-link" style="font-size: 1.1rem; font-family: Avenir">Cancer type</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link pt-0 link-inside-tab" href="#abbr-celltype" id="abbr-celltype-link" style="font-size: 1.1rem; font-family: Avenir">Cell type</a>
+                      </li>
+                    </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="introduction-tab" role="tabpanel">
+            <div class="row" style="margin-right: 0; margin-left: 0">
+              <div class="col-lg-9 offset-lg-3" style="margin-top: 3rem; margin-bottom: 6rem">
+                <div class="container" style="padding-right: 5rem; padding-left: 3rem; font-size: 1.1rem">
+                  <div class="d-flex flex-wrap flex-md-nowrap pt-3 pb-2 mb-3 border-bottom">
+                      <h2>Introduction</h2>
+                  </div>
+                  <p>
+                    Tumor Immune Single-cell Hub (TISCH) is a scRNA-seq database, which aims to deconvolve immune system heterogeneity in tumor at single-cell resolution. 
+                  </p>
+                  <h3 id="data-collection">Data collection and processing</h3>
+                  <p>
+                    We collected tumor-related scRNA-seq studies from human and mouse. Besides datasets of treatment-naive patients, those with samples treated are also included. For each collected dataset, a uniform analysis pipeline -- MAESTRO was adopted to perform quality control, clustering and cell-type annotation (Fig. 1). After the streamlined processing, we curated the cell-type annotation of all datasets at three levels: malignancy, major-lineage and minor-lineage (Fig. 2). The curation makes the gene expression in different cell types comparable across all datasets.
+                  </p>
+                  <div class="text-center" style="margin-top: -1rem; margin-bottom: 2rem">
+                    <img src="/static/image/TISCH_workflow.png" width="100%" style="margin-bottom: -2rem">
+                    <figcaption class="figure-caption text-center">Fig. 1 Workflow of TISCH</figcaption>
+                  </div>
+                  <div class="text-center" style="margin-bottom: 3rem">
+                    <img src="/static/image/Celltype_annotation.png" width="85%" style="margin-bottom: 2rem">
+                    <figcaption class="figure-caption text-center">Fig. 2 Hierarchical structure of cell-type annotation </figcaption>
+                  </div>
+                  <p>
+                    <b>Currently, after quality control, a total of 1,734,761 cells from 77 datasets across 28 cancer types are retained in TISCH (Fig. 3).</b>
+                  </p>
+                  <div class="text-center" style="margin-top: 2rem; margin-bottom: 3rem">
+                    <img src="/static/image/TISCH_data_summary.png" width="90%" style="margin-bottom: 1rem">
+                    <figcaption class="figure-caption text-center">Fig. 3 Summary of data in TISCH</figcaption>
+                  </div>
+                  <h3 id="function">Function of TISCH</h3>
+                  <p>
+                    Based on the unified data processing, TISCH presents the analysis results in a user-friendly interface for public accessing, which allows researchers to gain a quick insight into the expression of genes of interest at the single-cell level (Fig. 1).
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="usage-tab" role="tabpanel">
+            <div class="row" style="margin-right: 0; margin-left: 0">
+              <div class="col-lg-9 offset-lg-3" style="margin-top: 3rem; margin-bottom: 6rem">
+                <div class="container" style="padding-right: 5rem; padding-left: 3rem; font-size: 1.1rem">
+                  <div class="d-flex flex-wrap flex-md-nowrap pt-3 pb-2 mb-3 border-bottom">
+                      <h2>Usage</h2>
+                  </div>
+                  <h3 id="usage-cancer">Starting from a cancer type</h3>
+                  <p>
+                    If users are interested in one cancer type, they can click the tissue card in home page to query the related datasets.
+                  </p>
+                  <div class="text-center" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <img src="/static/image/document/home_cancer.png" width="85%">
+                  </div>
+                  <p>
+                    In the dataset page, users can further filter the query results according to other criteria. For example, users may be interested BRCA data from human patients without treatment.
+                  </p>
+                  <div class="text-center" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <img src="/static/image/document/dataset_filter.png" width="85%">
+                  </div>
+                  <p>
+                    The datasets satisfying the conditions will be displayed as below. 
+                  </p>
+                  <div class="text-center" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <img src="/static/image/document/dataset_return.png" width="85%">
+                  </div>
+                  <h4>Multiple-dataset comparison</h4>
+                  <p>
+                    Users can select multiple datasets and click the Submit button to take a quick look at the selected datasets at the same time. Then users  can input genes of interest to compare the gene expression across datasets. Besides, users can explore the expression pattern of a gene signature by uploading a line-separated gene list file. The level of cell-type annotation could be switched.
+                  </p>
+                  <div class="text-center" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <img src="/static/image/document/dataset_multiple.png" width="85%">
+                  </div>
+                  <p>
+                    If users are interested one specific dataset, users can click the left annotated UMAP plot to achieve a comprehensive understanding of it. The page will be re-directed to the single-dataset page.
+                  </p>
+                  <h4 id="">Single-dataset exploration</h4>
+                  <p>
+                    In the overview tab of single-dataset page, the clustering and annotation result are displayed on the top. And the top differentially expressed genes for each cluster are shown below. As in the multiple-dataset page, the annotation of cells can be chosen from three levels of cell-type annotation as well as meta information from original study (if available).
+                  </p>
+                  <div class="text-center" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <img src="/static/image/document/dataset_single.png" width="85%">
+                  </div>
+                  <p>
+                    In the gene tab, users can search genes of interest. Besides the UMAP plots, a violin plot will be returned to show the gene expression in different cell types. As in the multiple-dataset page, users can explore the expresion pattern of a gene signature by uploading a line-separated gene list file.
+                  </p>
+                  <div class="text-center" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <img src="/static/image/document/dataset_gene.png" width="85%">
+                  </div>
+                  <p>
+                    For the violin plot, users can choose to group cells by tissue origin or by other available meta information.
+                  </p>
+                  <div class="text-center" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <img src="/static/image/document/dataset_gene_violin.png" width="85%">
+                  </div>
+                  <p>
+                    TISCH also provides the gene set enrichment analysis (GSEA) results for each dataset. In the GSEA tab, the KEGG pathway and HALLMARK pathway analysis are performed on the up/down-regulated genes, respectively.
+                  </p>
+                  <div class="text-center" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <img src="/static/image/document/dataset_gsea.png" width="85%">
+                  </div>
+                  <p>
+                    Users can download the gene expresion matrix avaraged by cell types and differential gene table for further exploration.
+                  </p>
+                  <h3 id="usage-gene">Starting with a gene of interest</h3>
+                  <p>
+                    If users are interested in one gene, they can input the gene in the search bar and click the Explore button, then the page will be re-directed to gene page. 
+                  </p>
+                  <div class="text-center" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <img src="/static/image/document/home_gene.png" width="85%">
+                  </div>
+                  <p>
+                    By default, the expression of the given gene will be visualized using all datasets with the gene expressed. Users can select the cancer types of interest to further filter the datasets. 
+                  </p>
+                  <div class="text-center" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <img src="/static/image/document/gene_search.png" width="85%">
+                  </div>
+                  <p>
+                    After clicking the Search button, a heatmap and a violin plot will be displayed to reflect the gene expression in different cell types across all the selected datasets.
+                  </p>
+                  <div class="text-center" style="margin-top: 2rem; margin-bottom: 2rem">
+                    <img src="/static/image/document/gene_result.png" width="85%">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="abbreviation-tab" role="tabpanel">
+            <div class="row" style="margin-right: 0; margin-left: 0">
+              <div class="col-lg-9 offset-lg-3" style="margin-top: 3rem; margin-bottom: 6rem">
+                <div class="container" style="padding-right: 5rem; padding-left: 3rem; font-size: 1.1rem">
+                  <div class="d-flex flex-wrap flex-md-nowrap pt-3 pb-2 mb-3 border-bottom">
+                      <h2><b>Abbreviations</b></h2>
+                  </div>
+                  <h3 id="abbr-cancer">Cancer type</h3>
+                  <div style="margin-top: 1.2rem; margin-bottom: 2rem">
+                    <table class="table table-striped table-bordered dataTable justify-content-center" id="cancer_table">
+                      <thead>
+                        <tr>
+                          <th>Abbreviation</th>
+                          <th>Cancer type</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>AEL</td>
+                          <td>Acute Erythroid Leukemia</td>
+                        </tr>
+                        <tr>
+                          <td>ALL</td>
+                          <td>Acute Lymphoblastic Leukemia</td>
+                        </tr>
+                        <tr>
+                          <td>AML</td>
+                          <td>Acute Myeloid Leukemia</td>
+                        </tr>
+                        <tr>
+                          <td>BCC</td>
+                          <td>Basal Cell Carcinoma</td>
+                        </tr>
+                        <tr>
+                          <td>BLCA</td>
+                          <td>Bladder Urothelial Carcinoma</td>
+                        </tr>
+                        <tr>
+                          <td>BRCA</td>
+                          <td>Breast Invasive Carcinoma</td>
+                        </tr>
+                        <tr>
+                          <td>CHOL</td>
+                          <td>Cholangiocarcinoma</td>
+                        </tr>
+                        <tr>
+                          <td>COAD</td>
+                          <td>Colon Adenocarcinoma</td>
+                        </tr>
+                        <tr>
+                          <td>CLL</td>
+                          <td>Chronic Lymphocytic Leukemia</td>
+                        </tr>
+                        <tr>
+                          <td>GBM</td>
+                          <td>Glioblastoma Multiforme</td>
+                        </tr>
+                        <tr>
+                          <td>HNSCC</td>
+                          <td>Head and Neck Squamous Cell Carcinoma</td>
+                        </tr>
+                        <tr>
+                          <td>KIRC</td>
+                          <td>Kidney Renal Clear Cell Carcinoma</td>
+                        </tr>
+                        <tr>
+                          <td>LIHC</td>
+                          <td>Liver Hepatocellular Carcinoma</td>
+                        </tr>
+                        <tr>
+                          <td>MB</td>
+                          <td>Medulloblastoma</td>
+                        </tr>
+                        <tr>
+                          <td>MCC</td>
+                          <td>Merkel cell carcinoma</td>
+                        </tr>
+                        <tr>
+                          <td>MM</td>
+                          <td>Multiple Myeloma</td>
+                        </tr>
+                        <tr>
+                          <td>NET</td>
+                          <td>Neuroendocrine Tumor</td>
+                        </tr>
+                        <tr>
+                          <td>NHL</td>
+                          <td>Non-Hodgkin Lymphoma</td>
+                        </tr>
+                        <tr>
+                          <td>NSCLC</td>
+                          <td>Non-small Cell Lung Cancer</td>
+                        </tr>
+                        <tr>
+                          <td>OV</td>
+                          <td>Ovarian Serous Cystadenocarcinoma</td>
+                        </tr>
+                        <tr>
+                          <td>PAAD</td>
+                          <td>Pancreatic Adenocarcinoma</td>
+                        </tr>
+                        <tr>
+                          <td>READ</td>
+                          <td>Rectum Adenocarcinoma</td>
+                        </tr>
+                        <tr>
+                          <td>SARC</td>
+                          <td>Sarcoma</td>
+                        </tr>
+                        <tr>
+                          <td>SCC</td>
+                          <td>Squamous Cell Carcinoma</td>
+                        </tr>
+                        <tr>
+                          <td>SKCM</td>
+                          <td>Skin Cutaneous Melanoma</td>
+                        </tr>
+                        <tr>
+                          <td>STAD</td>
+                          <td>Stomach Adenocarcinoma</td>
+                        </tr>
+                        <tr>
+                          <td>UCEC</td>
+                          <td>Uterine Corpus Endometrial Carcinoma</td>
+                        </tr>
+                        <tr>
+                          <td>UVM</td>
+                          <td>Uveal Melanoma</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <h3 id="abbr-celltype">Cell type</h3>
+                  <div style="margin-top: 1.2rem">
+                    <table class="table table-striped table-bordered dataTable justify-content-center" id="celltype_table">
+                      <thead>
+                        <tr>
+                          <th>Abbreviation</th>
+                          <th>Cell type</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>AC-like Malignant</td>
+                          <td>Astrocyte-like Malignant Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Acinar</td>
+                          <td>Acinar Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Alveolar</td>
+                          <td>Alveolar Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Astrocyte</td>
+                          <td>Astrocytes</td>
+                        </tr>
+                        <tr>
+                          <td>B</td>
+                          <td>B Cells</td>
+                        </tr>
+                        <tr>
+                          <td>CD4Tconv</td>
+                          <td>Conventional CD4 T Cells</td>
+                        </tr>
+                        <tr>
+                          <td>CD8T</td>
+                          <td>CD8 T Cells</td>
+                        </tr>
+                        <tr>
+                          <td>CD8Tex</td>
+                          <td>Exhausted CD8 T Cells</td>
+                        </tr>
+                        <tr>
+                          <td>DC</td>
+                          <td>Dendritic Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Ductal</td>
+                          <td>Ductal Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Endocrine</td>
+                          <td>Endocrine Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Endothelial</td>
+                          <td>Endothelial Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Epithelial</td>
+                          <td>Epithelial Cells</td>
+                        </tr>
+                        <tr>
+                          <td>EryPro</td>
+                          <td>Erythroid Progenitor Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Erythrocytes</td>
+                          <td>Erythrocytes</td>
+                        </tr>
+                        <tr>
+                          <td>Fibroblasts</td>
+                          <td>Fibroblasts</td>
+                        </tr>
+                        <tr>
+                          <td>Gland mucous</td>
+                          <td>Gland Mucous Cells</td>
+                        </tr>
+                        <tr>
+                          <td>GMP</td>
+                          <td>Granulocyte-macrophage Progenitor Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Hepatic progenitor</td>
+                          <td>Hepatic progenitor Cells</td>
+                        </tr>
+                        <tr>
+                          <td>HSC</td>
+                          <td>Hematopoietic Stem Cells</td>
+                        </tr>
+                        <tr>
+                          <td>ILC</td>
+                          <td>Innate Lymphoid Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Keratinocytes</td>
+                          <td>Keratinocytes</td>
+                        </tr>
+                        <tr>
+                          <td>Malignant</td>
+                          <td>Malignant Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Mast</td>
+                          <td>Mast Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Melanocytes</td>
+                          <td>Melanocytes</td>
+                        </tr>
+                        <tr>
+                          <td>Microglia</td>
+                          <td>Microglia Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Mono/Macro</td>
+                          <td>Monocytes or Macrophages</td>
+                        </tr>
+                        <tr>
+                          <td>Myfibroblasts</td>
+                          <td>Myfibroblasts</td>
+                        </tr>
+                        <tr>
+                          <td>Myocyte</td>
+                          <td>Myocytes</td>
+                        </tr>
+                        <tr>
+                          <td>Myofibroblasts</td>
+                          <td>Myofibroblasts</td>
+                        </tr>
+                        <tr>
+                          <td>NB-like Malignant</td>
+                          <td>Neuroblast-like Malignant Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Neuron</td>
+                          <td>Neurons</td>
+                        </tr>
+                        <tr>
+                          <td>Neutrophils</td>
+                          <td>Neutrophils</td>
+                        </tr>
+                        <tr>
+                          <td>NK</td>
+                          <td>Natural Killer Cells</td>
+                        </tr>
+                        <tr>
+                          <td>OC-like Malignant</td>
+                          <td>Oligodendrocyte-like Malignant Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Oligodendrocyte</td>
+                          <td>Oligodendrocytes</td>
+                        </tr>
+                        <tr>
+                          <td>OPC</td>
+                          <td>Oligodendrocyte Precursor Cells</td>
+                        </tr>
+                        <tr>
+                          <td>OPC-like Malignant</td>
+                          <td>Oligodendrocyte-precursor-cell-like Malignant Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Others</td>
+                          <td>Other Cells</td>
+                        </tr>
+                        <tr>
+                          <td>pDC</td>
+                          <td>Plasmacytoid Dendritic Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Pericytes</td>
+                          <td>Pericytes</td>
+                        </tr>
+                        <tr>
+                          <td>Pit mucous</td>
+                          <td>Pit Mucous Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Plasma</td>
+                          <td>Plasma Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Progenitor</td>
+                          <td>Progenitor Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Promonocyte</td>
+                          <td>Promonocytes</td>
+                        </tr>
+                        <tr>
+                          <td>Secretory glandular</td>
+                          <td>Secretory Glandular Cells</td>
+                        </tr>
+                        <tr>
+                          <td>SMC</td>
+                          <td>Smooth Muscle Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Stellate</td>
+                          <td>Stellate Cells</td>
+                        </tr>
+                        <tr>
+                          <td>TMKI67</td>
+                          <td>Proliferating T Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Treg</td>
+                          <td>Regulatory T Cells</td>
+                        </tr>
+                        <tr>
+                          <td>Vascular</td>
+                          <td>Vascular Cells</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </main>
+    <nav class="navbar navbar-expand-sm fixed-bottom navbar-dark" style="background-color: #252746">
+        <div class="container">
+            <!--         <a href="http://liulab.dfci.harvard.edu/" class="navbar-brand">
+          <img src="http://liulab.dfci.harvard.edu/WEBSITE/images/Global/logofinal.png" height="46" width="58">
+        </a> -->
+            <span class="navbar-text" style="font-size: 13px">Copyright @2020 TISCH project</span>
+        </div>
+    </nav>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+      $('#cancer_table').DataTable({
+        "lengthMenu": [ [-1, 10, 25, 50], ["All", 10, 25, 50] ]
+      });
+      $('#celltype_table').DataTable();
+
+      $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var tab_link = e.target.getAttribute("id");
+        var tab_href = e.target.getAttribute("href");
+        $('html, body').animate({scrollTop:0}, 10); 
+        $("#" + tab_link).tab("show");
+        // console.log($(tab_href).offset().top);
+
+      })
+
+      $('.link-inside-tab').on('click', function (e) {
+        e.preventDefault();
+        var cur_link = $(this).attr("href")
+        console.log(cur_link);
+        var tab_link = $(this).parents()[2].children[0].getAttribute("id");
+        var tab_href = $(this).parents()[2].children[0].getAttribute("href");
+        console.log(tab_href);
+
+
+        // $(tab_href).offset({top:75.1875,left:0});
+        // $('html, body').animate({scrollTop:75.1875}, 'fast'); 
+        // $(tab_href).offset().top = 75.2;
+        $("#" + tab_link).tab("show");
+
+        // console.log($(tab_href).offset().top);
+        // console.log($($(this).attr("href")).offset().top);
+        setTimeout(function(){
+          console.log(cur_link);
+          $('html,body').animate({scrollTop:$(cur_link).offset().top-90}, 10);
+        }, 200);
+        return false;
+        // $('html,body').animate({scrollTop:$('#'+id).offset().top}, 800);
+      })
+    </script>
+</body>
+
+</html>

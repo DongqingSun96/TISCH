@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/selectize.bootstrap4.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <!-- <link rel="stylesheet" type="text/css" href="https://www.supremo.co.uk/typeterms/styles.min.css"> -->
+    <!--     <link rel="stylesheet" type="text/css" href="http://cistrome.org/~dsun/MAESTRO/css/mFilter.css">
+ -->
+    <!--     <link rel="stylesheet" type="text/css" href="https://cdn.mfilter.tk/css/mfilter.min.css">
+ -->
+    <title>TISCH</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark" style="background-color:#252746">
+        <div class="container">
+            <!-- <a href="/" class="navbar-brand">TISCH</a> -->
+            <a href="../home">
+                <img src="/static/image/TISCH.png" width="140">
+            </a>
+            <div id="navbar-nav-scroll">
+                <ul class="navbar-nav bd-navbar-nav flex-row">
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../home" style="padding-left: 1rem; padding-right: 1rem">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link nav-a" href="../gallery" style="padding-left: 1rem; padding-right: 1rem">Dataset</a>
+                    </li>
+                    <!--                     <li class="nav-item">
+                        <a class="nav-link nav-a" href="../search-cancer" style="padding-left: 1rem; padding-right: 1rem">Dataset</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../search-gene" style="padding-left: 1rem; padding-right: 1rem">Gene</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../documentation" style="padding-left: 1rem; padding-right: 1rem">Documentation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="row body2" style="margin-top: 4.7rem; margin-right: 0; margin-left: 0">
+        <div class="col-lg-12 px-0">
+            <div class="jumbotron jumbotron-fluid shadow-sm">
+                <div class="container">
+                    <h1 style="font-family: Avenir-black,Arial,sans-serif">Dataset Browser</h1>
+                    <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif">Filter datasets by cancer types or other criteria. Users can compare multiple datasets by selecting and submitting them. Alternatively, users can dive into one specified dataset by clicking the UMAP plot or the dataset ID. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2" style="margin-right: 0; margin-left: 0;">
+        <div class="col-lg-12">
+            <div class="container">
+                <form method="get" id="dataset_form">
+                    <div class="form-row align-items-start">
+                        <div class="col-lg-5 form-group" style="margin-bottom: 0.2rem">
+                            <label class="col-form-label" style="padding-left: 0px; font-size: 1.1rem">Cancer type</label>
+                            <select class="form-control rounded-left" style="font-size: 0.9rem; border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; " name="cancer" id="cancer" multiple="multiple">
+                                <!-- <option value="All">All cancers</option> -->
+                                <option value='' disabled selected style='display:none;'></option>
+                                <option value="AEL">AEL (Acute Erythroid Leukemia)</option>
+                                <option value="ALL">ALL (Acute Lymphoblastic Leukemia)</option>
+                                <option value="AML">AML (Acute Myeloid Leukemia)</option>
+                                <option value="BCC">BCC (Basal Cell Carcinoma)</option>
+                                <option value="BLCA">BLCA (Bladder Urothelial Carcinoma)</option>
+                                <option value="BRCA">BRCA (Breast Invasive Carcinoma)</option>
+                                <option value="CHOL">CHOL (Cholangiocarcinoma)</option>
+                                <option value="COAD">COAD (Colon Adenocarcinoma)</option>
+                                <option value="CLL">CLL (Chronic Lymphocytic Leukemia)</option>
+                                <option value="GBM">GBM (Glioblastoma Multiforme)</option>
+                                <option value="HNSC">HNSCC (Head and Neck Squamous Cell Carcinoma)</option>
+                                <option value="KIRC">KIRC (Kidney Renal Clear Cell Carcinoma)</option>
+                                <option value="LIHC">LIHC (Liver Hepatocellular Carcinoma)</option>
+                                <!--option value="LUAD">LUAD (Lung Adenocarcinoma)</option-->
+                                
+                                <option value="MB">MB (Medulloblastoma)</option>
+                                <option value="MCC">MCC (Merkel cell carcinoma)</option>
+                                <option value="MM">MM (Multiple Myeloma)</option>
+                                <option value="NET">NET (Neuroendocrine Tumor)</option>
+                                <option value="NHL">NHL (Non-Hodgkin Lymphoma)</option>
+                                <option value="NSCLC">NSCLC (Non-small Cell Lung Cancer)</option>
+                                <option value="OV">OV (Ovarian Serous Cystadenocarcinoma)</option>
+                                <option value="PAAD">PAAD (Pancreatic Adenocarcinoma)</option>
+                                <option value="PBMC">PBMC (Peripheral Blood Mononuclear Cell)</option>
+                                <!--option value="PRAD">PRAD (Prostate Adenocarcinoma)</option-->
+                                <option value="READ">READ (Rectum Adenocarcinoma)</option>
+                                <option value="SARC">SARC (Sarcoma)</option>
+                                <option value="SCC">SCC (Squamous Cell Carcinoma)</option>
+                                <option value="SKCM">SKCM (Skin Cutaneous Melanoma)</option>
+                                <option value="STAD">STAD (Stomach Adenocarcinoma)</option>
+                                <option value="UCEC">UCEC (Uterine Corpus Endometrial Carcinoma)</option>
+                                <option value="UVM">UVM (Uveal Melanoma)</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-5 form-group" style="margin-bottom: 0.2rem">
+                            <label class="col-form-label" style="padding-left: 0px; font-size: 1.1rem">Cell type included in datasets</label>
+                            <select class="form-control" name="celltype" id="celltype" multiple="multiple">
+                                <option value='' disabled selected style='display:none;'></option>
+                                <option value="B">B (B cells)</option>
+                                <option value="CD4Tconv">CD4Tconv (Conventional CD4 T cells)</option>
+                                <option value="CD8T">CD8T (CD8 T cells)</option>
+                                <option value="CD8Tex">CD8Tex (Exhausted CD8 T cells)</option>
+                                <option value="DC">DC (Dendritic cells)</option>
+                                <option value="Endothelial">Endothelial (Endothelial cells)</option>
+                                <option value="Fibroblasts">Fibroblasts</option>
+                                <option value="ILC">ILC (Innate lymphoid cells)</option>
+                                <option value="Malignant">Malignant (Malignant cells)</option>
+                                <option value="Mast">Mast (Mast cells)</option>
+                                <option value="Mono/Macro">Mono/Macro (Monocytes or macrophages)</option>
+                                <option value="Myofibroblasts">Myofibroblasts</option>
+                                <option value="NK">NK (Natural killer cells)</option>
+                                <option value="Neutrophils">Neutrophils</option>
+                                <option value="pDC">pDC (Plasmacytoid dendritic cells)</option>
+                                <option value="Plasma">Plasma (Plasma cells)</option>
+                                <option value="TMKI67">TMKI67 (Proliferating T cells)</option>
+                                <option value="Treg">Treg (Regulatory T cells)</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 form-group" style="margin-bottom: 0.2rem">
+                            <label class="col-form-label" style="padding-left: 0px; font-size: 1.1rem">Species</label>
+                            <select class="form-control" name="species" id="species">
+                                <option value='' disabled selected style='display:none;'></option>
+                                <option value="Human">Human</option>
+                                <option value="Mouse">Mouse</option>
+                            </select>
+                        </div>
+                        <!--                             <div class="col-lg-1 form-group">
+                                <button class="btn btn-tisch align-items-center" type="submit" id="button-addon2" style="padding-left: 0.65rem; padding-right: 0.65rem;">
+                                    <svg t="1586881905095" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2266" width="20" height="20" style="margin-top: -0.3rem">
+                                        <path d="M1005.26751 914.388545 696.84534 605.966377C741.636939 543.258136 767.872023 467.112414 767.872023 383.928011 767.872023 172.127725 595.744297 0 383.944011 0 172.143725 0 0.016 172.127725 0.016 383.928011 0.016 595.728297 172.143725 767.856024 383.944011 767.856024 467.128413 767.856024 543.274136 741.62094 606.622257 696.829341L915.044429 1005.251511C939.999745 1030.206833 980.952072 1030.206833 1005.26751 1005.251511 1029.582949 980.296188 1030.222833 939.343868 1005.26751 914.388545L1005.26751 914.388545ZM95.998002 383.928011C95.998002 224.597886 224.613886 95.982003 383.944011 95.982003 543.274136 95.982003 671.890018 224.597886 671.890018 383.928011 671.890018 543.258136 543.274136 671.874018 383.944011 671.874018 224.613886 671.874018 95.998002 543.258136 95.998002 383.928011L95.998002 383.928011Z" p-id="2267" fill="#ffffff"></path>
+                                    </svg>  
+                                </button>
+                            </div> -->
+                        <!--                             <div class="col-lg-1 form-group text-right">
+                                <input type="checkbox" class="form-check-input" name="selectall" id="selectall">
+                                <label class="form-check-label">Select all</label>
+                            </div> -->
+                        <div class="col-lg-5 form-group">
+                            <label class="col-form-label" style="padding-left: 0px; font-size: 1.1rem">Treatment</label>
+                            <select class="form-control rounded-left" style="font-size: 0.9rem; border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; " name="treatment" id="treatment" multiple="multiple">
+                                <option value='' disabled selected style='display:none;'></option>
+                                <option value="None">No treatment</option>
+                                <option value="aCTLA4">anti-CTLA4</option>
+                                <option value="aPD1">anti-PD1</option>
+                                <option value="aPDL1">anti-PDL1</option>
+                                <option value="aTIM3">anti-TIM3</option>
+                                <option value="Adoptive cell therapy">Adoptive cell therapy</option>
+                                Targeted therapy
+                                <option value="Chemotherapy">Chemotherapy</option>
+                                <option value="Targeted therapy">Targeted therapy</option>
+                                <option value="T cell therapy">T cell therapy</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-7 form-group">
+                            <label class="col-form-label" style="padding-left: 0px; font-size: 1.1rem">Primary/Metastatic</label>
+                            <select class="form-control rounded-left" style="font-size: 0.9rem; border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; " name="primary" id="primary" multiple="multiple">
+                                <option value='' disabled selected style='display:none;'></option>
+                                <option value="Primary">Primary</option>
+                                <option value="Metastatic">Metastatic</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--                         <div class="col-lg-5">
+                            <select class="form-control rounded-left" style="font-size: 0.9rem; border-top-left-radius: 0.25rem; border-bottom-left-radius: 0.25rem; " name="cancer" id="cancer" multiple="multiple">
+                                <option value="All">All cancers</option>
+                                <option value="BCC">BCC (Basal Cell Carcinoma)</option>
+                                <option value="BRCA">BRCA (Breast Invasive Carcinoma)</option>
+                                <option value="COAD">COAD (Colon Adenocarcinoma)</option>
+                                <option value="CLL">CLL (Chronic Lymphocytic Leukemia)</option>
+
+                                <option value="GBM">GBM (Glioblastoma Multiforme)</option>
+                                <option value="HNSC">HNSCC (Head and Neck Squamous Cell Carcinoma)</option>
+                                <option value="KIRC">KIRC (Kidney Renal Clear Cell Carcinoma)</option>
+                                <option value="LIHC">LIHC (Liver Hepatocellular Carcinoma)</option>
+                                <option value="MM">MM (Multiple Myeloma)</option>
+                                <option value="NET">NET (Neuroendocrine Tumor)</option>
+                                <option value="NHL">NHL (Non-Hodgkin Lymphoma)</option>
+                                <option value="NSCLC">NSCLC (Non-small Cell Lung Cancer)</option>
+                                <option value="OV">OV (Ovarian Serous Cystadenocarcinoma)</option>
+                                <option value="PAAD">PAAD (Pancreatic Adenocarcinoma)</option>
+                                <option value="Sarcoma">Sarcoma</option>
+                                <option value="SCC">SCC (Squamous Cell Carcinoma)</option>
+                                <option value="SKCM">SKCM (Skin Cutaneous Melanoma)</option>
+                                <option value="UCEC">UCEC (Uterine Corpus Endometrial Carcinoma)</option>
+                                <option value="UVM">UVM (Uveal Melanoma)</option>
+                            </select>
+                        </div> -->
+                    <!--                             <div class="input-group-append">
+                                <button class="btn btn-tisch align-items-center" type="submit" id="button-addon2" style="padding-left: 0.65rem; padding-right: 0.65rem; border-top-left-radius: 0; border-bottom-left-radius: 0; height: calc(1.5em + .75rem);">
+                                    <svg t="1586881905095" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2266" width="20" height="20" style="margin-top: -0.3rem">
+                                        <path d="M1005.26751 914.388545 696.84534 605.966377C741.636939 543.258136 767.872023 467.112414 767.872023 383.928011 767.872023 172.127725 595.744297 0 383.944011 0 172.143725 0 0.016 172.127725 0.016 383.928011 0.016 595.728297 172.143725 767.856024 383.944011 767.856024 467.128413 767.856024 543.274136 741.62094 606.622257 696.829341L915.044429 1005.251511C939.999745 1030.206833 980.952072 1030.206833 1005.26751 1005.251511 1029.582949 980.296188 1030.222833 939.343868 1005.26751 914.388545L1005.26751 914.388545ZM95.998002 383.928011C95.998002 224.597886 224.613886 95.982003 383.944011 95.982003 543.274136 95.982003 671.890018 224.597886 671.890018 383.928011 671.890018 543.258136 543.274136 671.874018 383.944011 671.874018 224.613886 671.874018 95.998002 543.258136 95.998002 383.928011L95.998002 383.928011Z" p-id="2267" fill="#ffffff"></path>
+                                    </svg>
+                                </button>
+                            </div> -->
+                    <!--                         <div class="col-lg-1">
+                            <button class="btn btn-tisch align-items-center" type="submit" id="button-addon2" style="padding-left: 0.65rem; padding-right: 0.65rem; height: calc(1.5em + .75rem);">
+                                <svg t="1586881905095" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2266" width="20" height="20" style="margin-top: -0.3rem">
+                                    <path d="M1005.26751 914.388545 696.84534 605.966377C741.636939 543.258136 767.872023 467.112414 767.872023 383.928011 767.872023 172.127725 595.744297 0 383.944011 0 172.143725 0 0.016 172.127725 0.016 383.928011 0.016 595.728297 172.143725 767.856024 383.944011 767.856024 467.128413 767.856024 543.274136 741.62094 606.622257 696.829341L915.044429 1005.251511C939.999745 1030.206833 980.952072 1030.206833 1005.26751 1005.251511 1029.582949 980.296188 1030.222833 939.343868 1005.26751 914.388545L1005.26751 914.388545ZM95.998002 383.928011C95.998002 224.597886 224.613886 95.982003 383.944011 95.982003 543.274136 95.982003 671.890018 224.597886 671.890018 383.928011 671.890018 543.258136 543.274136 671.874018 383.944011 671.874018 224.613886 671.874018 95.998002 543.258136 95.998002 383.928011L95.998002 383.928011Z" p-id="2267" fill="#ffffff"></path>
+                                </svg>
+                            </button>
+                        </div> -->
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container mb-3 mt-3">
+        <div class="row align-items-center">
+            <div class="col-lg-auto">
+                <p style="font-size: 1.2rem"><b>{{ searchinfo }}</b></p>
+            </div>
+            <!--             <div class="col-lg-2" style="margin-left: 2rem">
+                <div class="form-group">
+                    <input type="checkbox" class="form-check-input" name="selectall" id="selectall">
+                    <label class="form-check-label">Select all</label>
+                </div>
+            </div> -->
+        </div>
+        <!--         <div class="form-group">
+            <input type="checkbox" class="form-check-input" name="selectall" id="selectall">
+            <label class="form-check-label">Select all</label>
+        </div> -->
+    </div>
+    <form method="post" id="select_form">
+        {% csrf_token %}
+        <div class="container" style="margin-bottom: 6rem;">
+            <div class="row" id="dataset_row">
+                {% for data in datainfo %}
+                <div class="col-lg-4" style="margin-bottom: 3rem;">
+                    <div class="card">
+                        <!-- <a href="{% url 'data' data.dataset_name %}"><img src="{{ data.umap }}" class="card-img-top py-3" style="height: 275px"></a> -->
+                        <div class="row align-items-center mx-0" style="height: 280px">
+                            <a href="{% url 'data' data.dataset_name %}">
+                                <img src="{{ data.umap }}" class="card-img-top" style="width: 100%">
+                            </a>
+                        </div>
+                        <!-- <hr class="mt-0 mb-0" /> -->
+                        <div class="card-body pb-2 pr-2" style="background-color: #F0F0F0;">
+                            <a href="{% url 'data' data.dataset_name %}">
+                                <h5 class="card-title">{{ data.dataset_name }}</h5>
+                            </a>
+                            {% if data.species == 'Human' %}
+                            <p class="card-text" style="margin-bottom: 0">
+                                <b>Species: </b>{{ data.species }}<br>
+                                <b>Treatment: </b>{{ data.treatment }}<br>
+                                <b>Patient number: </b>{{ data.patient }}<br>
+                                <b>Cell number: </b>{{ data.cell }}<br>
+                                <b>Platform: </b>{{ data.platform }}<br>
+                                <b>Primary/Metastatic: </b>{{ data.primary }}<br>
+                                {% if data.publication == 'NA' %}
+                                <b>Publication: </b>{{ data.publication }}
+                                {% else %}
+                                <b>Publication: </b><a href="https://pubmed.ncbi.nlm.nih.gov/?term={{ data.pmid }}">{{ data.publication }}</a>
+                                {% endif %}
+                            </p>
+                            {% else %}
+                            <p class="card-text" style="margin-bottom: 0">
+                                <b>Species: </b>{{ data.species }}<br>
+                                <b>Treatment: </b>{{ data.treatment }}<br>
+                                <b>Cell number: </b>{{ data.cell }}<br>
+                                <b>Platform: </b>{{ data.platform }}<br>
+                                <b>Primary/Metastatic: </b>{{ data.primary }}<br>
+                                {% if data.publication == 'NA' %}
+                                <b>Publication: </b>{{ data.publication }}
+                                {% else %}
+                                <b>Publication: </b><a href="https://pubmed.ncbi.nlm.nih.gov/?term={{ data.pmid }}">{{ data.publication }}</a>
+                                {% endif %}
+                            </p>
+                            {% endif %}
+                            <div class="text-right">
+                                <input type="checkbox" value="{{ data.dataset_name }}" name="dataset_checkbox_list">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!--             <div class="row" style="margin-bottom: 3rem;">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <img src="/Users/dongqing/Documents/Project/WebServer/TISCH/static/image/umap.png" class="card-img-top py-3">
+                        <div class="card-body pb-2 pr-2" style="background-color: #F0F0F0;">
+                            <h5 class="card-title">BRCA_Alex</h5>
+                            <p class="card-text" style="margin-bottom: 0">
+                                <b>Patient number: </b>20<br><b>Cell number: </b>90828<br><b>Platform: </b>10x Genomics
+                            </p>
+                            <div class="text-right">
+                                <input type="checkbox" value="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <img src="/Users/dongqing/Documents/Project/WebServer/TISCH/static/image/umap.png" class="card-img-top py-3">
+                        <div class="card-body pb-2 pr-2" style="background-color: #F0F0F0;">
+                            <h5 class="card-title">BRCA_Alex</h5>
+                            <p class="card-text" style="margin-bottom: 0">
+                                <b>Patient number: </b>20<br><b>Cell number: </b>90828<br><b>Platform: </b>10x Genomics
+                            </p>
+                            <div class="text-right">
+                                <input type="checkbox" value="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <img src="/Users/dongqing/Documents/Project/WebServer/TISCH/static/image/umap.png" class="card-img-top py-3">
+                        <div class="card-body pb-2 pr-2" style="background-color: #F0F0F0;">
+                            <h5 class="card-title">BRCA_Alex</h5>
+                            <p class="card-text" style="margin-bottom: 0">
+                                <b>Patient number: </b>20<br><b>Cell number: </b>90828<br><b>Platform: </b>10x Genomics
+                            </p>
+                            <div class="text-right">
+                                <input type="checkbox" value="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        <button type="button" id="select_button" class="btn btn-tisch" style="position: fixed; right: 1rem; bottom: 6rem;">Submit</button>
+    </form>
+    <nav class="navbar navbar-expand-sm fixed-bottom navbar-dark" style="background-color: #252746">
+        <div class="container">
+            <!--         <a href="http://liulab.dfci.harvard.edu/" class="navbar-brand">
+          <img src="http://liulab.dfci.harvard.edu/WEBSITE/images/Global/logofinal.png" height="46" width="58">
+        </a> -->
+            <span class="navbar-text" style="font-size: 13px">Copyright @2020 TISCH project</span>
+        </div>
+    </nav>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+
+        // init the selectize plugin
+        $(function() {
+            $("#cancer").selectize({
+                plugins: ['remove_button'],
+                persist: false,
+                maxOptions: 50,
+                create: false,
+            });
+            $("#celltype").selectize({
+                plugins: ['remove_button'],
+                persist: false,
+                maxOptions: 50,
+                create: false,
+            });
+            $("#species").selectize();
+            $("#treatment").selectize({
+                plugins: ['remove_button'],
+                persist: false,
+                maxOptions: 50,
+                create: false,
+            });
+            $("#primary").selectize({
+                plugins: ['remove_button'],
+                persist: false,
+                create: false,
+            });
+        });
+
+        $("#select_button").on("click", function() {
+            if ($('input[name="dataset_checkbox_list"]:checked').length == 0){
+                alert("Please select at least one dataset!");
+            }
+            else if ($('input[name="dataset_checkbox_list"]:checked').length > 0 & $('input[name="dataset_checkbox_list"]:checked').length <= 10) {
+                $("#select_form").submit();
+            }
+            else {
+                alert("Please select at most 10 datasets!");
+            }
+        });
+
+        // select all current datasets
+        $("#selectall").on("click", function() {
+            if ($(this).is(':checked')) {
+                if ($('input[name="dataset_checkbox_list"]').length > 10) {
+                    $('input[name="dataset_checkbox_list"]').slice(0, 10).each(function() {
+                        $(this).prop("checked", true);
+                    });
+                    alert("Select 10 datasets at most!")
+                } else {
+                    $('input[name="dataset_checkbox_list"]').each(function() {
+                        $(this).prop("checked", true);
+                    });
+                }
+            } else {
+                $('input[name="dataset_checkbox_list"]').each(function() {
+                    $(this).prop("checked", false);
+                });
+            }
+        });
+
+
+        var cancer_selected = {{ cancerlist | safe }};
+        for (var i = 0; i < cancer_selected.length; i++) {
+            $(" #cancer option[value='" + cancer_selected[i] + "']").each(function() {
+                $(this).attr("selected", "selected");
+            });
+        }
+
+        var celltype_selected = {{ celltypelist | safe }};
+        for (var i = 0; i < celltype_selected.length; i++) {
+            $(" #celltype option[value='" + celltype_selected[i] + "']").each(function() {
+                $(this).attr("selected", "selected");
+            });
+        }
+
+        var treatment_selected = {{ treatmentlist | safe }};
+        for (var i = 0; i < treatment_selected.length; i++) {
+            $(" #treatment option[value='" + treatment_selected[i] + "']").each(function() {
+                $(this).attr("selected", "selected");
+            });
+        }
+
+        var species_selected = {{ specieslist | safe }};
+        console.log(species_selected);
+        if (species_selected.length == 2) {
+            $(" #species option[value='']").each(function() {
+                $(this).attr("selected", "selected");
+            });
+        } else {
+            $(" #species option[value='" + species_selected[0] + "']").each(function() {
+                $(this).attr("selected", "selected");
+            });
+        }
+
+        var primary_selected = {{ primarylist | safe }};
+        for (var i = 0; i < primary_selected.length; i++) {
+            $(" #primary option[value='" + primary_selected[i] + "']").each(function() {
+                $(this).attr("selected", "selected");
+            });
+        }
+
+        // if (cancer_selected[0] != "" || celltype_selected[0] != "" || treatment_selected[0] != "") {
+        //     document.getElementById('selectall').click()
+        // }
+
+        if ($('input[name="dataset_checkbox_list"]').length <= 10) {
+            $('input[name="dataset_checkbox_list"]').each(function() {
+                $(this).prop("checked", true);
+            });
+            // document.getElementById('selectall').click()
+        }
+        // return datasets in real time
+
+        $("#cancer").change(function() {
+            $("#dataset_form").submit();
+        });
+        $("#celltype").change(function() {
+            $("#dataset_form").submit();
+        });
+        $("#species").change(function() {
+            $("#dataset_form").submit();
+        });
+        $("#treatment").change(function() {
+            $("#dataset_form").submit();
+        });
+        $("#primary").change(function() {
+            $("#dataset_form").submit();
+        });
+
+    });
+    </script>
+</body>
+
+</html>

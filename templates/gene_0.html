@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/selectize.bootstrap4.css">
+
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <!--     <link rel="stylesheet" type="text/css" href="http://cistrome.org/~dsun/MAESTRO/css/mFilter.css">
+ -->
+    <!--     <link rel="stylesheet" type="text/css" href="https://cdn.mfilter.tk/css/mfilter.min.css">
+ -->
+    <title>TISCH</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm fixed-top navbar-dark" style="background-color:#252746">
+        <div class="container">
+            <!-- <a href="/" class="navbar-brand">TISCH</a> -->
+            <a href="../home">
+                <img src="/static/image/TISCH.png" width="140">
+            </a>
+            <div id="navbar-nav-scroll">
+                <ul class="navbar-nav bd-navbar-nav flex-row">
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../home" style="padding-left: 1rem; padding-right: 1rem">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../gallery" style="padding-left: 1rem; padding-right: 1rem">Dataset-Browser</a>
+                    </li>
+<!--                     <li class="nav-item">
+                        <a class="nav-link nav-a" href="../search-cancer" style="padding-left: 1rem; padding-right: 1rem">Dataset</a>
+                    </li> -->
+                    <li class="nav-item active">
+                        <a class="nav-link nav-a" href="../search-gene" style="padding-left: 1rem; padding-right: 1rem">Gene-Browser</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="#" style="padding-left: 1rem; padding-right: 1rem">Documentation</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="row body2" style="margin-top: 4.7rem;">
+        <div class="col-sm-12">
+            <div class="jumbotron jumbotron-fluid shadow-sm">
+                <div class="container">
+                    <h1 style="font-family: Avenir-black,Arial,sans-serif">Gene Exploration</h1>
+                    <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif">Search a gene across all cancer types. A heatmap and a violinplot will be displayed to show the expression of given gene in different cell-types across all available datasets. The level of cell-type annotation is optional. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-sm-12">
+            <div class="container">
+                <form method="post" id="geneform" onsubmit="return CheckGene()">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+<!--                             <label class="col-form-label" style="padding-left: 0px; font-size: 1.2rem"><b>Gene</b></label> -->
+                            <input type="text" class="form-control" placeholder="Gene" aria-label="Gene" aria-describedby="button-addon2" id="genesearch" autocomplete="on" name="genesearch">
+                        </div>
+                        <div class="form-group col-sm-6">
+<!--                             <label class="col-form-label" style="padding-left: 0px; font-size: 1.2rem"><b>Cell-type annotation</b></label> -->
+                            <select class="form-control" name="annotation" id="annotation" placeholder="Level of cell-type annotation">
+                                <option value='' disabled selected style='display:none;'>Level of cell-type annotations</option>
+                                <option value="Celltype_general">Level 1 annotation (immunity)</option>
+                                <option value="Celltype_curated">Level 2 annotation (lineage)</option>
+                                <option value="Celltype_subtype">Level 3 annotation (lineage subtype)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row align-items-end" style="">
+                        <div class="form-group col-sm-6" style="margin-bottom: 0;">
+                            <!-- <label class="col-form-label" style="padding-left: 0px; font-size: 1.2rem"><b>Cancer type</b></label> -->
+                            <select class="form-control" name="cancer" id="cancer" multiple="multiple" placeholder="Cancer type">
+                                <option value="All">All cancers</option>
+                                <option value="AML">AML (Acute Myeloid Leukemia)</option>
+                                <option value="BCC">BCC (Basal Cell Carcinoma)</option>
+                                <option value="BRCA">BRCA (Breast Invasive Carcinoma)</option>
+                                <option value="COAD">COAD (Colon Adenocarcinoma)</option>
+                                <option value="CLL">CLL (Chronic Lymphocytic Leukemia)</option>
+
+                                <option value="GBM">GBM (Glioblastoma Multiforme)</option>
+                                <option value="HNSC">HNSCC (Head and Neck Squamous Cell Carcinoma)</option>
+                                <option value="KIRC">KIRC (Kidney Renal Clear Cell Carcinoma)</option>
+                                <option value="LIHC">LIHC (Liver Hepatocellular Carcinoma)</option>
+                                <!--option value="LUAD">LUAD (Lung Adenocarcinoma)</option-->
+                                <option value="MM">MM (Multiple Myeloma)</option>
+                                <option value="NET">NET (Neuroendocrine Tumor)</option>
+                                <option value="NHL">NHL (Non-Hodgkin Lymphoma)</option>
+                                <option value="NSCLC">NSCLC (Non-small Cell Lung Cancer)</option>
+                                <option value="OV">OV (Ovarian Serous Cystadenocarcinoma)</option>
+                                <option value="PAAD">PAAD (Pancreatic Adenocarcinoma)</option>
+                                <!--option value="PRAD">PRAD (Prostate Adenocarcinoma)</option-->
+                                <option value="Sarcoma">Sarcoma</option>
+                                <option value="SCC">SCC (Squamous Cell Carcinoma)</option>
+                                <option value="SKCM">SKCM (Skin Cutaneous Melanoma)</option>
+                                <option value="UCEC">UCEC (Uterine Corpus Endometrial Carcinoma)</option>
+                                <option value="UVM">UVM (Uveal Melanoma)</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-1">
+                            <button class="btn btn-tisch" type="submit" id="button-addon2">Search</button>
+                        </div>
+                    </div>
+<!--                     <div class="row form-group container mb-3">
+                        <div class="col-sm-1">
+                            <button class="btn btn-tisch" type="submit" id="button-addon2">
+                                <svg t="1586881905095" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2266" width="20" height="20" style="margin-top: -0.3rem">
+                                    <path d="M1005.26751 914.388545 696.84534 605.966377C741.636939 543.258136 767.872023 467.112414 767.872023 383.928011 767.872023 172.127725 595.744297 0 383.944011 0 172.143725 0 0.016 172.127725 0.016 383.928011 0.016 595.728297 172.143725 767.856024 383.944011 767.856024 467.128413 767.856024 543.274136 741.62094 606.622257 696.829341L915.044429 1005.251511C939.999745 1030.206833 980.952072 1030.206833 1005.26751 1005.251511 1029.582949 980.296188 1030.222833 939.343868 1005.26751 914.388545L1005.26751 914.388545ZM95.998002 383.928011C95.998002 224.597886 224.613886 95.982003 383.944011 95.982003 543.274136 95.982003 671.890018 224.597886 671.890018 383.928011 671.890018 543.258136 543.274136 671.874018 383.944011 671.874018 224.613886 671.874018 95.998002 543.258136 95.998002 383.928011L95.998002 383.928011Z" p-id="2267" fill="#ffffff"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div> -->
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="container">
+                <div id="loading" style="display: none">
+                    <img src="/static/image/loading.gif">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 3rem; margin-bottom: 6rem;" id="generesult">
+        <div class="col-sm-12">
+            <div class="container">
+                <div class="card" style="display: none" id="generesult_heatmap">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Average expression of gene in different cell-types across datasets (Heatmap)
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+                        <div class="card-body">
+                            <div id="heatmap">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="display: none" id="generesult_violin">
+                    <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Distribution of expression of gene in different cell-types across datasets (Violin plot)
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center">
+                                <div class="lds-spinner" id="loading2">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                            <div id="violin">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--     <div class="row" style="margin-bottom: 6rem;">
+        <div class="col-sm-12">
+            <div class="container">
+                <div id="heatmap">
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <nav class="navbar navbar-expand-sm fixed-bottom navbar-dark" style="background-color:#252746;">
+        <div class="container">
+            <span class="navbar-text" style="font-size: 13px">Copyright @2020 Liu lab</span>
+        </div>
+    </nav>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"></script>
+
+    <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+    <script src="/static/js/plot.js"></script>
+    <script type="text/javascript">
+    var availableTags = {{ available_genes | safe }};
+    var gene_valid = true;
+
+    function CheckGene() {
+        var gene_search = $("#genesearch").val();
+        if (availableTags.indexOf(gene_search) > -1) {
+            gene_valid = true;
+            return false;
+        } else {
+            alert("Please input valid gene symbol!")
+            gene_valid = false;
+            return false;
+        }
+    };
+
+    // $(document).ready(function() {
+    $("#genesearch").autocomplete({
+        source: availableTags,
+        minLength: 3
+    });
+
+    $(function() {
+        $("#cancer").selectize({
+            plugins: ['remove_button'],
+            persist: false,
+            maxOptions: 100,
+            create: false,
+        });
+        $("#annotation").selectize();
+    });
+
+    $("#geneform").submit(function() {
+        if (gene_valid) {
+            $('#loading').show();
+            $("#violin").html('');
+            $("#generesult_violin").hide();
+            $.ajax({
+                data: {
+                    'genesearch': $("#genesearch").val(),
+                    'annotation': $("#annotation").val(),
+                    'cancer': $("#cancer").val(),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'plottype': 'heatmap'
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function(res) {
+                    console.log('res');
+                    var selected_gene = res.selected_gene;
+                    console.log(selected_gene);
+                    $('#loading').hide();
+                    var heatmap_file = res.heatmap_file;
+                    console.log(heatmap_file);
+                    PlotHeatmap(heatmap_file, selected_gene, "heatmap");
+                    $("#generesult_heatmap").show();
+                    $("#generesult_violin").show();
+                    $("#loading2").show();
+                    // console.log(res.violin_svg);
+                    // $("#violin").html(res.violin_svg);
+                    // $("#generesult_violin").show();
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                }
+            });
+            $.ajax({
+                data: {
+                    'genesearch': $("#genesearch").val(),
+                    'annotation': $("#annotation").val(),
+                    'cancer': $("#cancer").val(),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'plottype': 'violin'
+                },
+                type: 'POST',
+                dataType: 'json',
+                success: function(res) {
+                    console.log('res');
+                    var selected_gene = res.selected_gene;
+                    console.log(selected_gene);
+                    // var heatmap_file = res.heatmap_file;
+                    // console.log(heatmap_file);
+                    // PlotHeatmap(heatmap_file, selected_gene, "heatmap");
+                    // $("#generesult_heatmap").show();
+                    console.log(res.violin_svg);
+                    $("#loading2").hide();
+                    $("#violin").html(res.violin_svg);
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    $("#loading2").hide();
+                    alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+                }
+            });
+        }
+    });
+
+
+    // var selected_gene = "{{ selected_gene }}";
+    // if (selected_gene == "") {
+    //     $("#generesult").hide()
+    // } else {
+    //     $("#generesult").show()
+    // }
+
+    // PlotHeatmap("/static/data/CD34_dataset.json", "CD34", "heatmap");
+    // });
+    </script>
+</body>
+
+</html>
