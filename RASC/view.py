@@ -28,8 +28,10 @@ def search_cancer(request):
     return render(request, "dataset.html", search_result)
 
 def doc(request):
-    print(BASE_DIR)
     return render(request, "doc.html")
+
+def statistics(request):
+    return render(request, "statistics.html")
 
 def select_dataset(request):
     search_result = {}
@@ -108,6 +110,7 @@ def select_dataset(request):
 
                 expr_mat = "/static/data/%s/%s_Expression.zip" %(dataset, dataset)
                 de_table = "/static/data/%s/%s_AllDiffGenes_table.tsv" %(dataset, dataset)
+                meta_info =  "/static/data/%s/%s_CellMetainfo_table.tsv" %(dataset, dataset)
 
                 # CPDB
                 # if len(celltype_list) < 5:
@@ -138,6 +141,7 @@ def select_dataset(request):
                 search_result["gsea_hallmark_down_cluster"] = gsea_hallmark_down_cluster
                 search_result["expr_mat"] = expr_mat
                 search_result["de_table"] = de_table
+                search_result["meta_info"] = meta_info
                 # search_result["celltype_available"] = celltype_available
                 search_result["gsea_meta_available"] = gsea_meta_available
                 # search_result["celltype_selected"] = cpdb_dotplot_celltype
@@ -750,6 +754,8 @@ def data(request, dataset):
 
             expr_mat = "/static/data/%s/%s_Expression.zip" %(dataset, dataset)
             de_table = "/static/data/%s/%s_AllDiffGenes_table.tsv" %(dataset, dataset)
+            meta_info =  "/static/data/%s/%s_CellMetainfo_table.tsv" %(dataset, dataset)
+
 
             # CPDB
             # if len(celltype_list) < 5:
@@ -780,6 +786,7 @@ def data(request, dataset):
             search_result["gsea_hallmark_down_cluster"] = gsea_hallmark_down_cluster
             search_result["expr_mat"] = expr_mat
             search_result["de_table"] = de_table
+            search_result["meta_info"] = meta_info
             # search_result["celltype_available"] = celltype_available
             search_result["gsea_meta_available"] = gsea_meta_available
             # search_result["celltype_selected"] = cpdb_dotplot_celltype

@@ -26,6 +26,7 @@ urlpatterns = [
     path('search-gene/', view.search_gene),
     path('gallery/', view.select_dataset),
     path('documentation/', view.doc),
+    path('statistics/', view.statistics),
     # path('run-lisa/', view.run_lisa),
     # path('run-success/', view.run_success),
     # path('run-result/', view.run_result),

@@ -23,6 +23,39 @@
             font-size: 1.2rem;
             font-family: Avenir-black,Arial,sans-serif;
         }
+        .highcharts-figure, .highcharts-data-table table {
+            min-width: 800px; 
+            max-width: 1068Px;
+            margin: 1em auto;
+        }
+
+        .highcharts-data-table table {
+            font-family: Verdana, sans-serif;
+            border-collapse: collapse;
+            border: 1px solid #EBEBEB;
+            margin: 10px auto;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+        .highcharts-data-table caption {
+            padding: 1em 0;
+            font-size: 1.2em;
+            color: #555;
+        }
+        .highcharts-data-table th {
+            font-weight: 600;
+            padding: 0.5em;
+        }
+        .highcharts-data-table td, .highcharts-data-table th, .highcharts-data-table caption {
+            padding: 0.5em;
+        }
+        .highcharts-data-table thead tr, .highcharts-data-table tr:nth-child(even) {
+            background: #f8f8f8;
+        }
+        .highcharts-data-table tr:hover {
+            background: #f1f7ff;
+        }
     </style>
 </head>
 
@@ -50,6 +83,9 @@
                     <li class="nav-item">
                         <a class="nav-link nav-a" href="../documentation" style="padding-left: 1rem; padding-right: 1rem">Documentation</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../statistics" style="padding-left: 1rem; padding-right: 1rem">Statistics</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -59,7 +95,7 @@
             <div class="jumbotron jumbotron-fluid shadow-sm">
                 <div class="container">
                     <h1 style="font-family: Avenir-black,Arial,sans-serif">Gene Exploration</h1>
-                    <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif">Search a gene across cancer types. A heatmap and a violin plot will be displayed to show the expression of given gene in different cell-types across all available datasets. The level of cell-type annotation is optional and the datasets to be used can be customized. </p>
+                    <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif">Search a gene across cancer types. A heatmap and a violin plot will be displayed to show the expression of given gene in different cell types across all available datasets. The level of cell-type annotation is optional and the datasets to be used can be customized. We recommend users to choose some specific cancer types rather than all cancer types for the sake of quick response.</p>
                 </div>
             </div>
         </div>
@@ -168,7 +204,9 @@
                     </div>
                     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
                         <div class="card-body">
-                            <div id="heatmap">
+                            <div class="highcharts-figure">
+                                <div id="heatmap">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -216,22 +254,35 @@
             </div>
         </div>
     </div> -->
-    <nav class="navbar navbar-expand-sm fixed-bottom navbar-dark" style="background-color:#252746;">
+    <nav class="navbar navbar-expand-sm fixed-bottom navbar-dark" style="background-color: #252746; font-family: Avenir,Arial,sans-serif;">
         <div class="container">
+            <!--         <a href="http://liulab.dfci.harvard.edu/" class="navbar-brand">
+          <img src="http://liulab.dfci.harvard.edu/WEBSITE/images/Global/logofinal.png" height="46" width="58">
+        </a> -->
             <span class="navbar-text" style="font-size: 13px">Copyright @2020 TISCH project</span>
+            <a href="mailto: dongqingsun96@gmail.com">
+              <span class="navbar-text" style="font-size: 13px">
+                <svg t="1594304718896" class="icon" viewBox="0 0 1385 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2148" width="30" height="30" style="margin-right: 10px"><path d="M1226.571294 36.442353h-1090.258823c-74.992941 0-136.312471 54.211765-136.312471 120.470588v722.82353c0 66.258824 61.319529 120.470588 136.312471 120.470588h1090.258823c74.992941 0 136.312471-54.211765 136.312471-120.470588v-722.82353c0-66.258824-61.319529-120.470588-136.312471-120.470588z m0 240.941176l-545.129412 301.176471-545.129411-301.176471v-120.470588l545.129411 301.176471 545.129412-301.176471v120.470588z" fill="#FFCB05" p-id="2149"></path>
+                </svg>
+                dongqingsun96@gmail.com
+              </span>
+            </a>
         </div>
     </nav>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="/static/js/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <!-- <script src='https://cdn.plot.ly/plotly-latest.min.js'></script> -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/heatmap.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js"></script>
     <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
     <script src="/static/js/plot.js"></script>
@@ -425,7 +476,8 @@
                         $('#loading').hide();
                         var heatmap_file = res.heatmap_file;
                         console.log(heatmap_file);
-                        PlotHeatmap(heatmap_file, selected_gene, "heatmap");
+                        // PlotHeatmap(heatmap_file, selected_gene, "heatmap");
+                        PlotHeatmap(heatmap_file, "heatmap");
                         $("#generesult_heatmap").show();
                         $("#generesult_violin").show();
                         $("#violin-link").innerHTML = ""
@@ -460,10 +512,6 @@
                         console.log('res');
                         var selected_gene = res.selected_gene;
                         console.log(selected_gene);
-                        // var heatmap_file = res.heatmap_file;
-                        // console.log(heatmap_file);
-                        // PlotHeatmap(heatmap_file, selected_gene, "heatmap");
-                        // $("#generesult_heatmap").show();
                         $("#loading2").hide();
                         $("#violin-link").html(res.violin_svg);
                         $("#violin-link").attr("href", res.violin_pdf)

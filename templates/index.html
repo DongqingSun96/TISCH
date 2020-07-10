@@ -45,6 +45,9 @@
                     <li class="nav-item">
                         <a class="nav-link nav-a" href="../documentation" style="padding-left: 1rem; padding-right: 1rem">Documentation</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-a" href="../statistics" style="padding-left: 1rem; padding-right: 1rem">Statistics</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -86,13 +89,13 @@
                         <h1 class="display-5" style="font-family: Avenir-black,Arial,sans-serif; text-align: center;">
                           Welcome to TISCH
                           <span class="badge badge-pill badge-warning" style="font-size: 1rem; vertical-align: top; font-family: Avenir,Arial,sans-serif; font-weight: 400; background-color: rgba(51, 204, 255, 0.4); color: #262626"><b>BETA</b></span>
-                          <span class="badge badge-pill badge-warning" style="font-size: 1rem; vertical-align: top; font-family: Avenir,Arial,sans-serif; font-weight: 400; background-color: rgba(255, 221, 51, 0.7); margin-left: -0.5rem"><b>80</b> datasets</span>
+                          <span class="badge badge-pill badge-warning" style="font-size: 1rem; vertical-align: top; font-family: Avenir,Arial,sans-serif; font-weight: 400; background-color: rgba(255, 221, 51, 0.7); margin-left: -0.5rem"><b>81</b> datasets</span>
                           <span class="badge badge-pill badge-warning" style="font-size: 1rem; vertical-align: top; font-family: Avenir,Arial,sans-serif; font-weight: 400; background-color: rgba(255, 221, 51, 0.7); margin-left: -0.5rem">
-                          <b>2,144,813</b> cells</span></h1>
-                        <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif;">Tumor Immune Single-cell Hub (TISCH) is a scRNA-seq database, which focuses on immune cells in tumor. TISCH provides detailed cell-type annotation for all curated datasets, enabling the exploration of tumor immunity across different cancer types.</p>
+                          <b>2,144,812</b> cells</span></h1>
+                        <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif;">Tumor Immune Single-cell Hub (TISCH) is a scRNA-seq database, which focuses on tumor microenvironment (TME). TISCH provides detailed cell-type annotation for all curated datasets, enabling the exploration of TME across different cancer types.</p>
                         <div class="row justify-content-center">
                             <div class="col-lg-8">
-                                <form method="post">
+                                <form method="post"> 
                                     {% csrf_token %}
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Search a gene of interest" id="genesearch" name="genesearch" autocomplete="on">
@@ -483,7 +486,7 @@
                                         </thead>
                                         <tbody style="font-size: 0.8rem">
                                             <tr>
-                                                <td class="py-0">KIRC (2)</td>
+                                                <td class="py-0">KIRC (3)</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -707,17 +710,24 @@
             </div> -->
         </div>
 
-    <nav class="navbar navbar-expand-sm fixed-bottom navbar-dark" style="background-color: #252746">
+    <nav class="navbar navbar-expand-sm fixed-bottom navbar-dark" style="background-color: #252746; font-family: Avenir,Arial,sans-serif;">
         <div class="container">
             <!--         <a href="http://liulab.dfci.harvard.edu/" class="navbar-brand">
           <img src="http://liulab.dfci.harvard.edu/WEBSITE/images/Global/logofinal.png" height="46" width="58">
         </a> -->
             <span class="navbar-text" style="font-size: 13px">Copyright @2020 TISCH project</span>
+            <a href="mailto: dongqingsun96@gmail.com">
+              <span class="navbar-text" style="font-size: 13px">
+                <svg t="1594304718896" class="icon" viewBox="0 0 1385 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2148" width="30" height="30" style="margin-right: 10px"><path d="M1226.571294 36.442353h-1090.258823c-74.992941 0-136.312471 54.211765-136.312471 120.470588v722.82353c0 66.258824 61.319529 120.470588 136.312471 120.470588h1090.258823c74.992941 0 136.312471-54.211765 136.312471-120.470588v-722.82353c0-66.258824-61.319529-120.470588-136.312471-120.470588z m0 240.941176l-545.129412 301.176471-545.129411-301.176471v-120.470588l545.129411 301.176471 545.129412-301.176471v120.470588z" fill="#FFCB05" p-id="2149"></path>
+                </svg>
+                dongqingsun96@gmail.com
+              </span>
+            </a>
         </div>
     </nav>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="/static/js/jquery-3.4.1.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

@@ -929,172 +929,325 @@ function PlotDot(data_file, title_name, plot_id) {
     });
 };
 
-function PlotHeatmap(data_file, title_name, plot_id) {
-    Plotly.d3.json(data_file, function(error, data_use) {
-        var zmin, zmax;
-        var expr_array = data_use.expression.join(",").split(",")
-        zmin = Math.min.apply(null, expr_array);
-        zmax = Math.max.apply(null, expr_array);
+function PlotHeatmap(data_file, plot_id) {
+    $.getJSON(data_file, function(data) {
+        var data_expr = data.expression
+        var cell_type = data.celltype
+        var dataset = data.dataset
+        var gene = data.gene
+        // console.log(data_expr)
+        // console.log(cell_type)
+        // console.log(dataset)
+        // console.log(gene)
 
-        var dataset_text = [];
-        for (var i = 0; i < data_use.dataset.length; i++) {
-            var dataset = [];
-            for (var j = 0; j < data_use.celltype.length; j++) {
-                dataset.push(data_use.dataset[i])
-            }
-            dataset_text.push(dataset);
-        }
-        var layout_height = 32 * (data_use.dataset.length) + 250;
+        var layout_height = 30 * (dataset.length) + 250;
         if (layout_height < 400) {
             layout_height = 400;
         }
 
-
         var yvalue = [];
-        for (var i = 0; i < data_use.dataset.length; i++) {
-            yvalue.push("<a href='/data/" + data_use.dataset[i] + "' style='color: #54aced'>" + data_use.dataset[i] + "</a>")
+        for (var i = 0; i < dataset.length; i++) {
+            yvalue.push("<a href='/data/" + dataset[i] + "' style='color: #54aced'>" + dataset[i] + "</a>")
         }
 
-        var data = [{
-            type: 'heatmap',
-            y: yvalue,
-            x: data_use.celltype,
-            z: data_use.expression,
-            mode: 'lines',
-            // colorscale: 'RdBu',
-            // colorscale: [
-            //     ['0.0', 'rgb(33,102,172)'],
-            //     ['0.125', 'rgb(67,147,195)'],
-            //     ['0.25', 'rgb(146,197,222)'],
-            //     ['0.375', 'rgb(209,229,240)'],
-            //     ['0.5', 'rgb(247,247,247)'],
-            //     ['0.625', 'rgb(253,219,199)'],
-            //     ['0.75', 'rgb(244,165,130)'],
-            //     ['0.875', 'rgb(214,96,77)'],
-            //     ['1.0', 'rgb(178,24,43)']
-            // ],
-            colorscale: "Reds",
-            // colorscale: [
-            //     ['0.0', 'rgb(5,48,97)'],
-            //     ['0.1', 'rgb(33,102,172)'],
-            //     ['0.2', 'rgb(67,147,195)'],
-            //     ['0.3', 'rgb(146,197,222)'],
-            //     ['0.4', 'rgb(209,229,240)'],
-            //     ['0.5', 'rgb(247,247,247)'],
-            //     ['0.6', 'rgb(253,219,199)'],
-            //     ['0.7', 'rgb(244,165,130)'],
-            //     ['0.8', 'rgb(214,96,77)'],
-            //     ['0.9', 'rgb(178,24,43)'],
-            //     ['1.0', 'rgb(103,0,31)']
-            // ],
-            reversescale: false,
-            colorbar: {
-                title: {
-                    text: "Expression"
-                }
-            },
-            xgap: 0.3,
-            ygap: 0.3,
-            text: dataset_text,
-            hovertemplate: "<b>Dataset: </b> %{text}<br>" +
-                "<b>Cell-type: </b> %{x}<br>" +
-                "<b>Expression: </b> %{z}<br>" +
-                "<extra></extra>"
-        }];
-
-        var layout = {
-            autosize: true,
-            height: layout_height,
-            title: title_name,
-            annotations: [],
-            xaxis: {
-                type: "category",
-                showgrid: true,
-                automargin: true,
-                // tick0: 10,
-                ticks: "",
-                tickson: "boundaries",
-                tickangle: -45,
-                showline: true,
-                linecolor: "#AFABAB",
-                gridcolor: "#AFABAB",
-                mirror: true,
-                side: 'top'
-            },
-            yaxis: {
-                type: "category",
-                showgrid: true,
-                automargin: true,
-                // tickmode: "linear",
-                // tick0: 25,
-                ticks: "",
-                tickson: "boundaries",
-                showline: true,
-                linecolor: "#AFABAB",
-                gridcolor: "#AFABAB",
-                mirror: true,
-            },
-            margin: {
-                l: 40,
-                t: 200
-            }
-        };
-
-        var filename = title_name + "_heatmap";
-        var config = {
-            responsive: true,
-            toImageButtonOptions: {
-                format: 'png', // one of png, svg, jpeg, webp
-                filename: filename,
-                height: layout.height*1.2,
-                width: 1200,
-                scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
-            }
-        };
-
-        sizemax = Math.max.apply(null, data_use.percent);
-        if (data_use.celltype.length > 30) {
-            text_size = 9
-        } else {
-            text_size = 10
+        function getPointCategoryName(point, dimension) {
+            var series = point.series,
+                isY = dimension === 'y',
+                axis = series[isY ? 'yAxis' : 'xAxis'];
+            return axis.categories[point[isY ? 'y' : 'x']];
         }
 
-        for (var i = 0; i < data_use.dataset.length; i++) {
-            for (var j = 0; j < data_use.celltype.length; j++) {
-                var currentValue = data_use.expression[i][j];
-                if (currentValue == null) {
-                    // var textColor = '#595959';
-                    // var zvaule = "NA";
-                    continue;
-                } else {
-                    if (currentValue < zmin + (zmax-zmin)*2/5) {
-                        var textColor = DefaultColorBorder;
-                    } else {
-                        var textColor = '#D9D9D9';
+        Highcharts.chart(plot_id, {
+            chart: {
+                type: 'heatmap',
+                marginTop: 50,
+                marginBottom: 100,
+                plotBorderWidth: 1,
+                height: layout_height
+            },
+
+            title: {
+                text: gene,
+            },
+
+            xAxis: {
+                categories: cell_type,
+                labels: {
+                    style:{
+                        color: 'black',
+                        fontFamily: 'Arial',
+                        fontSize: 12
                     }
-                    var zvaule = currentValue;
-                    var result = {
-                        xref: 'x1',
-                        yref: 'y1',
-                        x: data_use.celltype[j],
-                        y: yvalue[i],
-                        text: zvaule,
-                        font: {
-                            family: 'Arial',
-                            size: text_size,
-                            color: textColor
-                        },
-                        showarrow: false
-                    };
-                    layout.annotations.push(result);
+                },
+            },
+
+            yAxis: {
+                categories: yvalue,
+                title: null,
+                reversed: false,
+                labels: {
+                    style:{
+                        fontFamily: 'Arial',
+                        fontSize: 12
+                    }
+                }
+            },
+
+            accessibility: {
+                point: {
+                    descriptionFormatter: function (point) {
+                        var ix = point.index + 1,
+                            xName = getPointCategoryName(point, 'x'),
+                            yName = getPointCategoryName(point, 'y'),
+                            val = point.value;
+                        return ix + '. ' + xName + ' in ' + yName + ', ' + val + '.';
+                    }
+                }
+            },
+
+            colorAxis: {
+                min: 0,
+                minColor: "#F0F0F0",
+                // '#FFFFFF',
+                maxColor:  "#A50F15",
+                reversed: false,
+            },
+
+            legend: {
+                align: 'right',
+                layout: 'vertical',
+                margin: 0,
+                verticalAlign: 'top',
+                y: 25,
+                // symbolHeight: 280
+            },
+
+            tooltip: {
+                formatter: function () {
+                    return '<b> Dataset: ' + getPointCategoryName(this.point, 'y') + 
+                    '</b> <br><b>Cell-type: ' + getPointCategoryName(this.point, 'x') + 
+                    '</b> <br><b>Expression: ' + this.point.value + '</b>';
+                }
+            },
+
+            series: [{
+                turboThreshold: 0,
+                name: 'Sales per employee',
+                borderWidth: 0.2,
+                borderColor: "#AFABAB" ,
+                nullColor: "white",
+                data: data_expr,
+                dataLabels: {
+                    enabled: true,
+                    color: 'black',
+                    style:{
+                        fontSize: 10,
+                        fontFamily: 'Arial',
+                        fontWeight: 'normal',
+                        // color: 'black',
+                        textOutline: false
+                    }
+                }
+            }],
+
+            credits: false,
+
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500,
+                    },
+                    chartOptions: {
+                        chart: {
+                            className: 'small-chart'
+                        }
+                    }
+                }]
+            },
+
+            exporting: {
+                filename: "TISCH_" + gene + "_heatmap",
+                sourceWidth: 1050,
+                sourceHeight: layout_height,
+                buttons: {
+                    contextButton: {
+                        menuItems: ["viewFullscreen", "separator", "downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "separator", "downloadCSV"]
+                    }
                 }
 
             }
-        }
+        })
 
-        Plotly.react(plot_id, data, layout, config);
-    });
+    })    
 };
+
+
+// function PlotHeatmap(data_file, title_name, plot_id) {
+//     Plotly.d3.json(data_file, function(error, data_use) {
+//         var zmin, zmax;
+//         var expr_array = data_use.expression.join(",").split(",")
+//         zmin = Math.min.apply(null, expr_array);
+//         zmax = Math.max.apply(null, expr_array);
+
+//         var dataset_text = [];
+//         for (var i = 0; i < data_use.dataset.length; i++) {
+//             var dataset = [];
+//             for (var j = 0; j < data_use.celltype.length; j++) {
+//                 dataset.push(data_use.dataset[i])
+//             }
+//             dataset_text.push(dataset);
+//         }
+//         var layout_height = 32 * (data_use.dataset.length) + 250;
+//         if (layout_height < 400) {
+//             layout_height = 400;
+//         }
+
+
+//         var yvalue = [];
+//         for (var i = 0; i < data_use.dataset.length; i++) {
+//             yvalue.push("<a href='/data/" + data_use.dataset[i] + "' style='color: #54aced'>" + data_use.dataset[i] + "</a>")
+//         }
+
+//         var data = [{
+//             type: 'heatmap',
+//             y: yvalue,
+//             x: data_use.celltype,
+//             z: data_use.expression,
+//             mode: 'lines',
+//             // colorscale: 'RdBu',
+//             // colorscale: [
+//             //     ['0.0', 'rgb(33,102,172)'],
+//             //     ['0.125', 'rgb(67,147,195)'],
+//             //     ['0.25', 'rgb(146,197,222)'],
+//             //     ['0.375', 'rgb(209,229,240)'],
+//             //     ['0.5', 'rgb(247,247,247)'],
+//             //     ['0.625', 'rgb(253,219,199)'],
+//             //     ['0.75', 'rgb(244,165,130)'],
+//             //     ['0.875', 'rgb(214,96,77)'],
+//             //     ['1.0', 'rgb(178,24,43)']
+//             // ],
+//             colorscale: "Reds",
+//             // colorscale: [
+//             //     ['0.0', 'rgb(5,48,97)'],
+//             //     ['0.1', 'rgb(33,102,172)'],
+//             //     ['0.2', 'rgb(67,147,195)'],
+//             //     ['0.3', 'rgb(146,197,222)'],
+//             //     ['0.4', 'rgb(209,229,240)'],
+//             //     ['0.5', 'rgb(247,247,247)'],
+//             //     ['0.6', 'rgb(253,219,199)'],
+//             //     ['0.7', 'rgb(244,165,130)'],
+//             //     ['0.8', 'rgb(214,96,77)'],
+//             //     ['0.9', 'rgb(178,24,43)'],
+//             //     ['1.0', 'rgb(103,0,31)']
+//             // ],
+//             reversescale: false,
+//             colorbar: {
+//                 title: {
+//                     text: "Expression"
+//                 }
+//             },
+//             xgap: 0.3,
+//             ygap: 0.3,
+//             text: dataset_text,
+//             hovertemplate: "<b>Dataset: </b> %{text}<br>" +
+//                 "<b>Cell-type: </b> %{x}<br>" +
+//                 "<b>Expression: </b> %{z}<br>" +
+//                 "<extra></extra>"
+//         }];
+
+//         var layout = {
+//             autosize: true,
+//             height: layout_height,
+//             title: title_name,
+//             annotations: [],
+//             xaxis: {
+//                 type: "category",
+//                 showgrid: true,
+//                 automargin: true,
+//                 // tick0: 10,
+//                 ticks: "",
+//                 tickson: "boundaries",
+//                 tickangle: -45,
+//                 showline: true,
+//                 linecolor: "#AFABAB",
+//                 gridcolor: "#AFABAB",
+//                 mirror: true,
+//                 side: 'top'
+//             },
+//             yaxis: {
+//                 type: "category",
+//                 showgrid: true,
+//                 automargin: true,
+//                 // tickmode: "linear",
+//                 // tick0: 25,
+//                 ticks: "",
+//                 tickson: "boundaries",
+//                 showline: true,
+//                 linecolor: "#AFABAB",
+//                 gridcolor: "#AFABAB",
+//                 mirror: true,
+//             },
+//             margin: {
+//                 l: 40,
+//                 t: 200
+//             }
+//         };
+
+//         var filename = title_name + "_heatmap";
+//         var config = {
+//             responsive: false,
+//             toImageButtonOptions: {
+//                 format: 'png', // one of png, svg, jpeg, webp
+//                 filename: filename,
+//                 height: layout.height*1.2,
+//                 width: 1200,
+//                 scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
+//             }
+//         };
+
+//         sizemax = Math.max.apply(null, data_use.percent);
+//         if (data_use.celltype.length > 30) {
+//             text_size = 9
+//         } else {
+//             text_size = 10
+//         }
+
+//         for (var i = 0; i < data_use.dataset.length; i++) {
+//             for (var j = 0; j < data_use.celltype.length; j++) {
+//                 var currentValue = data_use.expression[i][j];
+//                 if (currentValue == null) {
+//                     // var textColor = '#595959';
+//                     // var zvaule = "NA";
+//                     continue;
+//                 } else {
+//                     if (currentValue < zmin + (zmax-zmin)*2/5) {
+//                         var textColor = DefaultColorBorder;
+//                     } else {
+//                         var textColor = '#D9D9D9';
+//                     }
+//                     var zvaule = currentValue;
+//                     var result = {
+//                         xref: 'x1',
+//                         yref: 'y1',
+//                         x: data_use.celltype[j],
+//                         y: yvalue[i],
+//                         text: zvaule,
+//                         font: {
+//                             family: 'Arial',
+//                             size: text_size,
+//                             color: textColor
+//                         },
+//                         showarrow: false
+//                     };
+//                     layout.annotations.push(result);
+//                 }
+
+//             }
+//         }
+
+//         Plotly.react(plot_id, data, layout, config);
+//     });
+// };
 
 function PlotDotCPDB(data_file, title_name, plot_id) {
     Plotly.d3.json(data_file, function(error, data_use) {

@@ -221,6 +221,81 @@ def GenerateGeneList(dataset_list):
     return gene_list
 
 
+# def GenerateHeatmapData(dataset_list, gene, annotation_level):
+#     human_mouse_gene_match_file = os.path.join(BASE_DIR, "static/commondata/Human_mouse_gene.json")
+#     mouse_human_gene_match_file = os.path.join(BASE_DIR, "static/commondata/Mouse_human_gene.json")
+#     human_mouse_gene_dict = json.load(open(human_mouse_gene_match_file, "r"))
+#     mouse_human_gene_dict = json.load(open(mouse_human_gene_match_file, "r"))
+#     dataset_list.sort(reverse = True)
+#     gene_df = pd.DataFrame()
+#     i = 0
+#     while i < len(dataset_list):
+#         dataset = dataset_list[i]
+#         if "mouse" in dataset:
+#             if gene.isupper():
+#                 gene_use = human_mouse_gene_dict.get(gene, gene)
+#             else:
+#                 gene_use = gene
+#         else:
+#             if gene.isupper():
+#                 gene_use = gene
+#             else:
+#                 gene_use = mouse_human_gene_dict.get(gene, gene)
+
+#         expr_file = os.path.join(BASE_DIR, "static/data/%s/%s_expression_%s.txt" %(dataset, dataset, annotation_level))
+#         df = pd.read_csv(expr_file, sep = "\t")
+#         if gene_use in df.index:
+#             gene_expr = df.loc[gene_use,]
+#             gene_df = pd.DataFrame(gene_expr)
+#             gene_df.columns = [dataset]
+#             break
+#         else:
+#             i += 1
+
+#     j = i + 1
+#     gene_df_list = []
+#     if j < len(dataset_list):
+#         for dataset in dataset_list[j:]:
+#             if "mouse" in dataset:
+#                 if gene.isupper():
+#                     gene_use = human_mouse_gene_dict.get(gene, gene)
+#                 else:
+#                     gene_use = gene
+#             else:
+#                 if gene.isupper():
+#                     gene_use = gene
+#                 else:
+#                     gene_use = mouse_human_gene_dict.get(gene, gene)
+#             expr_file = os.path.join(BASE_DIR, "static/data/%s/%s_expression_%s.txt" %(dataset, dataset, annotation_level))
+#             df = pd.read_csv(expr_file, sep = "\t")
+#             if gene_use in df.index:
+#                 gene_expr = df.loc[gene_use,]
+#                 gene_df0 = pd.DataFrame(gene_expr)
+#                 gene_df0.columns = [dataset]
+#                 gene_df_list.append(gene_df0)
+#             else:
+#                 continue
+                
+#     gene_df_merge = gene_df.join(gene_df_list, how = "outer")
+#     gene_df_merge = gene_df_merge.sort_index(ascending = True)
+#     gene_df_merge = gene_df_merge.round(decimals = 2)
+    
+#     # keep the cell-types existing in over one dataset
+#     # if len(dataset_list) > 1:
+#     #     notnull_count = pd.notnull(gene_df_merge).apply(np.sum, axis=1)
+#     #     gene_df_merge = gene_df_merge.loc[notnull_count[notnull_count > 1].index]
+
+#     gene_df_merge = gene_df_merge.where(pd.notnull(gene_df_merge), None)
+#     gene_df_merge = gene_df_merge.T
+
+#     gene_dataset_dict = {"expression": gene_df_merge.values.tolist(), "celltype":gene_df_merge.columns.to_list(), "dataset":gene_df_merge.index.to_list()}
+
+#     out_dir = os.path.join(BASE_DIR, "media/tmp/") + randomString()
+#     headmap_file = "%s_%s_dataset_heatmap.json" %(out_dir, gene)
+#     json.dump(gene_dataset_dict, open(headmap_file, "w"))
+#     out_file_return = headmap_file.split(BASE_DIR)[1]
+#     return out_file_return
+
 def GenerateHeatmapData(dataset_list, gene, annotation_level):
     human_mouse_gene_match_file = os.path.join(BASE_DIR, "static/commondata/Human_mouse_gene.json")
     mouse_human_gene_match_file = os.path.join(BASE_DIR, "static/commondata/Mouse_human_gene.json")
@@ -279,16 +354,24 @@ def GenerateHeatmapData(dataset_list, gene, annotation_level):
     gene_df_merge = gene_df.join(gene_df_list, how = "outer")
     gene_df_merge = gene_df_merge.sort_index(ascending = True)
     gene_df_merge = gene_df_merge.round(decimals = 2)
-    
+
     # keep the cell-types existing in over one dataset
-    # if len(dataset_list) > 1:
-    #     notnull_count = pd.notnull(gene_df_merge).apply(np.sum, axis=1)
-    #     gene_df_merge = gene_df_merge.loc[notnull_count[notnull_count > 1].index]
+    if len(dataset_list) > 5:
+        notnull_count = pd.notnull(gene_df_merge).apply(np.sum, axis=1)
+        gene_df_merge = gene_df_merge.loc[notnull_count[notnull_count > 1].index]
 
     gene_df_merge = gene_df_merge.where(pd.notnull(gene_df_merge), None)
     gene_df_merge = gene_df_merge.T
 
-    gene_dataset_dict = {"expression": gene_df_merge.values.tolist(), "celltype":gene_df_merge.columns.to_list(), "dataset":gene_df_merge.index.to_list()}
+    # generate a list for storing row and column index for gene in all datasets and cell types 
+    gene_index_value_list = []
+    for col in range(0,gene_df_merge.shape[1]): 
+        for row in range(0,gene_df_merge.shape[0]):
+            var = gene_df_merge.iloc[row,col]
+            var_list = [col, row, var]
+            gene_index_value_list.append(var_list)
+                        
+    gene_dataset_dict = {"expression": gene_index_value_list, "celltype":gene_df_merge.columns.to_list(), "dataset":gene_df_merge.index.to_list(), "gene":gene}
 
     out_dir = os.path.join(BASE_DIR, "media/tmp/") + randomString()
     headmap_file = "%s_%s_dataset_heatmap.json" %(out_dir, gene)
@@ -312,9 +395,14 @@ def GenerateViolinGridGeneData(dataset_list, gene, annotation_level):
     dataset_list_all = []
 
     while i < len(dataset_list):
-        dataset = dataset_list[i];
-        h5_file = os.path.join(BASE_DIR, "static/data/%s/%s_gene_count.h5" %(dataset, dataset))
-        umap_file = os.path.join(BASE_DIR, "static/data/%s/%s_umap.json" %(dataset, dataset))
+        dataset = dataset_list[i]
+        if os.path.exists(os.path.join(BASE_DIR, "static/data/%s/%s_collapsed_bin_10_gene_count.h5" %(dataset, dataset))):
+            h5_file = os.path.join(BASE_DIR, "static/data/%s/%s_collapsed_bin_10_gene_count.h5" %(dataset, dataset))
+            umap_file = os.path.join(BASE_DIR, "static/data/%s/%s_collapsed_bin_10_celltype.json" %(dataset, dataset))
+        else:
+            h5_file = os.path.join(BASE_DIR, "static/data/%s/%s_gene_count.h5" %(dataset, dataset))
+            umap_file = os.path.join(BASE_DIR, "static/data/%s/%s_umap.json" %(dataset, dataset))
+
         gene_file = os.path.join(BASE_DIR, "static/data/%s/%s_genes.tsv" %(dataset, dataset))
         genes = open(gene_file, "r").readlines()
         gene_list = [i.strip() for i in genes]
@@ -354,16 +442,16 @@ def ViolinGridGenePlot(gene_df, gene):
         "#BEBADA", "#AF6458", "#D9AF6B", "#9C9C5E", "#625377", "#8C785D"]
     out_dir = os.path.join(BASE_DIR, "media/tmp/") + randomString()
 
-    # if len(set(gene_df["Dataset"].tolist())) > 1:
-    #     # keep the cell-types existing in over one dataset
-    #     celltype_dataset_df = gene_df[["Celltype","Dataset"]]
-    #     celltype_dataset_df = celltype_dataset_df.drop_duplicates(keep='first')
-    #     celltype_dataset_count_df = celltype_dataset_df.groupby(["Celltype"]).count()
-    #     celltypes_common = celltype_dataset_count_df[celltype_dataset_count_df["Dataset"] >1].index.tolist()
-    #     gene_df_use = gene_df[gene_df["Celltype"].isin(celltypes_common)]
-    # else:
-    #     gene_df_use = gene_df
-    gene_df_use = gene_df
+    if len(set(gene_df["Dataset"].tolist())) > 5:
+        # keep the cell-types existing in over one dataset
+        celltype_dataset_df = gene_df[["Celltype","Dataset"]]
+        celltype_dataset_df = celltype_dataset_df.drop_duplicates(keep='first')
+        celltype_dataset_count_df = celltype_dataset_df.groupby(["Celltype"]).count()
+        celltypes_common = celltype_dataset_count_df[celltype_dataset_count_df["Dataset"] >1].index.tolist()
+        gene_df_use = gene_df[gene_df["Celltype"].isin(celltypes_common)]
+    else:
+        gene_df_use = gene_df
+    # gene_df_use = gene_df
     celltypes = sorted(list(set(gene_df_use["Celltype"].tolist())))
     datasets = sorted(list(set(gene_df_use["Dataset"].tolist())))
 
@@ -425,8 +513,8 @@ def ViolinGridGenePlot(gene_df, gene):
         ax = g.axes.flatten()[i]
         ax.set_ylabel(ylabel = datasets[i], url = "/data/" + datasets[i], color = "#54aced", fontsize = ylabel_size, rotation = "horizontal", horizontalalignment = "right", verticalalignment = "center")
         for label in ax.get_xticklabels():
-            label.set_rotation(315)
-            label.set_horizontalalignment("left")
+            label.set_rotation(45)
+            label.set_horizontalalignment("right")
             label.set_fontsize(xlabel_sixe)
 
     g.fig.tight_layout()
@@ -631,8 +719,8 @@ def ViolinGridDatasetPlot(gene_df, dataset, annotation_level, groupby):
             for label in ax.get_yticklabels():
                 label.set_fontsize(label_fontsize/2)
             for label in ax.get_xticklabels():
-                label.set_rotation(315)
-                label.set_horizontalalignment("left")
+                label.set_rotation(45)
+                label.set_horizontalalignment("right")
                 label.set_fontsize(label_fontsize)
                 
         g.fig.tight_layout()

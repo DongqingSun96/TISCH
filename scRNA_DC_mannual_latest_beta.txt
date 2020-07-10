@@ -1,11 +1,11 @@
-AML_GSE116256	AML	Smart-seq2	21	38348	De Bie J, et al. Leukemia 2018	29740158	GSE116256	TME	Human	B, CD4Tconv, CD8T, EryPro, GMP, HSC, Malignant, Mono/Macro, NK, Plasma, Progenitor, Promonocyte, TMKI67	Primary	None	None
 AEL_GSE142213	AEL	10x Genomics	2	3994	Di Genua C, et al. Cancer Cell 2020	32330454	GSE142213	TME	Human	Malignant, Mono/Macro, NK, Plasma	Primary	None	None
 AEL_GSE142213_mouse	AEL	10x Genomics	2	9595	Di Genua C, et al. Cancer Cell 2020	32330454	GSE142213	TME	Mouse	Malignant, Mono/Macro, Neutrophils, NK	Primary	None	None
 ALL_GSE132509	ALL	10x Genomics	11	37936	Caron M, et al. Sci Rep 2020	32415257	GSE132509	TME	Human	B, CD4Tconv, CD8T, Erythrocytes, Malignant, Mono/Macro, TMKI67	Primary	None	None
-AML_GSE147989	AML	10x Genomics	2	7389	NA	NA	GSE147989	TME	Human	HSC	Primary	Targeted therapy	Cusatuzumab
+AML_GSE116256	AML	Smart-seq2	21	38348	De Bie J, et al. Leukemia 2018	29740158	GSE116256	TME	Human	B, CD4Tconv, CD8T, EryPro, GMP, HSC, Malignant, Mono/Macro, NK, Plasma, Progenitor, Promonocyte, TMKI67	Primary	None	None
+AML_GSE147989	AML	10x Genomics	2	7389	NA	NA	GSE147989	TME	Human	HSC	Primary	Targeted therapy	Targeted therapy (Cusatuzumab)
 BCC_GSE123813_aPD1	BCC	10x Genomics	11	52884	Yost KE, et al. Nat Med 2019	31359002	GSE123813	ICB	Human	B, CD4Tconv, CD8T, CD8Tex, DC, Endothelial, Fibroblasts, Malignant, Mast, Melanocytes, Mono/Macro, Myofibroblasts, NK, Plasma, TMKI67, Treg, pDC	Metastatic	Immunotherapy	aPD1
 BLCA_GSE130001	BLCA	10x Genomics	2	4129	Wang L, et al. Genome Med 2020	32111252	GSE130001	TME	Human	Endothelial, Epithelial, Fibroblasts, Myofibroblasts	Primary	None	None
-BLCA_GSE145281_aPD1	BLCA	Smart-seq2	14	58683	Yuen KC, et al. Nat Medicine 2020	32405063	GSE145281	ICB	Human	B, CD4Tconv, CD8T, DC, Mast, Mono/Macro, Myofibroblasts, NK, Others, Plasma	Metastatic	Immunotherapy	aPD1
+BLCA_GSE145281_aPD1	BLCA	10x Genomics	10	14462	Yuen KC, et al. Nat Medicine 2020	32405063	GSE145281	ICB	Human	B, CD4Tconv, CD8T, DC, Mono/Macro, NK	Metastatic	Immunotherapy	aPD1
 BRCA_Alex	BRCA	10x Genomics	26	89471	NA	NA	NA	TME	Human	B, CD4Tconv, CD8Tex, Endothelial, Fibroblasts, Malignant, Mono/Macro, Plasma, SMC, TMKI67, pDC	Primary	None	None
 BRCA_GSE110686	BRCA (TNBC)	10x Genomics	2	6035	Savas P, et al. Nat Med 2018	29942092	GSE110686	TME	Human	CD4Tconv, CD8T, CD8Tex, Mono/Macro, TMKI67, Treg	Primary, Metastatic	None	None
 BRCA_GSE114727_10X	BRCA	10x Genomics	3	28678	Azizi E, et al. Cell 2018	29961579	GSE114727	TME	Human	CD4Tconv, CD8T, CD8Tex, TMKI67, Treg	Primary	None	None
@@ -15,7 +15,7 @@ BRCA_GSE138536	BRCA	Smart-seq2	8	1902	Gulati GS, et al. Science 2020	31974247	GS
 BRCA_GSE143423	BRCA	10x Genomics	2	4375	Weilin Jin, et al.	Preprint	GSE143423	TME	Human	Malignant, Mono/Macro, Oligodendrocyte	Metastatic	None	None
 BRCA_SRP114962	BRCA	SNRS	8	2472	Kim C, et al. Cell 2018	29681456	SRP114962	TME	Human	CD8Tex, Malignant	Primary	Chemotherapy	Chemotherapy
 CHOL_GSE125449_aPD1aPDL1aCTLA4	CHOL	10x Genomics	10	5761	Lichun Ma, et al. Cancer Cell 2019	31588021	GSE125449	ICB	Human	B, CD4Tconv, CD8T, CD8Tex, Endothelial, Fibroblasts, Hepatic progenitor, Malignant, Mono/Macro, Plasma, TMKI67	Primary	Immunotherapy	aPD1 + aPDL1 + aCTLA4
-CLL_GSE111014	CLL	10x Genomics	4	30106	Rendeiro AF, et al. Nat Commun 2020	31996669	GSE111014	TME	Human	B, CD4Tconv, CD8T, Mono/Macro, pDC, TMKI67	Primary	Targeted therapy	Ibrutinib
+CLL_GSE111014	CLL	10x Genomics	4	30106	Rendeiro AF, et al. Nat Commun 2020	31996669	GSE111014	TME	Human	B, CD4Tconv, CD8T, Mono/Macro, pDC, TMKI67	Primary	Targeted therapy	Targeted therapy (Ibrutinib)
 CLL_GSE125881	CLL, NHL	10x Genomics	4	60528	Sheih A, et al. Nat Commun 2020	31924795	GSE125881	TME	Human	CD8T, CD8Tex, TMKI67	Primary	Immunotherapy	Adoptive cell therapy (CAR-T)
 COAD_GSE108989	COAD	Smart-seq2	12	11125	Zhang L, et al. Nature 2018	30479382	GSE108989	TME	Human	CD4Tconv, CD8T, CD8Tex, TMKI67, Treg	Primary	None	None
 COAD_GSE112865_mouse_aPD1	COAD	10x Genomics	NA	4454	Arlauckas SP, et al. Theranostics 2018	30613266	GSE112865	ICB	Mouse	CD4Tconv, CD8T, CD8Tex, DC, Mono/Macro, NK, Neutrophils, TMKI67, pDC	Primary	Immunotherapy	aPD1
@@ -41,6 +41,7 @@ HNSC_GSE103322	HNSC	Smart-seq2	18	5902	Puram SV, et al. Cell 2018	29198524	GSE10
 HNSC_GSE139324	HNSC	10x Genomics	26	130721	Cillo AR, et al. Immunity 2020	31924475	GSE139324	TME	Human	B, CD4Tconv, CD8T, CD8Tex, Mast, Mono/Macro, NK, Plasma, TMKI67, Treg, pDC	Primary	None	None
 KIRC_GSE111360	KIRC	10x Genomics	2	23130	Neal JT, et al. Cell 2018	30550791	GSE111360	TME	Human	B, CD4Tconv, CD8T, CD8Tex, DC, Fibroblasts, Mast, Mono/Macro, NK, Plasma, TMKI67, Treg	Primary	None	None
 KIRC_GSE139555	KIRC	10x Genomics	3	49907	Wu TD, et al. Nature 2020	32103181	GSE139556	TME	Human	B, CD4Tconv, CD8T, CD8Tex, DC, Endothelial, Mast, Mono/Macro, NK, Plasma, TMKI67, pDC	Primary	None	None
+KIRC_GSE145281_aPD1	KIRC	10x Genomics	4	44220	Yuen KC, et al. Nat Medicine 2020	32405063	GSE145281	ICB	Human	B, CD4Tconv, CD8T, DC, Mono/Macro, Myofibroblasts, NK, Plasma	Metastatic	Immunotherapy	aPD1
 LIHC_GSE125449_aPDL1aCTLA4	LIHC	10x Genomics	9	3834	Ma L, et al.Cancer Cell 2019	31588021	GSE125449	ICB	Human	B, CD8Tex, Endothelial, Fibroblasts, Hepatic progenitor, Malignant, Mono/Macro, Plasma	Primary	Immunotherapy	aPDL1 + aCTLA4
 LIHC_GSE140228_10X	LIHC	10x Genomics	5	62530	Zhang Q, et al. Cell 2019	31675496	GSE140228	TME	Human	B, CD4Tconv, CD8T, CD8Tex, DC, ILC, Mast, Mono/Macro, NK, Plasma, TMKI67, Treg	Primary	None	None
 LIHC_GSE140228_Smartseq2	LIHC	Smart-seq2	6	7074	Zhang Q, et al. Cell 2019	31675496	GSE140228	TME	Human	B, CD4Tconv, CD8Tex, DC, ILC, Mast, Mono/Macro, NK, Plasma, TMKI67	Primary	None	None
@@ -48,11 +49,11 @@ LIHC_GSE98638	LIHC	Smart-seq2	6	5059	Zheng C, et al. Cell 2017	28622514	GSE98638
 MB_GSE119926	MB	Smart-seq2	25	7745	Hovestadt V, et al. Nature 2019	31341285	GSE119926	TME	Human	Fibroblasts, Malignant, TMKI67	Primary, Metastatic	None	None
 MCC_GSE117988_aPD1aCTLA4	MCC	10x Genomics	1	10134	Paulson KG et al. Nat Commun 2018	30250229	GSE117988	ICB	Human	B, CD4Tconv, CD8T, CD8Tex, Fibroblasts, Malignant, Mono/Macro, Others	Metastatic	Immunotherapy	T cell therapy, aPD1 + aCTLA4
 MCC_GSE118056_aPDL1	MCC	10x Genomics	1	11024	Paulson KG, et al. Nat Commun 2018	30250229	GSE118056	ICB	Human	B, CD4Tconv, CD8T, Malignant, Mono/Macro, Myofibroblasts, NK, Others, pDC, TMKI67, Treg	Primary	Immunotherapy	T cell therapy, aPDL1
-MM_GSE117156	MM	MARS-seq	14	24918	Ledergor G, et al. Nat Med 2018	30523328	GSE117156	TME	Human	CD8T, Malignant, Mono/Macro, Plasma	Primary	Targeted therapy	Bortezomib
-MM_GSE141299	MM	10x Genomics	7	16840	NA	NA	GSE141299	TME	Human	Malignant, Plasma	Primary	None	None
+MM_GSE117156	MM	MARS-seq	14	24918	Ledergor G, et al. Nat Med 2018	30523328	GSE117156	TME	Human	CD8T, Malignant, Mono/Macro, Plasma	Primary	Targeted therapy	Targeted therapy (Bortezomib)
+MM_GSE141299	MM	10x Genomics	7	16840	NA	NA	GSE141299	TME	Human	Malignant	Primary	None	None
 NET_GSE140312	NET	10x Genomics	1	3158	Rao M, et al. Cold Spring Harb Mol Case Stud 2020	32054662	GSE140312	TME	Human	Endothelial, Fibroblasts, Mono/Macro, Myofibroblasts, Others	Primary, Metastatic	None	None
 NHL_GSE128531	NHL	10x Genomics	9	30497	Gaydosik AM, et al. Clin Cancer Res 2019	31010835	GSE128531	TME	Human	B, CD4Tconv, CD8Tex, Endothelial, Fibroblasts, Keratinocytes, Melanocytes, Mono/Macro, NK, Others, Pericytes, Secretory glandular, SMC, TMKI67	Primary	None	None
-NSCLC_EMTAB6149	NSCLC	10x Genomics	8	40218	Lambrechts D, et al. Nat Med 2018	29988129	EMTAB6149	TME	Human	Alveolar, B, CD4Tconv, CD8T, CD8Tex, Endothelial, Fibroblasts, Malignant, Mast, Mono/Macro, Plasma, Treg	Primary	None	None
+NSCLC_EMTAB6149	NSCLC	10x Genomics	5	40218	Lambrechts D, et al. Nat Med 2018	29988129	EMTAB6149	TME	Human	Alveolar, B, CD4Tconv, CD8T, CD8Tex, Endothelial, Fibroblasts, Malignant, Mast, Mono/Macro, Plasma, Treg	Primary	None	None
 NSCLC_GSE117570	NSCLC	10x Genomics	4	11453	Song Q, et al. Cancer Med 2019	31033233	GSE117570	TME	Human	B, CD4Tconv, CD8T, DC, Endothelial, Malignant, Mast, Mono/Macro, Myofibroblasts, NK, Plasma	Primary	None	None
 NSCLC_GSE127465	NSCLC	Smart-seq2	7	31179	Zilionis R, et al. Immunity 2019	30979687	GSE127465	TME	Human	B, CD4Tconv, CD8Tex, DC, Endothelial, Fibroblasts, Malignant, Mast, Mono/Macro, NK, Neutrophils, Plasma	Primary	None	None
 NSCLC_GSE127471	NSCLC	10x Genomics	1	1108	Newman AM, et al. Nat Biotechnol 2019	31061481	GSE127471	TME	Human	B, CD4Tconv, CD8T, CD8Tex, Mono/Macro, NK, Others	Primary	None	None
