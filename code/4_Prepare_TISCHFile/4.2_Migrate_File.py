@@ -3,7 +3,7 @@
 # @E-mail: Dongqingsun96@gmail.com
 # @Date:   2020-07-12 13:54:23
 # @Last Modified by:   Dongqing Sun
-# @Last Modified time: 2020-07-12 13:56:34
+# @Last Modified time: 2020-07-13 11:38:52
 
 
 import os, shutil
@@ -22,11 +22,11 @@ for i in dir_list[0:1]:
             file_need.append(j)
         if j.endswith("_gene_count.h5"):
             file_need.append(j)
-        if j.endswith("_expression_Celltype_curated.txt"):
+        if j.endswith("_expression_Celltype_majorlineage.txt"):
             file_need.append(j)
-        if j.endswith("_expression_Celltype_general.txt"):
+        if j.endswith("_expression_Celltype_malignancy.txt"):
             file_need.append(j)
-        if j.endswith("_expression_Celltype_subtype.txt"):
+        if j.endswith("_expression_Celltype_minorlineage.txt"):
             file_need.append(j)
         if j.endswith("_expression_Cluster.txt"):
             file_need.append(j)
