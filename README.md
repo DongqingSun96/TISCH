@@ -9,6 +9,5 @@
 
 ### Features
 - **Gene module:** Search a gene across species and cancer types.
-- **Single-dataset exploration:** 1. Overview of dataset; 2. Gene expression visualization at both single-cell level (UMAP plot) and cluster level (violin plot);
-3. Functional enrichment analysis (GSEA); 4. Download files (cluster-level expression matrices, DE gene table and meta information).
+- **Single-dataset exploration:** 1. Overview of dataset; 2. Gene expression visualization at both single-cell level (UMAP plot) and cluster level (violin plot); 3. Functional enrichment analysis (GSEA); 4. Download files (cluster-level expression matrices, DE gene table and meta information).
 - **Multiple-dataset comparison:** Compare expression of genes across multiple datasets.
