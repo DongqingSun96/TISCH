@@ -4,7 +4,7 @@
 The analysis pipeline starts from count matrices and corresponding meta information (if available). 
 The count matrices are usually downloaded from GEO. If there're only normalized count matrices like TPM or FPKM, they are also acceptable.
 The meta information can be derived from supplementary file in GEO or original paper, Series Matrix file in GEO, and other sources.
-
+The data collection and downloading can be finished by GEO_parser automatically. The relative codes can be found in `0_GEO_Parser`.
 
 ## 1. Analyze data
 ### 1.1 Prepare data for MAESTRO pipeline

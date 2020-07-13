@@ -1,0 +1,11 @@
+Smart-seq2	smartseq2
+Smart-seq2	smartseq 2
+Smart-seq	smartseq
+10X Genomics	10x genomics
+scTrio-seq2	sctrioseq2
+MARS-seq	marsseq
+inDrop	indrop
+Microwell-seq	microwellseq
+Microwell-seq	microwell
+CellRanger	cellranger
+Seurat	seurat
