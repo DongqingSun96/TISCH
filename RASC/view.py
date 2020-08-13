@@ -39,6 +39,7 @@ def select_dataset(request):
     class DataSet(object):
         """docstring for DataSet"""
         def __init__(self):
+            self.file = ""
             self.umap = ""
             self.dataset_name = ""
             self.species = ""
@@ -355,6 +356,7 @@ def select_dataset(request):
                 for dataset in dataset_list:
                     data = DataSet()
                     data.umap = "/static/data/%s/%s_umap_Celltype_curated.png" %(dataset, dataset)
+                    data.file = "/static/data/%s/%s_Data.zip" %(dataset, dataset)
                     data.dataset_name = dataset
                     dataset_return_list.append(data)
 
@@ -449,6 +451,7 @@ def select_dataset(request):
             data.update(query_result_list[i])
             data.column = i%3 +1
             data.umap = "/static/data/%s/%s_umap.png" %(data.dataset_name, data.dataset_name)
+            data.file = "/static/data/%s/%s_Data.zip" %(data.dataset_name, data.dataset_name)
             data_list.append(data)            
 
         # if data_list[len(data_list)-1].column == 1:
@@ -477,26 +480,53 @@ def search_gene(request):
     if request.POST:
         if request.is_ajax():
             print(request.POST)
-            if "dataset[]" in request.POST:
-                datasets = request.POST.getlist('dataset[]')
-            else:
-                if "cancer[]" in request.POST and request.POST.getlist('cancer[]') != ["All"]:
-                    query_result = DataCollect.objects.filter(cancer__in=request.POST.getlist('cancer[]'))
+            if "plottype" in request.POST:
+                if "dataset[]" in request.POST:
+                    datasets = request.POST.getlist('dataset[]')
                 else:
-                    query_result = DataCollect.objects.all()
-                datasets = [data.dataset_name for data in query_result]
-            gene = request.POST["genesearch"]
-            annotation_level = request.POST["annotation"]
-            if request.POST["plottype"] == "heatmap":
-                search_result['heatmap_file'] = GenerateHeatmapData(datasets, gene, annotation_level)
-            if request.POST["plottype"] == "violin":
-                violin_plot = ViolinGridGenePlot(GenerateViolinGridGeneData(datasets, gene, annotation_level), gene)
-                search_result["violin_svg"] = violin_plot[0]
-                search_result["violin_pdf"] = violin_plot[1]
-            search_result['selected_gene'] = gene
-            search_result["available_genes"] = gene_list
-            # search_result["violin_svg"] = ViolinGridPlot(GenerateViolinGridData(all_datasets, gene), gene)
-            return HttpResponse(json.dumps(search_result), content_type='application/json')
+                    if "cancer[]" in request.POST and "All" not in request.POST.getlist('cancer[]'):
+                        query_result = DataCollect.objects.filter(cancer__in=request.POST.getlist('cancer[]'))
+                    else:
+                        query_result = DataCollect.objects.all()
+                    datasets = [data.dataset_name for data in query_result]
+                gene = request.POST["genesearch"]
+                annotation_level = request.POST["annotation"]
+                if request.POST["plottype"] == "heatmap":
+                    search_result['heatmap_file'] = GenerateHeatmapData(datasets, gene, annotation_level)
+                if request.POST["plottype"] == "violin":
+                    violin_plot = ViolinGridGenePlot(GenerateViolinGridGeneData(datasets, gene, annotation_level), gene)
+                    search_result["violin_svg"] = violin_plot[0]
+                    search_result["violin_pdf"] = violin_plot[1]
+                search_result['selected_gene'] = gene
+                search_result["available_genes"] = gene_list
+                # search_result["violin_svg"] = ViolinGridPlot(GenerateViolinGridData(all_datasets, gene), gene)
+                return HttpResponse(json.dumps(search_result), content_type='application/json')
+            else:
+                query_result_cancer = DataCollect.objects.exclude(species__in = ["Human","Mouse"])
+                query_result_celltype = DataCollect.objects.exclude(species__in = ["Human","Mouse"])
+                if "cancer[]" in request.POST and "All" not in request.POST.getlist('cancer[]'):
+                    cancer_list = request.POST.getlist('cancer[]')
+                    for cancer in cancer_list:
+                        query_result = DataCollect.objects.filter(cancer__icontains=cancer)
+                        query_result_cancer = query_result_cancer | query_result
+                else:
+                    query_result_cancer = DataCollect.objects.all()
+
+                if "celltype[]" in request.POST:
+                    celltype_list = request.POST.getlist('celltype[]')
+                    for celltype in celltype_list:
+                        query_result = DataCollect.objects.filter(celltype__icontains=celltype)
+                        query_result_celltype = query_result_celltype | query_result
+                else:
+                    query_result_celltype = DataCollect.objects.all()
+
+                query_result_final = query_result_cancer & query_result_celltype
+                datasets = [data.dataset_name for data in query_result_final]
+                search_result["datasets"] = datasets
+                print(datasets)
+                return HttpResponse(json.dumps(search_result), content_type='application/json')
+
+
         # else:
         #     query_result = DataCollect.objects.all()
         #     datasets = [data.dataset_name for data in query_result]

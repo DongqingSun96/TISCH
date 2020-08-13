@@ -95,7 +95,7 @@
             <div class="jumbotron jumbotron-fluid shadow-sm">
                 <div class="container">
                     <h1 style="font-family: Avenir-black,Arial,sans-serif">Gene Exploration</h1>
-                    <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif">Search a gene across cancer types. A heatmap and a violin plot will be displayed to show the expression of given gene in different cell types across all available datasets. The level of cell-type annotation is optional and the datasets to be used can be customized. We recommend users to choose some specific cancer types rather than all cancer types for the sake of quick response.</p>
+                    <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif">Search a gene across cancer types. A heatmap and a violin plot will be displayed to show the expression of a given gene in different cell types across selected datasets. We recommend users to choose several specific cancer types rather than all cancer types for a quick response.</p>
                 </div>
             </div>
         </div>
@@ -107,7 +107,7 @@
                     {% csrf_token %}
                     <div class="form-group row" style="margin-right: 0;margin-left: 0;">
                         <label class="col-form-label col-lg-3" style="padding-left: 0px; font-size: 1.2rem"><b>Gene</b></label>
-                        <input type="text" class="form-control col-lg-9" placeholder="Gene" aria-label="Gene" aria-describedby="button-addon2" id="genesearch" autocomplete="on" name="genesearch">
+                        <input type="text" class="form-control col-lg-9" placeholder="Gene (required)" aria-label="Gene" aria-describedby="button-addon2" id="genesearch" autocomplete="on" name="genesearch">
                     </div>
                     <div class="form-group row" style="margin-right: 0;margin-left: 0;">
                         <label class="col-form-label col-lg-3" style="padding-left: 0px; font-size: 1.2rem"><b>Cell-type annotation</b></label>
@@ -120,7 +120,7 @@
                     </div>
                     <div class="form-group row" style="margin-right: 0;margin-left: 0;">
                         <label class="col-form-label col-lg-3" style="padding-left: 0px; font-size: 1.2rem"><b>Cancer type</b></label>
-                        <select class="form-control col-lg-9" name="cancer" id="cancer" multiple="multiple" placeholder="Cancer type">
+                        <select class="form-control col-lg-9" name="cancer" id="cancer" multiple="multiple" placeholder="Cancer types (optional)">
                             <option value="All">All cancers</option>
                             <option value="AEL">AEL (Acute Erythroid Leukemia)</option>
                             <option value="ALL">ALL (Acute Lymphoblastic Leukemia)</option>
@@ -154,6 +154,30 @@
                             <option value="STAD">STAD (Stomach Adenocarcinoma)</option>
                             <option value="UCEC">UCEC (Uterine Corpus Endometrial Carcinoma)</option>
                             <option value="UVM">UVM (Uveal Melanoma)</option>
+                        </select>
+                    </div>
+                    <div class="form-group row" style="margin-right: 0;margin-left: 0;">
+                        <label class="col-form-label col-lg-3" style="padding-left: 0px; font-size: 1.2rem"><b>Cell type included in datasets</b></label>
+                        <select class="form-control col-lg-9" name="celltype" id="celltype" multiple="multiple" placeholder="Cell types (optional)">
+                            <option value='' disabled selected style='display:none;'></option>
+                            <option value="B">B (B cells)</option>
+                            <option value="CD4Tconv">CD4Tconv (Conventional CD4 T cells)</option>
+                            <option value="CD8T">CD8T (CD8 T cells)</option>
+                            <option value="CD8Tex">CD8Tex (Exhausted CD8 T cells)</option>
+                            <option value="DC">DC (Dendritic cells)</option>
+                            <option value="Endothelial">Endothelial (Endothelial cells)</option>
+                            <option value="Fibroblasts">Fibroblasts</option>
+                            <option value="ILC">ILC (Innate lymphoid cells)</option>
+                            <option value="Malignant">Malignant (Malignant cells)</option>
+                            <option value="Mast">Mast (Mast cells)</option>
+                            <option value="Mono/Macro">Mono/Macro (Monocytes or macrophages)</option>
+                            <option value="Myofibroblasts">Myofibroblasts</option>
+                            <option value="NK">NK (Natural killer cells)</option>
+                            <option value="Neutrophils">Neutrophils</option>
+                            <option value="pDC">pDC (Plasmacytoid dendritic cells)</option>
+                            <option value="Plasma">Plasma (Plasma cells)</option>
+                            <option value="TMKI67">TMKI67 (Proliferating T cells)</option>
+                            <option value="Treg">Treg (Regulatory T cells)</option>
                         </select>
                     </div>
                     <div class="form-group row" style="margin-right: 0;margin-left: 0; font-size: 0.85rem">
@@ -260,11 +284,11 @@
           <img src="http://liulab.dfci.harvard.edu/WEBSITE/images/Global/logofinal.png" height="46" width="58">
         </a> -->
             <span class="navbar-text" style="font-size: 13px">Copyright @2020 TISCH project</span>
-            <a href="mailto: dongqingsun96@gmail.com">
+            <a href="mailto: tisch.compgenomics@gmail.com">
               <span class="navbar-text" style="font-size: 13px">
                 <svg t="1594304718896" class="icon" viewBox="0 0 1385 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2148" width="30" height="30" style="margin-right: 10px"><path d="M1226.571294 36.442353h-1090.258823c-74.992941 0-136.312471 54.211765-136.312471 120.470588v722.82353c0 66.258824 61.319529 120.470588 136.312471 120.470588h1090.258823c74.992941 0 136.312471-54.211765 136.312471-120.470588v-722.82353c0-66.258824-61.319529-120.470588-136.312471-120.470588z m0 240.941176l-545.129412 301.176471-545.129411-301.176471v-120.470588l545.129411 301.176471 545.129412-301.176471v120.470588z" fill="#FFCB05" p-id="2149"></path>
                 </svg>
-                dongqingsun96@gmail.com
+                tisch.compgenomics@gmail.com
               </span>
             </a>
         </div>
@@ -310,69 +334,117 @@
     var availableDatasets = {{ available_cancer_dict | safe }};
     console.log(availableDatasets);
 
+    function RetrieveDataset() {
+        $.ajax({
+            url: "/search-gene/",
+            data: {
+                'cancer': $("#cancer").val(),
+                'celltype': $("#celltype").val(),
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            type: 'POST',
+            dataType: 'json',
+            success: function(res) {
+                document.getElementById("datasets-row").innerHTML = "";
+                console.log(res.datasets);
+                for (var i = 0; i < res.datasets.length; i++) {
+                    dataset = res.datasets[i];
+                    dataset_checkbox = document.createElement("div");
+                    dataset_checkbox.classList.add("form-check", "col-lg-4");
+                    dataset_input = document.createElement("input");
+                    dataset_input.className = "form-check-input";
+                    dataset_input.setAttribute("type", "checkbox");
+                    dataset_input.setAttribute("name", "dataset_checkbox_list");
+                    dataset_input.setAttribute("checked", "checked");
+                    dataset_input.setAttribute("value", dataset);
+                    dataset_checkbox.appendChild(dataset_input);
+
+                    dataset_label = document.createElement("label");
+                    dataset_label.className = "form-check-label";
+                    dataset_label.innerHTML = dataset;
+                    dataset_checkbox.appendChild(dataset_label);
+                    console.log(dataset_checkbox);
+                    document.getElementById("datasets-row").appendChild(dataset_checkbox);
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $("#loading2").hide();
+                alert(XMLHttpRequest.readyState + XMLHttpRequest.status + XMLHttpRequest.responseText);
+            }
+        });
+    };
+
     $("#cancer").change(function() {
-        console.log($("#cancer").val());
-        document.getElementById("datasets-row").innerHTML = "";
-        datasets = new Array();
-        if ($("#cancer").val().indexOf("All") < 0) {
-            for (var i = 0; i < $("#cancer").val().length; i++) {
-                cancer = $("#cancer").val()[i];
-                console.log(cancer);
-                if (cancer in availableDatasets) {
-                    console.log(availableDatasets[cancer]);
-                    for (var j = 0; j < availableDatasets[cancer].length; j++) {
-                        dataset = availableDatasets[cancer][j];
-                        if (datasets.indexOf(dataset) < 0) {
-                            datasets.push(dataset);
-
-                            dataset_checkbox = document.createElement("div");
-                            dataset_checkbox.classList.add("form-check", "col-lg-4");
-                            dataset_input = document.createElement("input");
-                            dataset_input.className = "form-check-input";
-                            dataset_input.setAttribute("type", "checkbox");
-                            dataset_input.setAttribute("name", "dataset_checkbox_list");
-                            dataset_input.setAttribute("checked", "checked");
-                            dataset_input.setAttribute("value", dataset);
-                            dataset_checkbox.appendChild(dataset_input);
-
-                            dataset_label = document.createElement("label");
-                            dataset_label.className = "form-check-label";
-                            dataset_label.innerHTML = dataset;
-                            dataset_checkbox.appendChild(dataset_label);
-                            console.log(dataset_checkbox);
-                            document.getElementById("datasets-row").appendChild(dataset_checkbox);
-                        }
-                    }
-                }
-            }
-        } else {
-            for (cancer in availableDatasets) {
-                for (var j = 0; j < availableDatasets[cancer].length; j++) {
-                    dataset = availableDatasets[cancer][j];
-                    if (datasets.indexOf(dataset) < 0) {
-                        datasets.push(dataset);
-
-                        dataset_checkbox = document.createElement("div");
-                        dataset_checkbox.classList.add("form-check", "col-lg-4");
-                        dataset_input = document.createElement("input");
-                        dataset_input.className = "form-check-input";
-                        dataset_input.setAttribute("type", "checkbox");
-                        dataset_input.setAttribute("name", "dataset_checkbox_list");
-                        dataset_input.setAttribute("checked", "checked");
-                        dataset_input.setAttribute("value", dataset);
-                        dataset_checkbox.appendChild(dataset_input);
-
-                        dataset_label = document.createElement("label");
-                        dataset_label.className = "form-check-label";
-                        dataset_label.innerHTML = dataset;
-                        dataset_checkbox.appendChild(dataset_label);
-                        console.log(dataset_checkbox);
-                        document.getElementById("datasets-row").appendChild(dataset_checkbox);
-                    }
-                }
-            }
-        }
+        RetrieveDataset();
     });
+
+    $("#celltype").change(function() {
+        RetrieveDataset();
+    });
+    // $("#cancer").change(function() {
+    //     console.log($("#cancer").val());
+    //     document.getElementById("datasets-row").innerHTML = "";
+    //     datasets = new Array();
+    //     if ($("#cancer").val().indexOf("All") < 0) {
+    //         for (var i = 0; i < $("#cancer").val().length; i++) {
+    //             cancer = $("#cancer").val()[i];
+    //             console.log(cancer);
+    //             if (cancer in availableDatasets) {
+    //                 console.log(availableDatasets[cancer]);
+    //                 for (var j = 0; j < availableDatasets[cancer].length; j++) {
+    //                     dataset = availableDatasets[cancer][j];
+    //                     if (datasets.indexOf(dataset) < 0) {
+    //                         datasets.push(dataset);
+
+    //                         dataset_checkbox = document.createElement("div");
+    //                         dataset_checkbox.classList.add("form-check", "col-lg-4");
+    //                         dataset_input = document.createElement("input");
+    //                         dataset_input.className = "form-check-input";
+    //                         dataset_input.setAttribute("type", "checkbox");
+    //                         dataset_input.setAttribute("name", "dataset_checkbox_list");
+    //                         dataset_input.setAttribute("checked", "checked");
+    //                         dataset_input.setAttribute("value", dataset);
+    //                         dataset_checkbox.appendChild(dataset_input);
+
+    //                         dataset_label = document.createElement("label");
+    //                         dataset_label.className = "form-check-label";
+    //                         dataset_label.innerHTML = dataset;
+    //                         dataset_checkbox.appendChild(dataset_label);
+    //                         console.log(dataset_checkbox);
+    //                         document.getElementById("datasets-row").appendChild(dataset_checkbox);
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     } else {
+    //         for (cancer in availableDatasets) {
+    //             for (var j = 0; j < availableDatasets[cancer].length; j++) {
+    //                 dataset = availableDatasets[cancer][j];
+    //                 if (datasets.indexOf(dataset) < 0) {
+    //                     datasets.push(dataset);
+
+    //                     dataset_checkbox = document.createElement("div");
+    //                     dataset_checkbox.classList.add("form-check", "col-lg-4");
+    //                     dataset_input = document.createElement("input");
+    //                     dataset_input.className = "form-check-input";
+    //                     dataset_input.setAttribute("type", "checkbox");
+    //                     dataset_input.setAttribute("name", "dataset_checkbox_list");
+    //                     dataset_input.setAttribute("checked", "checked");
+    //                     dataset_input.setAttribute("value", dataset);
+    //                     dataset_checkbox.appendChild(dataset_input);
+
+    //                     dataset_label = document.createElement("label");
+    //                     dataset_label.className = "form-check-label";
+    //                     dataset_label.innerHTML = dataset;
+    //                     dataset_checkbox.appendChild(dataset_label);
+    //                     console.log(dataset_checkbox);
+    //                     document.getElementById("datasets-row").appendChild(dataset_checkbox);
+    //                 }
+    //             }
+    //         }
+    //     }
+    // });
+
     // dataset_checkbox = document.createElement("div");
     // dataset_checkbox.classList.add("form-check", "col-lg-4");
     // dataset_input = document.createElement("input");
@@ -416,6 +488,12 @@
             create: false,
         });
         $("#annotation").selectize();
+        $("#celltype").selectize({
+            plugins: ['remove_button'],
+            persist: false,
+            maxOptions: 100,
+            create: false,
+        });
         $("#genesearch").selectize({
             valueField: 'gene',
             labelField: 'gene',
@@ -512,6 +590,10 @@
                         console.log('res');
                         var selected_gene = res.selected_gene;
                         console.log(selected_gene);
+                        // var heatmap_file = res.heatmap_file;
+                        // console.log(heatmap_file);
+                        // PlotHeatmap(heatmap_file, selected_gene, "heatmap");
+                        // $("#generesult_heatmap").show();
                         $("#loading2").hide();
                         $("#violin-link").html(res.violin_svg);
                         $("#violin-link").attr("href", res.violin_pdf)

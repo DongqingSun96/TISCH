@@ -61,7 +61,7 @@
             <div class="jumbotron jumbotron-fluid shadow-sm">
                 <div class="container">
                     <h1 style="font-family: Avenir-black,Arial,sans-serif">Dataset Browser</h1>
-                    <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif">Filter datasets by cancer types or other criteria. Users can compare multiple datasets by selecting and submitting them. Alternatively, if users are interested in one specific dataset, they can dive into it by clicking the line of the dataset. </p>
+                    <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif">Search by the datasets. For a single dataset, TISCH provides meta information, cell-type annotation, expression visualization, differential gene expression, and GSEA results. For multiple datasets, TISCH provides gene expression comparison. </p>
                 </div>
             </div>
         </div>
@@ -238,7 +238,7 @@
             <table class="table dataTable justify-content-center table-hover table-bordered table-sm" style="font-size: 0.8rem;" id="dataset-table">
                 <thead class="thead">
                     <tr>
-                        <th scope="col" style="vertical-align: middle; text-align: center;">Select</th>
+                        <th scope="col" style="vertical-align: middle;" class="text-center"></th>
                         <th scope="col" style="vertical-align: middle;">Dataset Name</th>
                         <th scope="col" style="vertical-align: middle;">Species</th>
                         <th scope="col" style="vertical-align: middle;">Treatment</th>
@@ -247,12 +247,15 @@
                         <th scope="col" style="vertical-align: middle;">Platform</th>
                         <th scope="col" style="vertical-align: middle;">Pri / Meta</th>
                         <th scope="col" style="vertical-align: middle;">Publication</th>
+                        <th scope="col" style="vertical-align: middle;"></th>
                     </tr>
                 </thead>
                 <tbody style="font-size: 0.7rem; word-break: keep-all; word-wrap: break-word;">
                     {% for data in datainfo %}
                     <tr>
-                        <td style="vertical-align: middle; text-align: center;" class="checkbox-td"><input type="checkbox" value="{{ data.dataset_name }}" name="dataset_checkbox_list"></td>
+                        <td style="vertical-align: middle; text-align: center;" class="checkbox-td">
+                            <input type="checkbox" value="{{ data.dataset_name }}" name="dataset_checkbox_list" style="margin-top: 0.19rem;">
+                        </td>
                         <td style="vertical-align: middle; cursor: pointer;" data-toggle="tooltip" title="<img src='{{ data.umap }}' width=350px>" data-placement="right" data-html="true">{{ data.dataset_name }}</td>
                         <td style="vertical-align: middle; cursor: pointer;">{{ data.species }}</td>
                         {% if data.treatment == 'None' %}
@@ -269,6 +272,12 @@
                         {% else %}
                         <td style="vertical-align: middle;" class="checkbox-td"><a href="https://pubmed.ncbi.nlm.nih.gov/?term={{ data.pmid }}">{{ data.publication }}</a></td>
                         {% endif %}
+                        <td style="vertical-align: middle; text-align: center;" class="checkbox-td">
+                            <a href="{{ data.file }}">
+                                <?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+                                <svg t="1596767972123" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2189" width="1.1em" height="1.1em" fill="currentColor" style="margin-top: -0.25rem"><path d="M469.333333 170.666667v341.333333H341.333333l170.666667 170.666667 170.666667-170.666667h-128V170.666667z" fill="" p-id="2190"></path><path d="M853.333333 768H170.666667v-341.333333H85.333333v384a42.666667 42.666667 0 0 0 42.666667 42.666666h768a42.666667 42.666667 0 0 0 42.666667-42.666666v-384h-85.333334v341.333333z" fill="" p-id="2191"></path></svg>
+                            </a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -754,11 +763,11 @@
           <img src="http://liulab.dfci.harvard.edu/WEBSITE/images/Global/logofinal.png" height="46" width="58">
         </a> -->
             <span class="navbar-text" style="font-size: 13px">Copyright @2020 TISCH project</span>
-            <a href="mailto: dongqingsun96@gmail.com">
+            <a href="mailto: tisch.compgenomics@gmail.com">
               <span class="navbar-text" style="font-size: 13px">
                 <svg t="1594304718896" class="icon" viewBox="0 0 1385 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2148" width="30" height="30" style="margin-right: 10px"><path d="M1226.571294 36.442353h-1090.258823c-74.992941 0-136.312471 54.211765-136.312471 120.470588v722.82353c0 66.258824 61.319529 120.470588 136.312471 120.470588h1090.258823c74.992941 0 136.312471-54.211765 136.312471-120.470588v-722.82353c0-66.258824-61.319529-120.470588-136.312471-120.470588z m0 240.941176l-545.129412 301.176471-545.129411-301.176471v-120.470588l545.129411 301.176471 545.129412-301.176471v120.470588z" fill="#FFCB05" p-id="2149"></path>
                 </svg>
-                dongqingsun96@gmail.com
+                tisch.compgenomics@gmail.com
               </span>
             </a>
         </div>
@@ -821,7 +830,8 @@
             "searching": false,
             "info": false,
             "columnDefs": [
-                { "orderable": false, "targets": [0,8] }
+                { "orderable": false, "targets": [0,8,9] },
+                { "width": 9, "targets": [0,9] }
                 ],
             "order": [[ 1, "asc" ]]
         });
